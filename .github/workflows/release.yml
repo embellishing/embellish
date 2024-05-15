@@ -24,7 +24,7 @@ jobs:
         uses: changesets/action@v1
         with:
           commit: version packages
-          publish: pnpm -r publish
+          publish: pnpm -r publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
