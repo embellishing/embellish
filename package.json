@@ -18,6 +18,7 @@
   ],
   "author": "Nick Saunders",
   "license": "MIT",
+  "packageManager": "pnpm@9.0.4",
   "devDependencies": {
     "@changesets/cli": "^2.27.1"
   }
