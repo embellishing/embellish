@@ -17,5 +17,8 @@
     "tailwind"
   ],
   "author": "Nick Saunders",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1"
+  }
 }
