@@ -1,0 +1,21 @@
+{
+  "name": "@embellish/react",
+  "version": "0.0.0",
+  "description": "A lightweight React styling primitive, powered entirely by CSS and inline styles",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/embellishes/embellish.git"
+  },
+  "keywords": [
+    "react",
+    "inline",
+    "styles",
+    "css",
+    "polymorphic",
+    "box",
+    "stitches",
+    "tailwind"
+  ],
+  "author": "Nick Saunders",
+  "license": "MIT"
+}

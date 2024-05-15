@@ -1,0 +1,43 @@
+{
+  "name": "@embellish/react",
+  "version": "0.0.0",
+  "description": "A lightweight React styling primitive, powered entirely by CSS and inline styles",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/embellishes/embellish.git",
+    "directory": "packages/react"
+  },
+  "keywords": [
+    "react",
+    "inline",
+    "styles",
+    "css",
+    "polymorphic",
+    "box",
+    "stitches",
+    "tailwind"
+  ],
+  "files": [
+    "index.cjs",
+    "index.d.ts",
+    "index.js"
+  ],
+  "main": "index.cjs",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
+  "author": "Nick Saunders",
+  "license": "MIT",
+  "devDependencies": {
+    "ascjs": "^6.0.3"
+  },
+  "scripts": {
+    "prepublishOnly": "ascjs index.js index.cjs"
+  }
+}
