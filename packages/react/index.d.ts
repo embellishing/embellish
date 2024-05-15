@@ -83,4 +83,4 @@ export type EmbellishFn = <ConditionName, ConfigProperties>(
   config: Config<ConditionName, ConfigProperties>
 ) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
 
-export const embellish: CreateBoxFn;
+export const embellish: EmbellishFn;
