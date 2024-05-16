@@ -13,5 +13,9 @@
   "type": "module",
   "devDependencies": {
     "@changesets/cli": "^2.27.1"
+  },
+  "scripts": {
+    "ci:publish": "pnpm publish -r --access public && changeset tag",
+    "ci:version": "changeset version && pnpm install --no-frozen-lockfile"
   }
 }
