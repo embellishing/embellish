@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { createElement, forwardRef } from "react";
 
 function normalizeCondition(cond) {
