@@ -85,8 +85,12 @@ export type Config<ConditionName extends string, ConfigProperties> = {
     [P in ConditionName]: ValidConditionName<P> & Condition<Selector>;
   };
   properties?: {
-    [P in keyof ConfigProperties]: ValidPropertyName<P> & ConfigProperties[P];
-  } & Record<string, (value: any) => CSSProperties>;
+    [P in keyof ConfigProperties]: ValidPropertyName<P> &
+      (ConfigProperties[P] extends (value: any) => CSSProperties
+        ? unknown
+        : never) &
+      ConfigProperties[P];
+  };
   fallback?: "revert-layer" | "unset";
   debug?: boolean;
 };
