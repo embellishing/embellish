@@ -1,8 +1,8 @@
 import {
+  CSSProperties,
   Component,
   ComponentProps,
   ComponentType,
-  CSSProperties,
   ElementType,
   PropsWithRef,
   PropsWithoutRef,
@@ -74,9 +74,9 @@ export type BoxComponent<ConditionName, Properties> = <
 
 export type GetProperties<ConfigProperties> = Partial<{
   [P in keyof ConfigProperties]: ConfigProperties[P] extends (
-    value: unknown
-  ) => CSSProperties
-    ? ValidPropertyName<P> & Parameters<ConfigProperties[P]>[0]
+    value: infer V
+  ) => unknown
+    ? V
     : never;
 }>;
 
@@ -84,7 +84,9 @@ export type Config<ConditionName extends string, ConfigProperties> = {
   conditions?: {
     [P in ConditionName]: ValidConditionName<P> & Condition<Selector>;
   };
-  properties?: ConfigProperties;
+  properties?: {
+    [P in keyof ConfigProperties]: ValidPropertyName<P> & ConfigProperties[P];
+  } & Record<string, (value: any) => CSSProperties>;
   fallback?: "revert-layer" | "unset";
   debug?: boolean;
 };
