@@ -2,8 +2,11 @@ import {
   Component,
   ComponentProps,
   ComponentType,
+  CSSProperties,
+  ElementType,
   PropsWithRef,
   PropsWithoutRef,
+  RefAttributes,
 } from "react";
 
 export type Chars<S, Acc = never> = S extends `${infer Head}${infer Tail}`
@@ -26,6 +29,10 @@ export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
   ? OnlyChars<Letter | Digit, Tail>
   : never;
 
+export type ValidPropertyName<Name> = Name extends `${Letter}${infer Tail}`
+  ? OnlyChars<Letter | Digit, Tail>
+  : never;
+
 export type Condition<S> = S | { and: S[] } | { or: S[] } | { not: S };
 
 export type Selector =
@@ -33,7 +40,11 @@ export type Selector =
   | `@${"media" | "container" | "supports"} ${string}`;
 
 export type StyleProps<ConditionName, Properties> = {
-  [Property in keyof Properties as `${ConditionName}:${Property}`]: Properties[Property];
+  [Property in keyof Properties as `${ConditionName extends string
+    ? ConditionName
+    : never}:${Property extends string
+    ? Property
+    : never}`]: Properties[Property];
 };
 
 export type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<
@@ -46,7 +57,7 @@ export type BoxComponent<ConditionName, Properties> = <
   Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<unknown> = "div",
-  LocalConditionName = ""
+  LocalConditionName extends string = ""
 >(
   props: {
     "box:is"?: Is;
@@ -62,10 +73,14 @@ export type BoxComponent<ConditionName, Properties> = <
 ) => JSX.Element;
 
 export type GetProperties<ConfigProperties> = Partial<{
-  [P in keyof ConfigProperties]: Parameters<ConfigProperties[P]>[0];
+  [P in keyof ConfigProperties]: ConfigProperties[P] extends (
+    value: unknown
+  ) => CSSProperties
+    ? ValidPropertyName<P> & Parameters<ConfigProperties[P]>[0]
+    : never;
 }>;
 
-export type Config<ConditionName, ConfigProperties> = {
+export type Config<ConditionName extends string, ConfigProperties> = {
   conditions?: {
     [P in ConditionName]: ValidConditionName<P> & Condition<Selector>;
   };
@@ -79,7 +94,7 @@ export type EmbellishResult<ConditionName, Properties> = {
   Box: BoxComponent<ConditionName, Properties>;
 };
 
-export type EmbellishFn = <ConditionName, ConfigProperties>(
+export type EmbellishFn = <ConditionName extends string, ConfigProperties>(
   config: Config<ConditionName, ConfigProperties>
 ) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
 
