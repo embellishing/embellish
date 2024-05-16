@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.0.5
+
+### Patch Changes
+
+- 60eef17: Properly apply fallback value.
+
 ## 0.0.4
 
 ### Patch Changes
