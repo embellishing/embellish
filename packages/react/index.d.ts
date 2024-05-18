@@ -59,7 +59,7 @@ export type BoxComponent<ConditionName, Properties> = <
   Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<unknown> = "div",
-  LocalConditionName = never
+  LocalConditionName extends string = never
 >(
   props: {
     "box:is"?: Is;
@@ -82,7 +82,7 @@ export type GetProperties<ConfigProperties> = Partial<{
     : never;
 }>;
 
-export type Config<ConditionName, ConfigProperties> = {
+export type Config<ConditionName extends string, ConfigProperties> = {
   conditions?: {
     [P in ConditionName]: ValidConditionName<P> & Condition<Selector>;
   };
@@ -105,7 +105,11 @@ export type EmbellishResult<ConditionName, Properties> = {
 export type EmbellishFn = <
   Conditions,
   ConfigProperties,
-  ConditionName = Conditions extends Record<infer C, unknown> ? C : never
+  ConditionName extends string = Conditions extends Record<infer C, unknown>
+    ? C extends string
+      ? C
+      : never
+    : never
 >(
   config: Config<ConditionName, ConfigProperties>
 ) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
