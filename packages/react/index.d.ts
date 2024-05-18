@@ -25,7 +25,9 @@ export type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}`
     : never
   : unknown;
 
-export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
+export type ValidConditionName<Name> = Name extends "box" | "initial"
+  ? never
+  : Name extends `${Letter}${infer Tail}`
   ? OnlyChars<Letter | Digit, Tail>
   : never;
 
