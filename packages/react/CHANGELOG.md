@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.0.8
+
+### Patch Changes
+
+- 98044b4: make conditions optional and properties required
+
 ## 0.0.7
 
 ### Patch Changes
