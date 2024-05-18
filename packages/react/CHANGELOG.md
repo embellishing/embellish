@@ -1,5 +1,14 @@
 # @embellish/react
 
+## 0.0.9
+
+### Patch Changes
+
+- e005503: fix for missing props
+- 88fb52f: fix for missing constraints
+- e005503: fix for no conditions at runtime
+- 26def23: fix for missing properties when no conditions are specified
+
 ## 0.0.8
 
 ### Patch Changes
