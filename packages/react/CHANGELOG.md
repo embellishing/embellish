@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.0.10
+
+### Patch Changes
+
+- 22bc9ca: fix attempt to get condition names when the conditions object is undefined
+
 ## 0.0.9
 
 ### Patch Changes
