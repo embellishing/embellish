@@ -71,10 +71,7 @@ export type BoxComponent<ConditionName, Properties> = <
     JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
     "style"
   > &
-    StyleProps<
-      "initial" | Exclude<ConditionName | LocalConditionName, unknown>,
-      Properties
-    >
+    StyleProps<"initial" | ConditionName | LocalConditionName, Properties>
 ) => JSX.Element;
 
 export type GetProperties<ConfigProperties> = Partial<{
@@ -105,7 +102,11 @@ export type EmbellishResult<ConditionName, Properties> = {
   Box: BoxComponent<ConditionName, Properties>;
 };
 
-export type EmbellishFn = <ConditionName, ConfigProperties>(
+export type EmbellishFn = <
+  Conditions,
+  ConfigProperties,
+  ConditionName = Conditions extends Record<infer C, unknown> ? C : never
+>(
   config: Config<ConditionName, ConfigProperties>
 ) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
 
