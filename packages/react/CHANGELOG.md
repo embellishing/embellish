@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.0.7
+
+### Patch Changes
+
+- 7946320: block "initial" and "box" condition names
+
 ## 0.0.6
 
 ### Patch Changes
