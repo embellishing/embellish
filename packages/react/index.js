@@ -159,7 +159,7 @@ export function embellish(config) {
 
     let sheet = `*${space}{${newline}`;
 
-    const conditions = Object.entries(config.conditions)
+    const conditions = Object.entries(config.conditions || {})
       .map(([name, def]) => [name, normalizeCondition(def)])
       .filter(([, def]) => def);
 
