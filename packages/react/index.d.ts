@@ -41,9 +41,9 @@ export type Selector =
   | `${string}&${string}`
   | `@${"media" | "container" | "supports"} ${string}`;
 
-export type StyleProps<ConditionName, Properties> = {
-  [Property in keyof Properties as `${ConditionName extends string
-    ? ConditionName
+export type StyleProps<Namespace, Properties> = {
+  [Property in keyof Properties as `${Namespace extends string
+    ? Namespace
     : never}:${Property extends string
     ? Property
     : never}`]: Properties[Property];
@@ -59,7 +59,7 @@ export type BoxComponent<ConditionName, Properties> = <
   Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<unknown> = "div",
-  LocalConditionName extends string = ""
+  LocalConditionName = never
 >(
   props: {
     "box:is"?: Is;
@@ -71,7 +71,10 @@ export type BoxComponent<ConditionName, Properties> = <
     JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
     "style"
   > &
-    StyleProps<"initial" | ConditionName | LocalConditionName, Properties>
+    StyleProps<
+      "initial" | Exclude<ConditionName | LocalConditionName, unknown>,
+      Properties
+    >
 ) => JSX.Element;
 
 export type GetProperties<ConfigProperties> = Partial<{
@@ -82,11 +85,11 @@ export type GetProperties<ConfigProperties> = Partial<{
     : never;
 }>;
 
-export type Config<ConditionName extends string, ConfigProperties> = {
+export type Config<ConditionName, ConfigProperties> = {
   conditions?: {
     [P in ConditionName]: ValidConditionName<P> & Condition<Selector>;
   };
-  properties?: {
+  properties: {
     [P in keyof ConfigProperties]: ValidPropertyName<P> &
       (ConfigProperties[P] extends (value: any) => CSSProperties
         ? unknown
@@ -102,7 +105,7 @@ export type EmbellishResult<ConditionName, Properties> = {
   Box: BoxComponent<ConditionName, Properties>;
 };
 
-export type EmbellishFn = <ConditionName extends string, ConfigProperties>(
+export type EmbellishFn = <ConditionName, ConfigProperties>(
   config: Config<ConditionName, ConfigProperties>
 ) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
 
