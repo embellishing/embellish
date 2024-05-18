@@ -294,7 +294,7 @@ export function embellish(config) {
       })(conditionNameToId(key), normalizeCondition(conditions[key]));
     }
 
-    const conditionNames = Object.keys(config.conditions).concat(
+    const conditionNames = Object.keys(config.conditions || {}).concat(
       Object.keys(conditions)
     );
 
