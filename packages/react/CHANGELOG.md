@@ -1,5 +1,15 @@
 # @embellish/react
 
+## 0.1.0
+
+### Minor Changes
+
+- 6932e6e: Renamed the `embellish` function to `createEmbellish`.
+
+### Patch Changes
+
+- 1fe5f25: Add `standardLonghandProperties`, `vendorLonghandProperties`, `standardShorthandProperties`, and `vendorShorthandProperties`.
+
 ## 0.0.10
 
 ### Patch Changes
