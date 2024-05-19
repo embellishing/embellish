@@ -8,6 +8,7 @@ import {
   PropsWithoutRef,
   RefAttributes,
 } from "react";
+import * as CSS from "csstype";
 
 export type Chars<S, Acc = never> = S extends `${infer Head}${infer Tail}`
   ? Chars<Tail, Acc | Head>
@@ -115,3 +116,27 @@ export type CreateEmbellishFn = <
 ) => Embellish<ConditionName, GetProperties<ConfigProperties>>;
 
 export const createEmbellish: CreateEmbellishFn;
+
+export const standardLonghandProperties: Required<{
+  [P in keyof CSS.StandardLonghandProperties]: (
+    value: CSSProperties[P]
+  ) => CSSProperties;
+}>;
+
+export const standardShorthandProperties: Required<{
+  [P in keyof CSS.StandardShorthandProperties]: (
+    value: CSSProperties[P]
+  ) => CSSProperties;
+}>;
+
+export const vendorLonghandProperties: Required<{
+  [P in keyof CSS.VendorLonghandProperties]: (
+    value: CSSProperties[P]
+  ) => CSSProperties;
+}>;
+
+export const vendorShorthandProperties: Required<{
+  [P in keyof CSS.VendorShorthandProperties]: (
+    value: CSSProperties[P]
+  ) => CSSProperties;
+}>;

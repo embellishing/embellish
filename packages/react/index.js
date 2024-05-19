@@ -142,6 +142,11 @@ function stringifyValue(propertyName, value) {
 export function createEmbellish(config) {
   const conditionNameToId = (name) => `${name}-${hash(config)}`;
 
+  const resolveProperty = (() => {
+    const properties = config.properties || {};
+    return (name) => properties[name] || ((x) => ({ [name]: x }));
+  })();
+
   const [space, newline] = [" ", "\n"].map((c) => (config.debug ? c : ""));
 
   function StyleSheet() {
@@ -322,13 +327,12 @@ export function createEmbellish(config) {
         continue;
       }
       if (stylePrefix === "initial") {
-        // style[styleProperty] = props[key];
-        Object.assign(style, config.properties[styleProperty](props[key]));
+        Object.assign(style, resolveProperty(styleProperty)(props[key]));
         continue;
       }
       const id = conditionNameToId(stylePrefix);
       for (const [resolvedProperty, value] of Object.entries(
-        config.properties[styleProperty](props[key])
+        resolveProperty(styleProperty)(props[key])
       )) {
         let fallback = stringifyValue(
           resolvedProperty,
@@ -353,3 +357,11 @@ export function createEmbellish(config) {
 
   return { StyleSheet, Box };
 }
+
+export const standardLonghandProperties = undefined;
+
+export const standardShorthandProperties = undefined;
+
+export const vendorLonghandProperties = undefined;
+
+export const vendorShorthandProperties = undefined;
