@@ -139,7 +139,7 @@ function stringifyValue(propertyName, value) {
   }
 }
 
-export function embellish(config) {
+export function createEmbellish(config) {
   const conditionNameToId = (name) => `${name}-${hash(config)}`;
 
   const [space, newline] = [" ", "\n"].map((c) => (config.debug ? c : ""));

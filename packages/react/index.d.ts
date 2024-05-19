@@ -97,12 +97,12 @@ export type Config<ConditionName extends string, ConfigProperties> = {
   debug?: boolean;
 };
 
-export type EmbellishResult<ConditionName, Properties> = {
+export type Embellish<ConditionName, Properties> = {
   StyleSheet: ComponentType<Record<string, never>>;
   Box: BoxComponent<ConditionName, Properties>;
 };
 
-export type EmbellishFn = <
+export type CreateEmbellishFn = <
   Conditions,
   ConfigProperties,
   ConditionName extends string = Conditions extends Record<infer C, unknown>
@@ -112,6 +112,6 @@ export type EmbellishFn = <
     : never
 >(
   config: Config<ConditionName, ConfigProperties>
-) => EmbellishResult<ConditionName, GetProperties<ConfigProperties>>;
+) => Embellish<ConditionName, GetProperties<ConfigProperties>>;
 
-export const embellish: EmbellishFn;
+export const createEmbellish: CreateEmbellishFn;
