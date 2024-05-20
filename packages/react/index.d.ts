@@ -1,14 +1,14 @@
-import {
-  CSSProperties,
+import type * as CSS from "csstype";
+import type {
   Component,
   ComponentProps,
   ComponentType,
+  CSSProperties,
   ElementType,
-  PropsWithRef,
   PropsWithoutRef,
+  PropsWithRef,
   RefAttributes,
 } from "react";
-import * as CSS from "csstype";
 
 export type Chars<S, Acc = never> = S extends `${infer Head}${infer Tail}`
   ? Chars<Tail, Acc | Head>
