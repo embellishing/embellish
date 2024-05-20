@@ -21,9 +21,7 @@ function normalizeCondition(cond) {
     return inner ? { not: inner } : undefined;
   }
   const [operator] = Object.keys(cond);
-  const [head, ...tail] = cond[operator]
-    .map(normalizeCondition)
-    .filter((x) => x);
+  const [head, ...tail] = cond[operator].map(normalizeCondition).filter(x => x);
   if (!head) {
     return undefined;
   }
@@ -140,24 +138,24 @@ function stringifyValue(propertyName, value) {
 }
 
 export function createEmbellish(config) {
-  const conditionNameToId = (name) => `${name}-${hash(config)}`;
+  const conditionNameToId = name => `${name}-${hash(config)}`;
 
   const resolveProperty = (() => {
     const properties = config.properties || {};
-    return (name) => properties[name] || ((x) => ({ [name]: x }));
+    return name => properties[name] || (x => ({ [name]: x }));
   })();
 
-  const [space, newline] = [" ", "\n"].map((c) => (config.debug ? c : ""));
+  const [space, newline] = [" ", "\n"].map(c => (config.debug ? c : ""));
 
   function StyleSheet() {
     const indent = Array(2).fill(space).join("");
     function variablePair({ id, initial, indents }) {
       return [0, 1]
         .map(
-          (i) =>
+          i =>
             `${Array(indents).fill(indent).join("")}--${id}-${i}:${space}${
               initial === i ? "initial" : space ? "" : " "
-            };${newline}`
+            };${newline}`,
         )
         .join("");
     }
@@ -252,7 +250,7 @@ export function createEmbellish(config) {
       "box:conditions": conditions = {},
       ...props
     },
-    ref
+    ref,
   ) {
     const style = {},
       forwardProps = {};
@@ -275,11 +273,11 @@ export function createEmbellish(config) {
               rightId = `${id}B`;
               style[`--${id}-0`] = `var(--${it(
                 leftId,
-                def.and[0]
+                def.and[0],
               )}-0) var(--${it(rightId, def.and[1])}-0)`;
               style[`--${id}-1`] = `var(--${it(
                 leftId,
-                def.and[0]
+                def.and[0],
               )}-1, var(--${it(rightId, def.and[1])}-1))`;
               return id;
             case "or":
@@ -287,11 +285,11 @@ export function createEmbellish(config) {
               rightId = `${id}B`;
               style[`--${id}-0`] = `var(--${it(
                 leftId,
-                def.or[0]
+                def.or[0],
               )}-0, var(--${it(rightId, def.or[1])}-0))`;
               style[`--${id}-1`] = `var(--${it(
                 leftId,
-                def.or[0]
+                def.or[0],
               )}-1) var(--${it(rightId, def.or[1])}-1)`;
               return id;
           }
@@ -300,11 +298,11 @@ export function createEmbellish(config) {
     }
 
     const conditionNames = Object.keys(config.conditions || {}).concat(
-      Object.keys(conditions)
+      Object.keys(conditions),
     );
 
     const declarationPattern = new RegExp(
-      `^(${conditionNames.concat("initial").join("|")}):(.+)`
+      `^(${conditionNames.concat("initial").join("|")}):(.+)`,
     );
 
     for (const key of Object.keys(props).sort((a, b) => {
@@ -332,11 +330,11 @@ export function createEmbellish(config) {
       }
       const id = conditionNameToId(stylePrefix);
       for (const [resolvedProperty, value] of Object.entries(
-        resolveProperty(styleProperty)(props[key])
+        resolveProperty(styleProperty)(props[key]),
       )) {
         let fallback = stringifyValue(
           resolvedProperty,
-          style[resolvedProperty]
+          style[resolvedProperty],
         );
         if (fallback === null) {
           fallback = config.fallback === "unset" ? "unset" : "revert-layer";
@@ -346,9 +344,8 @@ export function createEmbellish(config) {
           continue;
         }
         delete style[resolvedProperty];
-        style[
-          resolvedProperty
-        ] = `var(--${id}-1, ${condValue}) var(--${id}-0, ${fallback})`;
+        style[resolvedProperty] =
+          `var(--${id}-1, ${condValue}) var(--${id}-0, ${fallback})`;
       }
     }
 

@@ -29,8 +29,8 @@ export type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}`
 export type ValidConditionName<Name> = Name extends "box" | "initial"
   ? never
   : Name extends `${Letter}${infer Tail}`
-  ? OnlyChars<Letter | Digit, Tail>
-  : never;
+    ? OnlyChars<Letter | Digit, Tail>
+    : never;
 
 export type ValidPropertyName<Name> = Name extends `${Letter}${infer Tail}`
   ? OnlyChars<Letter | Digit, Tail>
@@ -60,7 +60,7 @@ export type BoxComponent<ConditionName, Properties> = <
   Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<unknown> = "div",
-  LocalConditionName extends string = never
+  LocalConditionName extends string = never,
 >(
   props: {
     "box:is"?: Is;
@@ -72,12 +72,12 @@ export type BoxComponent<ConditionName, Properties> = <
     JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
     "style"
   > &
-    StyleProps<"initial" | ConditionName | LocalConditionName, Properties>
+    StyleProps<"initial" | ConditionName | LocalConditionName, Properties>,
 ) => JSX.Element;
 
 export type GetProperties<ConfigProperties> = Partial<{
   [P in keyof ConfigProperties]: ConfigProperties[P] extends (
-    value: infer V
+    value: infer V,
   ) => unknown
     ? V
     : never;
@@ -110,33 +110,33 @@ export type CreateEmbellishFn = <
     ? C extends string
       ? C
       : never
-    : never
+    : never,
 >(
-  config: Config<ConditionName, ConfigProperties>
+  config: Config<ConditionName, ConfigProperties>,
 ) => Embellish<ConditionName, GetProperties<ConfigProperties>>;
 
 export const createEmbellish: CreateEmbellishFn;
 
 export const standardLonghandProperties: Required<{
   [P in keyof CSS.StandardLonghandProperties]: (
-    value: CSSProperties[P]
+    value: CSSProperties[P],
   ) => CSSProperties;
 }>;
 
 export const standardShorthandProperties: Required<{
   [P in keyof CSS.StandardShorthandProperties]: (
-    value: CSSProperties[P]
+    value: CSSProperties[P],
   ) => CSSProperties;
 }>;
 
 export const vendorLonghandProperties: Required<{
   [P in keyof CSS.VendorLonghandProperties]: (
-    value: CSSProperties[P]
+    value: CSSProperties[P],
   ) => CSSProperties;
 }>;
 
 export const vendorShorthandProperties: Required<{
   [P in keyof CSS.VendorShorthandProperties]: (
-    value: CSSProperties[P]
+    value: CSSProperties[P],
   ) => CSSProperties;
 }>;

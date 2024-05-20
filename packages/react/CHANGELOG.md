@@ -8,34 +8,36 @@
 
 ### Patch Changes
 
-- 1fe5f25: Add `standardLonghandProperties`, `vendorLonghandProperties`, `standardShorthandProperties`, and `vendorShorthandProperties`.
+- 1fe5f25: Added `standardLonghandProperties`, `vendorLonghandProperties`,
+  `standardShorthandProperties`, and `vendorShorthandProperties`.
 
 ## 0.0.10
 
 ### Patch Changes
 
-- 22bc9ca: fix attempt to get condition names when the conditions object is undefined
+- 22bc9ca: Fix attempt to get condition names when the conditions object is
+  undefined.
 
 ## 0.0.9
 
 ### Patch Changes
 
-- e005503: fix for missing props
-- 88fb52f: fix for missing constraints
-- e005503: fix for no conditions at runtime
-- 26def23: fix for missing properties when no conditions are specified
+- e005503: Fix for missing props
+- 88fb52f: Fix for missing constraints
+- e005503: Fix for no conditions at runtime
+- 26def23: Fix for missing properties when no conditions are specified
 
 ## 0.0.8
 
 ### Patch Changes
 
-- 98044b4: make conditions optional and properties required
+- 98044b4: Made conditions optional and properties required.
 
 ## 0.0.7
 
 ### Patch Changes
 
-- 7946320: block "initial" and "box" condition names
+- 7946320: Updated types to prevent invalid "initial" and "box" condition names.
 
 ## 0.0.6
 
@@ -47,7 +49,7 @@
 
 ### Patch Changes
 
-- 60eef17: Properly apply fallback value.
+- 60eef17: Proper application of fallback value
 
 ## 0.0.4
 
@@ -65,4 +67,4 @@
 
 ### Patch Changes
 
-- aa851c9: Fix the type of the `embellish` function.
+- aa851c9: Fixed the type of the `embellish` function.

@@ -12,10 +12,13 @@
   "packageManager": "pnpm@9.0.4",
   "type": "module",
   "devDependencies": {
-    "@changesets/cli": "^2.27.1"
+    "@changesets/cli": "^2.27.1",
+    "prettier": "^3.2.5"
   },
   "scripts": {
     "ci:publish": "pnpm publish -r --access public && changeset tag",
-    "ci:version": "changeset version && pnpm install --no-frozen-lockfile"
+    "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
+    "check": "prettier --check .",
+    "fix": "prettier --write ."
   }
 }

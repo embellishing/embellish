@@ -19,17 +19,17 @@
     "tailwind"
   ],
   "files": [
-    "index.cjs",
+    "dist/index.cjs",
     "index.d.ts",
     "index.js"
   ],
-  "main": "index.cjs",
+  "main": "dist/index.cjs",
   "module": "index.js",
   "types": "index.d.ts",
   "exports": {
     ".": {
       "import": "./index.js",
-      "require": "./index.cjs",
+      "require": "./dist/index.cjs",
       "types": "./index.d.ts"
     }
   },
@@ -39,6 +39,6 @@
     "ascjs": "^6.0.3"
   },
   "scripts": {
-    "prepublishOnly": "ascjs index.js index.cjs"
+    "prepublishOnly": "ascjs index.js dist/index.cjs"
   }
 }
