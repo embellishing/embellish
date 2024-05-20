@@ -9,10 +9,10 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: create nvmrc
         run: sed -n 's/^use-node-version=//p' .npmrc >> .nvmrc
