@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./actions/setup
+      - uses: ./.github/actions/setup
 
       - run: pnpm check
