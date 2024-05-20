@@ -89,6 +89,7 @@ export type Config<ConditionName extends string, ConfigProperties> = {
   };
   properties: {
     [P in keyof ConfigProperties]: ValidPropertyName<P> &
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (ConfigProperties[P] extends (value: any) => CSSProperties
         ? unknown
         : never) &

@@ -13,12 +13,17 @@
   "type": "module",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "prettier": "^3.2.5"
+    "@eslint/js": "^9.3.0",
+    "eslint": "^8.57.0",
+    "globals": "^15.3.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
   },
   "scripts": {
     "ci:publish": "pnpm publish -r --access public && changeset tag",
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
-    "check": "prettier --check .",
-    "fix": "prettier --write ."
+    "check": "prettier --check . && eslint .",
+    "fix": "prettier --write . && eslint --fix ."
   }
 }
