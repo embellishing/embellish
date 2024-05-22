@@ -27,6 +27,18 @@ ability to define your own custom style properties and apply them conditionally
 using a pure CSS mechanism, the `Box` component provides a flexible and
 declarative API for rendering styled elements.
 
+```tsx
+<Box
+  box:is="a"
+  href="https://github.com/embellishes/embellish"
+  initial:color="#fff"
+  initial:background="#03f"
+  hover:background="color-mix(in srgb, #03f, #fff 12.5%)"
+  active:background="#c30">
+  Get started
+</Box>
+```
+
 ## Features
 
 - **Conditional styles with pure CSS**: Under the hood, Embellish uses CSS
@@ -42,7 +54,7 @@ declarative API for rendering styled elements.
   instance using logical operators, providing flexibility, promoting reuse, and
   keeping global CSS to a minimum.
 - **No runtime style injection**: Avoid hydration mismatches, flashes of
-  unstyled content, and various other pitfalls of runtime style injection.
+  unstyled content, and questionable performance of runtime style injection.
 - **No build step**: Simplify the development workflow by avoiding static
   analysis and extra build steps.
 - **Near-perfect code splitting**: Most style information is embedded directly
