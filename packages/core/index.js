@@ -177,7 +177,9 @@ export function createConditions(init, parent) {
     for (const key in init) {
       (function it(id, def) {
         if (typeof def === "string") {
-          return parent.conditionId(def);
+          style[`--${id}-0`] = `var(--${parent.conditionId(def)}-0)`;
+          style[`--${id}-1`] = `var(--${parent.conditionId(def)}-1)`;
+          return id;
         }
         if (typeof def === "object") {
           const [operator] = Object.keys(def);
