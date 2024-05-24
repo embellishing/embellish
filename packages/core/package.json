@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "@embellish/core",
+  "version": "0.0.0",
+  "description": "Embellish core library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/embellishes/embellish.git",
+    "directory": "packages/core"
+  },
+  "module": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "author": "Nick Saunders",
+  "license": "MIT"
+}
