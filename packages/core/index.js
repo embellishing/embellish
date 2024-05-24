@@ -1,7 +1,7 @@
 const debug = process.env.NODE_ENV === "development";
 const space = debug ? " " : "";
 
-function hash(obj) {
+function createHash(obj) {
   const jsonString = JSON.stringify(obj);
 
   let hashValue = 0;
@@ -50,7 +50,10 @@ function normalizeCondition(cond) {
 }
 
 export function createConditions(init, parent) {
-  const self = { _tag: parent ? "local" : "global" };
+  const hash = parent?.hash || createHash(init);
+  const depth = parent ? parent.depth + 1 : 0;
+
+  const self = { _tag: parent ? "local" : "global", hash, depth };
 
   const conditionNames = [
     ...Object.keys(init),
@@ -58,10 +61,10 @@ export function createConditions(init, parent) {
   ];
 
   function conditionId(conditionName) {
-    if (parent) {
-      return parent.conditionId(conditionName);
+    if (conditionName in init) {
+      return `${conditionName}-${hash}-${depth}`;
     }
-    return `${conditionName}-${hash(init)}`;
+    return parent.conditionId(conditionName);
   }
 
   function conditionalExpression(conditionName, valueIfTrue, valueIfFalse) {
@@ -186,8 +189,8 @@ export function createConditions(init, parent) {
           let leftId, rightId;
           switch (operator) {
             case "not":
-              style[`--${id}-0`] = `var(--${it(id, def.not)}-1)`;
-              style[`--${id}-1`] = `var(--${it(id, def.not)}-0)`;
+              style[`--${id}-0`] = `var(--${it(`${id}X`, def.not)}-1)`;
+              style[`--${id}-1`] = `var(--${it(`${id}X`, def.not)}-0)`;
               return id;
             case "and":
               leftId = `${id}A`;
