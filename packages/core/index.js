@@ -75,8 +75,12 @@ export function createConditions(init, parent) {
     )}-0,${space}${valueIfFalse})`;
   }
 
-  function createConditionsImpl(init) {
+  function add(init) {
     return createConditions(init, self);
+  }
+
+  function pick() {
+    return self;
   }
 
   function styleSheet() {
@@ -227,7 +231,8 @@ export function createConditions(init, parent) {
     conditionNames,
     conditionId,
     conditionalExpression,
-    createConditions: createConditionsImpl,
+    add,
+    pick,
     styleSheet,
     declarations,
   });

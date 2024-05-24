@@ -31,7 +31,7 @@ export type Selector =
   | `@${"media" | "container" | "supports"} ${string}`;
 
 export type Conditions<S, Hook, ConditionName extends string | never> = {
-  createConditions<Conds>(conditions: {
+  add<Conds>(conditions: {
     [C in keyof Conds]: ValidConditionName<C> & Condition<S>;
   }): keyof Conds extends string
     ? Conditions<
@@ -47,6 +47,9 @@ export type Conditions<S, Hook, ConditionName extends string | never> = {
     valueIfTrue: string,
     valueIfFalse: string,
   ): string;
+  pick<Cond extends ConditionName>(
+    conditionName: Cond[],
+  ): Conditions<Cond, { declarations(): Record<string, string> }, Cond>;
 };
 
 export const createConditions: Conditions<
@@ -55,4 +58,4 @@ export const createConditions: Conditions<
     styleSheet(): string;
   },
   never
->["createConditions"];
+>["add"];

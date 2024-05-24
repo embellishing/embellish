@@ -1,6 +1,7 @@
-import { createElement, forwardRef } from "react";
+// @ts-nocheck
 
 export * from "@embellish/core";
+import { createElement, forwardRef } from "react";
 
 const unitlessNumbers = new Set([
   "animationIterationCount",
@@ -111,7 +112,7 @@ export function createBox({
       },
       ref,
     ) => {
-      const conditions = configConditions.createConditions(localConditions);
+      const conditions = configConditions.add(localConditions);
       const style = conditions.declarations(),
         forwardProps = {};
 

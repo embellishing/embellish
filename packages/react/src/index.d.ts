@@ -1,4 +1,4 @@
-import type {
+import {
   Condition,
   createConditions,
   Digit,
@@ -78,11 +78,10 @@ declare function createBox<
   defaultIs?: DefaultIs;
   conditions?: Pick<
     ReturnType<typeof createConditions<Conditions>>,
-    "createConditions" | "conditionNames" | "conditionalExpression"
+    "add" | "conditionNames" | "conditionalExpression"
   >;
   properties: {
     [P in keyof Properties]: ValidPropertyName<P> &
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (Properties[P] extends (value: any) => CSSProperties ? unknown : never) &
       Properties[P];
   };
