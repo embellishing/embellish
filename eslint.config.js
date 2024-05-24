@@ -11,6 +11,16 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    ignores: ["**/dist/**"],
+  },
+  {
+    languageOptions: {
+      globals: {
+        process: "readonly",
+      },
+    },
+  },
+  {
     files: [".changeset/commit.cjs"],
     languageOptions: {
       globals: {

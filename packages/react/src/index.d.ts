@@ -1,4 +1,4 @@
-import {
+import type {
   Condition,
   createConditions,
   Digit,
@@ -82,6 +82,7 @@ declare function createBox<
   >;
   properties: {
     [P in keyof Properties]: ValidPropertyName<P> &
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (Properties[P] extends (value: any) => CSSProperties ? unknown : never) &
       Properties[P];
   };
