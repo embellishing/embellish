@@ -35,7 +35,7 @@ export type Conditions<S, Hook, ConditionName extends string | never> = {
     [C in keyof Conds]: ValidConditionName<C> & Condition<S>;
   }): keyof Conds extends string
     ? Conditions<
-        keyof Conds,
+        ConditionName | keyof Conds,
         { declarations(): Record<string, string> },
         ConditionName | keyof Conds
       > &
