@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.2.2
+
+### Patch Changes
+
+- 7e9ad14: Fixed multiple type issues in the `createComponent` function.
+
 ## 0.2.1
 
 ### Patch Changes
