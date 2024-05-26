@@ -1,7 +1,7 @@
 import { createLocalConditions } from "@embellish/core";
 import { createElement, forwardRef } from "react";
 
-export * from "@embellish/core";
+export { createHooks, createConditions } from "@embellish/core";
 
 const unitlessNumbers = new Set([
   "animationIterationCount",
