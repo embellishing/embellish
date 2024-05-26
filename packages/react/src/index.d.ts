@@ -17,6 +17,8 @@ import type {
   RefAttributes,
 } from "react";
 
+export * from "@embellish/core";
+
 export type ValidComponentDisplayName<Name> =
   Name extends `${UppercaseLetter}${infer Tail}`
     ? OnlyChars<Letter | Digit, Tail>
