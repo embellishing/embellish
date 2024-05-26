@@ -39,6 +39,7 @@ export default tseslint.config(
         { prefer: "type-imports", disallowTypeAnnotations: true },
       ],
       "import/consistent-type-specifier-style": "error",
+      "import/extensions": ["error", "always"],
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-absolute-path": "error",

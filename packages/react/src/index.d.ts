@@ -1,13 +1,12 @@
-import {
+import type {
   Condition,
-  createConditions,
+  Conditions,
   Digit,
   Letter,
   OnlyChars,
   UppercaseLetter,
   ValidConditionName,
 } from "@embellish/core";
-import type * as CSS from "csstype";
 import type {
   Component,
   ComponentProps,
@@ -23,17 +22,9 @@ export type ValidComponentDisplayName<Name> =
     ? OnlyChars<Letter | Digit, Tail>
     : never;
 
-export type ValidPropertyName<Name> = Name extends `${Letter}${infer Tail}`
+export type ValidStylePropName<Name> = Name extends `${Letter}${infer Tail}`
   ? OnlyChars<Letter | Digit, Tail>
   : never;
-
-export type StyleProps<Namespace, Properties> = {
-  [Property in keyof Properties as `${Namespace extends string
-    ? Namespace
-    : never}:${Property extends string
-    ? Property
-    : never}`]: Properties[Property];
-};
 
 export type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<
   C extends new (props: infer P) => Component<unknown, unknown>
@@ -41,12 +32,21 @@ export type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<
     : ComponentProps<C>
 >;
 
-export type BoxComponent<
-  DisplayName extends string,
-  DefaultIs extends keyof JSX.IntrinsicElements,
+declare function createComponent<
+  StyleProps,
   ConditionName,
-  Properties,
-> = <
+  const DisplayName extends string = "Box",
+  DefaultIs extends keyof JSX.IntrinsicElements = "div",
+>(config: {
+  displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
+  defaultIs?: DefaultIs;
+  defaultStyle?: CSSProperties;
+  styleProps: StyleProps & {
+    [P in keyof StyleProps]: ValidStylePropName<P> & StyleProps[P];
+  } & Record<string, (value: any) => CSSProperties>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  conditions?: Conditions<ConditionName>;
+  fallback?: "revert-layer" | "unset";
+}): <
   Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<unknown> = DefaultIs,
@@ -54,69 +54,22 @@ export type BoxComponent<
 >(
   props: {
     [P in `${Uncapitalize<DisplayName>}:is`]?: Is;
-  } & {
-    [P in ConditionName extends never
-      ? never
-      : `${Uncapitalize<DisplayName>}:conditions`]?: {
-      [P in LocalConditionName]: ValidConditionName<P> &
-        Condition<ConditionName>;
-    };
   } & Omit<
-      JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
-      "style"
-    > &
-    StyleProps<"initial" | ConditionName | LocalConditionName, Properties>,
+    JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+    "style"
+  > & {
+      [P in ConditionName extends never
+        ? never
+        : `${Uncapitalize<DisplayName>}:conditions`]?: {
+        [P in LocalConditionName]: ValidConditionName<P> &
+          Condition<ConditionName>;
+      };
+    } & Partial<{
+      [P in `${
+        | "initial"
+        | ConditionName
+        | LocalConditionName}:${keyof StyleProps}`]: P extends `${string}:${infer PropertyName}`
+        ? Parameters<StyleProps[PropertyName]>[0]
+        : never;
+    }>,
 ) => JSX.Element;
-
-declare function createBox<
-  Conditions,
-  Properties,
-  DisplayName extends string = "Box",
-  DefaultIs extends keyof JSX.IntrinsicElements = "div",
->(config: {
-  displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
-  defaultIs?: DefaultIs;
-  conditions?: Pick<
-    ReturnType<typeof createConditions<Conditions>>,
-    "add" | "conditionNames" | "conditionalExpression"
-  >;
-  properties: {
-    [P in keyof Properties]: ValidPropertyName<P> &
-      (Properties[P] extends (value: any) => CSSProperties ? unknown : never) &
-      Properties[P];
-  };
-  fallback?: "revert-layer" | "unset";
-}): BoxComponent<
-  DisplayName,
-  DefaultIs,
-  ReturnType<typeof createConditions<Conditions>>["conditionNames"][number],
-  Partial<{
-    [P in keyof Properties]: Properties[P] extends (value: infer V) => unknown
-      ? V
-      : never;
-  }>
->;
-
-export const standardLonghandProperties: Required<{
-  [P in keyof CSS.StandardLonghandProperties]: (
-    value: CSSProperties[P],
-  ) => CSSProperties;
-}>;
-
-export const standardShorthandProperties: Required<{
-  [P in keyof CSS.StandardShorthandProperties]: (
-    value: CSSProperties[P],
-  ) => CSSProperties;
-}>;
-
-export const vendorLonghandProperties: Required<{
-  [P in keyof CSS.VendorLonghandProperties]: (
-    value: CSSProperties[P],
-  ) => CSSProperties;
-}>;
-
-export const vendorShorthandProperties: Required<{
-  [P in keyof CSS.VendorShorthandProperties]: (
-    value: CSSProperties[P],
-  ) => CSSProperties;
-}>;

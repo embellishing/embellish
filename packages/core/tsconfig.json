@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/strictest",
+  "compilerOptions": {
+    "module": "ES2015",
+    "moduleResolution": "Node",
+    "target": "ES2019",
+    "outDir": "dist",
+    "declaration": true
+  },
+  "include": ["src"]
+}
