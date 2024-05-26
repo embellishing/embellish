@@ -1,5 +1,11 @@
 # @embellish/core
 
+## 0.0.2
+
+### Patch Changes
+
+- 749041e: Fix for getting condition names when no conditions exist.
+
 ## 0.0.1
 
 ### Patch Changes
