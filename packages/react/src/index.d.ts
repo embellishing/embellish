@@ -34,9 +34,9 @@ export type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<
     : ComponentProps<C>
 >;
 
-declare function createComponent<
+export function createComponent<
   StyleProps,
-  ConditionName,
+  ConditionName extends string,
   const DisplayName extends string = "Box",
   DefaultIs extends keyof JSX.IntrinsicElements = "div",
 >(config: {
@@ -70,8 +70,12 @@ declare function createComponent<
       [P in `${
         | "initial"
         | ConditionName
-        | LocalConditionName}:${keyof StyleProps}`]: P extends `${string}:${infer PropertyName}`
-        ? Parameters<StyleProps[PropertyName]>[0]
+        | LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}`]: P extends `${string}:${infer PropertyName}`
+        ? PropertyName extends keyof StyleProps
+          ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
+            ? Parameters<StyleProps[PropertyName]>[0]
+            : never
+          : never
         : never;
     }>,
 ) => JSX.Element;
