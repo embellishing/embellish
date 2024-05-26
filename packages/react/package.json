@@ -20,17 +20,14 @@
     "tailwind"
   ],
   "files": [
-    "dist/index.cjs",
-    "index.d.ts",
-    "index.js"
+    "dist"
   ],
-  "module": "dist/index.mjs",
+  "module": "dist/react.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./dist/index.cjs",
-      "types": "./index.d.ts"
+      "import": "./dist/react.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "author": "Nick Saunders",
