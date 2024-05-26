@@ -36,7 +36,14 @@ importers:
         specifier: ^7.9.0
         version: 7.9.0(eslint@8.57.0)(typescript@5.4.5)
 
-  packages/core: {}
+  packages/core:
+    devDependencies:
+      '@tsconfig/strictest':
+        specifier: ^2.0.5
+        version: 2.0.5
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   packages/react:
     devDependencies:
