@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.2.1
+
+### Patch Changes
+
+- 60b4817: Core type re-exports
+
 ## 0.2.0
 
 ### Minor Changes
