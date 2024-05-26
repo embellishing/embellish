@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.2.3
+
+### Patch Changes
+
+- c0971bf: Made `createComponent` config type more permissive for less confusing DX.
+
 ## 0.2.2
 
 ### Patch Changes
