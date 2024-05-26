@@ -3,6 +3,7 @@
   "name": "@embellish/react",
   "version": "0.1.0",
   "description": "A lightweight React styling primitive, powered entirely by CSS and inline styles",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/embellishes/embellish.git",
@@ -44,6 +45,6 @@
     "vite-plugin-dts": "^3.9.1"
   },
   "scripts": {
-    "prepare": "vite build"
+    "prepare": "tsc && vite build"
   }
 }
