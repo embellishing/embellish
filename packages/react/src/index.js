@@ -1,7 +1,7 @@
-// @ts-nocheck
+import { createLocalConditions } from "@embellish/core";
+import { createElement, forwardRef } from "react";
 
 export * from "@embellish/core";
-import { createElement, forwardRef } from "react";
 
 const unitlessNumbers = new Set([
   "animationIterationCount",
@@ -92,16 +92,17 @@ function stringifyValue(propertyName, value) {
   }
 }
 
-export function createBox({
+export function createComponent({
   displayName = "Box",
+  styleProps,
   defaultIs = "div",
+  defaultStyle = {},
   conditions: configConditions,
-  properties,
   fallback: configFallback = "revert-layer",
 }) {
   const namespace = displayName.replace(/^./, x => x.toLowerCase());
   const resolveProperty = propertyName =>
-    properties[propertyName] || (x => ({ [propertyName]: x }));
+    styleProps[propertyName] || (x => ({ [propertyName]: x }));
 
   const Component = forwardRef(
     (
@@ -112,11 +113,15 @@ export function createBox({
       },
       ref,
     ) => {
-      const conditions = configConditions.add(localConditions);
-      const style = conditions.declarations(),
+      const style = { ...defaultStyle },
         forwardProps = {};
 
-      const declarationPattern = new RegExp(
+      const conditions = createLocalConditions(
+        configConditions,
+        localConditions,
+      );
+
+      const stylePropPattern = new RegExp(
         `^(${conditions.conditionNames.concat("initial").join("|")}):(.+)`,
       );
 
@@ -134,7 +139,8 @@ export function createBox({
         return 0;
       })) {
         const [, stylePrefix, styleProperty] =
-          key.match(declarationPattern) || [];
+          key.match(stylePropPattern) || [];
+
         if (!stylePrefix) {
           forwardProps[key] = props[key];
           continue;
@@ -151,14 +157,14 @@ export function createBox({
             style[resolvedProperty],
           );
           if (fallback === null) {
-            fallback = configFallback === "unset" ? "unset" : "revert-layer";
+            fallback = configFallback;
           }
           const condValue = stringifyValue(resolvedProperty, value);
           if (condValue === null) {
             continue;
           }
           delete style[resolvedProperty];
-          style[resolvedProperty] = conditions.conditionalExpression(
+          style[resolvedProperty] = conditions.conditionalDeclarationValue(
             stylePrefix,
             condValue,
             fallback,
@@ -174,11 +180,3 @@ export function createBox({
 
   return Component;
 }
-
-export const standardLonghandProperties = {};
-
-export const standardShorthandProperties = {};
-
-export const vendorLonghandProperties = {};
-
-export const vendorShorthandProperties = {};
