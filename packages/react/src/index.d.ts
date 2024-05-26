@@ -38,7 +38,9 @@ export function createComponent<
   const DisplayName extends string,
   StyleProps,
   Conds,
-  DefaultIs extends keyof JSX.IntrinsicElements = "div",
+  DefaultIs extends
+    | keyof JSX.IntrinsicElements
+    | React.JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
   displayName: DisplayName & ValidComponentDisplayName<DisplayName>;
   defaultIs?: DefaultIs;
@@ -51,7 +53,7 @@ export function createComponent<
 }): <
   Is extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<unknown> = DefaultIs,
+    | React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
   LocalConditionName extends string = never,
 >(
   props: {
