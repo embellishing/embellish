@@ -132,10 +132,9 @@ export function createLocalConditions<
 ) {
   return {
     get conditionNames() {
-      return Object.keys(conditions).concat(Object.keys(localConditions)) as (
-        | keyof Conditions
-        | keyof LocalConditions
-      )[];
+      return Object.keys(conditions || {}).concat(
+        Object.keys(localConditions || {}),
+      ) as (keyof Conditions | keyof LocalConditions)[];
     },
     conditionalDeclarationValue(
       conditionName: keyof Conditions | keyof LocalConditions,
