@@ -46,8 +46,14 @@ export function createComponent<
   defaultIs?: DefaultIs;
   defaultStyle?: CSSProperties;
   styleProps?: StyleProps & {
-    [P in keyof StyleProps]: ValidStylePropName<P> & StyleProps[P];
-  } & Record<string, (value: any) => CSSProperties>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    [P in keyof StyleProps]: ValidStylePropName<P> &
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((value: any) => {
+        [Q in keyof ReturnType<StyleProps[P]>]: Q extends keyof CSSProperties
+          ? CSSProperties[Q]
+          : never;
+      });
+  };
   conditions?: Conds;
   fallback?: "revert-layer" | "unset";
 }): <
