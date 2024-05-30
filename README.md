@@ -77,7 +77,9 @@ npm install @embellish/react
 
 ## Getting started
 
-### Step 1: Define CSS hooks
+### Step 1: CSS hooks
+
+#### Step 1a: Define hooks
 
 Start by defining CSS hooks. These are all of the CSS "selectors" you want to
 use throughout your app. These can be actual selectors, e.g., `&:hover`,
@@ -99,8 +101,7 @@ const { styleSheet, hooks } = createHooks([
 > [!NOTE]
 >
 > It's a good practice to keep these hooks as simple and generic as possible to
-> promote reuse. As you'll see in the next step, it's possible to combine them
-> later to create more complex conditions.
+> promote reuse. Later, you can combine them to create more complex conditions.
 
 #### Step 1b: Add style sheet
 
