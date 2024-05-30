@@ -96,9 +96,11 @@ const { styleSheet, hooks } = createHooks([
 ]);
 ```
 
-> [!NOTE] It's a good practice to keep these hooks as simple and generic as
-> possible to promote reuse. As you'll see in the next step, it's possible to
-> combine them later to create more complex conditions.
+> [!NOTE]
+>
+> It's a good practice to keep these hooks as simple and generic as possible to
+> promote reuse. As you'll see in the next step, it's possible to combine them
+> later to create more complex conditions.
 
 #### Step 1b: Add style sheet
 
