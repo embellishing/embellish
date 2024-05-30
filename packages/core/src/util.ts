@@ -9,5 +9,7 @@ export function createHash(obj: unknown) {
     hashValue &= 0x7fffffff;
   }
 
-  return hashValue.toString(36);
+  const str = hashValue.toString(36);
+
+  return /^[0-9]/.test(str) ? `a${str}` : str;
 }
