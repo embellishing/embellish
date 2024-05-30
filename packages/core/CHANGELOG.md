@@ -1,5 +1,11 @@
 # @embellish/core
 
+## 0.0.3
+
+### Patch Changes
+
+- 9a4ca33: Fix for CSS variable names sometimes being invalid.
+
 ## 0.0.2
 
 ### Patch Changes
