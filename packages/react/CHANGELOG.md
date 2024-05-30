@@ -1,5 +1,12 @@
 # @embellish/react
 
+## 0.2.5
+
+### Patch Changes
+
+- 9a4ca33: Fix for CSS variable names sometimes being invalid.
+- 38f5b97: Prevent excess CSS properties in return values of style props.
+
 ## 0.2.4
 
 ### Patch Changes
