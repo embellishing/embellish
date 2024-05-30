@@ -194,11 +194,20 @@ const Box = createComponent({
 Use your `Box` component to create e.g. a styled button:
 
 ```tsx
-function CtaButton({ href, children }: { href: string; children?: ReactNode }) {
+function CtaButton({
+  href,
+  children,
+  disabled,
+}: {
+  href: string;
+  children?: ReactNode;
+  disabled?: boolean;
+}) {
   return (
     <Box
       box:is="a"
       href={href}
+      aria-disabled={disabled}
       initial:backgroundColor="#6200ea"
       initial:color="#ffffff"
       initial:padding="12px 24px"
