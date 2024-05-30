@@ -123,7 +123,7 @@ root.render(
 ### Step 2: Create reusable conditions
 
 A reusable condition assigns an alphanumeric alias (i.e. a valid prop name) to
-each hook. You can also define a complex condition using logical operators.
+each hook. You can also define complex conditions using logical operators.
 
 ```typescript
 const conditions = createConditions(hooks, {
