@@ -7,16 +7,8 @@
   <a href="https://github.com/embellishes/embellish/#gh-light-mode-only" target="_blank">
     <img alt="Embellish" src="https://raw.githubusercontent.com/embellishes/embellish/HEAD/.github/logo-light.svg" width="324" height="64" style="max-width: 100%;">
   </a>
-</p>
-
-<p align="center">
+  <br/>
   A powerfully <em>simple</em> React styling primitive
-</p>
-
-<p align="center">
-  <a href="https://github.com/embellishes/embellish/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/embellishes/embellish/build.yml?branch=master" alt="Build Status"></a>
-  <a href="https://www.npmjs.com/org/embellish"><img src="https://img.shields.io/npm/v/@embellish%2Freact.svg" alt="Latest Release"></a>
-  <a href="https://github.com/embellishes/embellish/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@embellish/react.svg" alt="License"></a>
 </p>
 
 ---
