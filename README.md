@@ -41,7 +41,7 @@ behavior, and more. Consider this example of a `Box` component:
 
 With a styling API that builds heavily upon the declarative nature of React, the
 `Box` component enables you to manage complex styling scenarios with ease.
-Meanwhile, Embellish's purely CSS-based approach for defining conditions like
+Meanwhile, Embellish's purely CSS-driven approach for defining conditions like
 `hover` and `active` means that you can create dynamic and interactive UI
 elements without compromising on performance or maintainability.
 
