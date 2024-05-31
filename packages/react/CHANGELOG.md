@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.3.0
+
+### Minor Changes
+
+- 5e3ad90: Replaced the `styleSheet` function with a `StyleSheet` component.
+
 ## 0.2.5
 
 ### Patch Changes
