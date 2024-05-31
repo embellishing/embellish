@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@embellish/react",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "A lightweight React styling primitive, powered entirely by CSS and inline styles",
   "type": "module",
   "repository": {
