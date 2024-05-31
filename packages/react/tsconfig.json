@@ -1,8 +1,11 @@
 {
   "extends": "@tsconfig/strictest",
   "compilerOptions": {
+    "module": "ES2015",
+    "moduleResolution": "Node",
     "noEmit": true,
-    "checkJs": false
+    "checkJs": false,
+    "jsx": "react-jsx"
   },
   "include": ["src"]
 }

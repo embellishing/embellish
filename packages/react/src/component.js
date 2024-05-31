@@ -1,8 +1,6 @@
 import { createLocalConditions } from "@embellish/core";
 import { createElement, forwardRef } from "react";
 
-export { createHooks, createConditions } from "@embellish/core";
-
 const unitlessNumbers = new Set([
   "animationIterationCount",
   "aspectRatio",

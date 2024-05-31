@@ -1,38 +1,15 @@
 import type {
   Condition,
   Conditions,
-  Digit,
-  Letter,
-  OnlyChars,
-  UppercaseLetter,
   ValidConditionName,
 } from "@embellish/core";
+import type React, { CSSProperties } from "react";
+
 import type {
-  Component,
-  ComponentProps,
-  CSSProperties,
-  ElementType,
-  PropsWithoutRef,
-  PropsWithRef,
-  RefAttributes,
-} from "react";
-
-export { createHooks, createConditions } from "@embellish/core";
-
-export type ValidComponentDisplayName<Name> =
-  Name extends `${UppercaseLetter}${infer Tail}`
-    ? OnlyChars<Letter | Digit, Tail>
-    : never;
-
-export type ValidStylePropName<Name> = Name extends `${Letter}${infer Tail}`
-  ? OnlyChars<Letter | Digit, Tail>
-  : never;
-
-export type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<
-  C extends new (props: infer P) => Component<unknown, unknown>
-    ? PropsWithoutRef<P> & RefAttributes<InstanceType<C>>
-    : ComponentProps<C>
->;
+  ComponentPropsWithRef,
+  ValidComponentDisplayName,
+  ValidStylePropName,
+} from "./types";
 
 export function createComponent<
   const DisplayName extends string,
