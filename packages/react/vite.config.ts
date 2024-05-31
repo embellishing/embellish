@@ -12,11 +12,11 @@ export default defineConfig({
   build: {
     minify: false,
     lib: {
-      entry: resolve(__dirname, "src", "index.js"),
+      entry: resolve(__dirname, "src", "index.ts"),
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react"],
+      external: ["react", "react/jsx-runtime"],
       output: {
         preserveModules: true,
         preserveModulesRoot: "src",
