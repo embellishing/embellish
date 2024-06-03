@@ -15,12 +15,12 @@ export function createComponent<
   const DisplayName extends string,
   StyleProps,
   Conds,
-  DefaultIs extends
+  DefaultAs extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
   displayName: DisplayName & ValidComponentDisplayName<DisplayName>;
-  defaultIs?: DefaultIs;
+  defaultAs?: DefaultAs;
   defaultStyle?: CSSProperties;
   styleProps?: StyleProps & {
     [P in keyof StyleProps]: ValidStylePropName<P> &
@@ -34,15 +34,15 @@ export function createComponent<
   conditions?: Conds;
   fallback?: "revert-layer" | "unset";
 }): <
-  Is extends
+  As extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
+    | React.JSXElementConstructor<any> = DefaultAs, // eslint-disable-line @typescript-eslint/no-explicit-any
   LocalConditionName extends string = never,
 >(
   props: {
-    [P in `${Uncapitalize<DisplayName>}:is`]?: Is;
+    as?: As;
   } & Omit<
-    JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+    JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
     "style"
   > & {
       [P in Conds extends Conditions<unknown>

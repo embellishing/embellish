@@ -93,7 +93,7 @@ function stringifyValue(propertyName, value) {
 export function createComponent({
   displayName = "Box",
   styleProps,
-  defaultIs = "div",
+  defaultAs = "div",
   defaultStyle = {},
   conditions: configConditions,
   fallback: configFallback = "revert-layer",
@@ -105,7 +105,7 @@ export function createComponent({
   const Component = forwardRef(
     (
       {
-        [`${namespace}:is`]: Component = defaultIs,
+        as: Component = defaultAs,
         [`${namespace}:conditions`]: localConditions = {},
         ...props
       },
