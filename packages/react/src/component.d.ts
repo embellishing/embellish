@@ -46,7 +46,7 @@ export function createComponent<
     "style"
   > & {
       [P in Conds extends Conditions<unknown>
-        ? `${Uncapitalize<DisplayName>}:conditions`
+        ? "conditions"
         : never]?: Conds extends Conditions<infer ConditionName>
         ? {
             [P in LocalConditionName]: ValidConditionName<P> &

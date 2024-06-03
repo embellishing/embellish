@@ -91,24 +91,19 @@ function stringifyValue(propertyName, value) {
 }
 
 export function createComponent({
-  displayName = "Box",
+  displayName,
   styleProps,
   defaultAs = "div",
   defaultStyle = {},
   conditions: configConditions,
   fallback: configFallback = "revert-layer",
 }) {
-  const namespace = displayName.replace(/^./, x => x.toLowerCase());
   const resolveProperty = propertyName =>
     styleProps[propertyName] || (x => ({ [propertyName]: x }));
 
   const Component = forwardRef(
     (
-      {
-        as: Component = defaultAs,
-        [`${namespace}:conditions`]: localConditions = {},
-        ...props
-      },
+      { as: Component = defaultAs, conditions: localConditions = {}, ...props },
       ref,
     ) => {
       const style = { ...defaultStyle },
