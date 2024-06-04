@@ -103,11 +103,21 @@ export function createComponent({
 
   const Component = forwardRef(
     (
-      { as: Component = defaultAs, conditions: localConditions = {}, ...props },
+      {
+        as: Component = defaultAs,
+        conditions: localConditions = {},
+        style: styleProp = {},
+        ...props
+      },
       ref,
     ) => {
       const style = { ...defaultStyle },
         forwardProps = {};
+
+      for (const key in styleProp) {
+        delete style[key];
+        style[key] = styleProp[key];
+      }
 
       const conditions = createLocalConditions(
         configConditions,
@@ -115,22 +125,26 @@ export function createComponent({
       );
 
       const stylePropPattern = new RegExp(
-        `^(${conditions.conditionNames.concat("initial").join("|")}):(.+)`,
+        `^(${conditions.conditionNames.join("|")}):(.+)`,
       );
 
       for (const key of Object.keys(props).sort((a, b) => {
-        const prefix = "initial:";
-        if (a.startsWith(prefix) && b.startsWith(prefix)) {
+        if (a in styleProps && b in styleProps) {
           return 0;
         }
-        if (a.startsWith(prefix)) {
+        if (a in styleProps) {
           return -1;
         }
-        if (b.startsWith(prefix)) {
+        if (b in styleProps) {
           return 1;
         }
         return 0;
       })) {
+        if (key in styleProps) {
+          Object.assign(style, resolveProperty(key)(props[key]));
+          continue;
+        }
+
         const [, stylePrefix, styleProperty] =
           key.match(stylePropPattern) || [];
 
@@ -138,10 +152,7 @@ export function createComponent({
           forwardProps[key] = props[key];
           continue;
         }
-        if (stylePrefix === "initial") {
-          Object.assign(style, resolveProperty(styleProperty)(props[key]));
-          continue;
-        }
+
         for (const [resolvedProperty, value] of Object.entries(
           resolveProperty(styleProperty)(props[key]),
         )) {

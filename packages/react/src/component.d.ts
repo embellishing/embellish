@@ -19,7 +19,7 @@ export function createComponent<
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
-  displayName: DisplayName & ValidComponentDisplayName<DisplayName>;
+  displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
   defaultAs?: DefaultAs;
   defaultStyle?: CSSProperties;
   styleProps?: StyleProps & {
@@ -43,7 +43,7 @@ export function createComponent<
     as?: As;
   } & Omit<
     JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
-    "style"
+    never
   > & {
       [P in Conds extends Conditions<unknown>
         ? "conditions"
@@ -54,17 +54,22 @@ export function createComponent<
           }
         : never;
     } & Partial<{
-      [P in `${
-        | "initial"
-        | (Conds extends Conditions<infer ConditionName>
-            ? ConditionName
-            : never)
-        | LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}`]: P extends `${string}:${infer PropertyName}`
-        ? PropertyName extends keyof StyleProps
-          ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
-            ? Parameters<StyleProps[PropertyName]>[0]
-            : never
+      [P in
+        | keyof StyleProps
+        | `${
+            | (Conds extends Conditions<infer ConditionName>
+                ? ConditionName
+                : never)
+            | LocalConditionName}:${keyof StyleProps}`]: P extends keyof StyleProps
+        ? StyleProps[P] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
+          ? Parameters<StyleProps[P]>[0]
           : never
-        : never;
+        : P extends `${string}:${infer PropertyName}`
+          ? PropertyName extends keyof StyleProps
+            ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
+              ? Parameters<StyleProps[PropertyName]>[0]
+              : never
+            : never
+          : never;
     }>,
 ) => JSX.Element;
