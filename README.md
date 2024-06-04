@@ -140,14 +140,33 @@ const Box = createComponent({
   defaultStyle: {
     // optional, a regular React style object consisting of "base" styles
     boxSizing: "border-box",
+    textDecoration: "none",
   },
   conditions,
   styleProps: {
     backgroundColor: (backgroundColor: CSSProperties["backgroundColor"]) => ({
       backgroundColor,
     }),
+    border: (border: CSSProperties["border"]) => ({
+      border,
+    }),
+    borderRadius: (borderRadius: CSSProperties["borderRadius"]) => ({
+      borderRadius,
+    }),
     color: (color: CSSProperties["color"]) => ({
       color,
+    }),
+    cursor: (cursor: CSSProperties["cursor"]) => ({
+      cursor,
+    }),
+    display: (display: CSSProperties["display"]) => ({
+      display,
+    }),
+    fontSize: (fontSize: CSSProperties["fontSize"]) => ({
+      fontSize,
+    }),
+    fontWeight: (fontWeight: CSSProperties["fontWeight"]) => ({
+      fontWeight,
     }),
     outline: (outline: CSSProperties["outline"]) => ({
       outline,
@@ -157,21 +176,6 @@ const Box = createComponent({
     }),
     padding: (padding: CSSProperties["padding"]) => ({
       padding,
-    }),
-    border: (border: CSSProperties["border"]) => ({
-      border,
-    }),
-    borderRadius: (borderRadius: CSSProperties["borderRadius"]) => ({
-      borderRadius,
-    }),
-    cursor: (cursor: CSSProperties["cursor"]) => ({
-      cursor,
-    }),
-    fontSize: (fontSize: CSSProperties["fontSize"]) => ({
-      fontSize,
-    }),
-    fontWeight: (fontWeight: CSSProperties["fontWeight"]) => ({
-      fontWeight,
     }),
     transition: (transition: CSSProperties["transition"]) => ({
       transition,
@@ -200,6 +204,7 @@ function CtaButton({
       as="a"
       href={href}
       aria-disabled={disabled}
+      display="inline-block"
       backgroundColor="#6200ea"
       color="#ffffff"
       padding="12px 24px"
@@ -253,6 +258,7 @@ function CtaButton({
       as="a"
       href={href}
       aria-disabled={disabled}
+      display="inline-block"
       backgroundColor="#6200ea"
       color="#ffffff"
       padding="12px 24px"
