@@ -21,10 +21,10 @@ behavior, and more. Consider this example of a `Box` component:
 
 ```tsx
 <Box
-  box:is="a"
+  as="a"
   href="https://github.com/embellishes/embellish"
-  initial:color="#fff"
-  initial:background="#03f"
+  color="#fff"
+  background="#03f"
   hover:background="color-mix(in srgb, #03f, #fff 12.5%)"
   active:background="#c30">
   Get started
@@ -136,7 +136,7 @@ along with your desired style props.
 ```typescript
 const Box = createComponent({
   displayName: "Box",
-  defaultIs: "div", // optional, any HTML tag or component
+  defaultAs: "div", // optional, any HTML tag or component
   defaultStyle: {
     // optional, a regular React style object consisting of "base" styles
     boxSizing: "border-box",
@@ -197,18 +197,18 @@ function CtaButton({
 }) {
   return (
     <Box
-      box:is="a"
+      as="a"
       href={href}
       aria-disabled={disabled}
-      initial:backgroundColor="#6200ea"
-      initial:color="#ffffff"
-      initial:padding="12px 24px"
-      initial:border="none"
-      initial:borderRadius="4px"
-      initial:cursor="pointer"
-      initial:fontSize="16px"
-      initial:fontWeight="bold"
-      initial:transition="background-color 0.3s, color 0.3s"
+      backgroundColor="#6200ea"
+      color="#ffffff"
+      padding="12px 24px"
+      border="none"
+      borderRadius="4px"
+      cursor="pointer"
+      fontSize="16px"
+      fontWeight="bold"
+      transition="background-color 0.3s, color 0.3s"
       intent:backgroundColor="#3700b3"
       active:backgroundColor="#6200ea"
       active:color="#bb86fc"
