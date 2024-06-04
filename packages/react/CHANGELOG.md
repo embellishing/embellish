@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.4.0
+
+### Minor Changes
+
+- 4f45057: Removed `initial:` and component display name namespaces. Renamed `is` prop to `as`.
+
 ## 0.3.0
 
 ### Minor Changes
