@@ -48,9 +48,9 @@ elements without compromising on performance or maintainability.
 - **Style prop conditions**: Specify the name of a condition as a style prop
   modifier, e.g. `hover:background="#333"`, and its value will apply only under
   that condition.
-- **Locally-defined conditions**: Conditions can be combined in a single
-  component instance using logical operators, providing flexibility, promoting
-  reuse, and keeping global CSS to a minimum.
+- **Inline conditions**: Conditions can be combined in a single component
+  instance using logical operators, providing flexibility, promoting reuse, and
+  keeping global CSS to a minimum.
 - **No runtime style injection**: Avoid hydration mismatches, flashes of
   unstyled content, and questionable performance of runtime style injection.
 - **No build step**: Simplify the development workflow by avoiding static
