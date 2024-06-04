@@ -3,7 +3,7 @@ import type {
   Conditions,
   ValidConditionName,
 } from "@embellish/core";
-import type React, { CSSProperties } from "react";
+import type { CSSProperties, JSXElementConstructor } from "react";
 
 import type {
   ComponentPropsWithRef,
@@ -17,7 +17,7 @@ export function createComponent<
   Conds,
   DefaultAs extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
+    | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
   displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
   defaultAs?: DefaultAs;
@@ -26,9 +26,10 @@ export function createComponent<
     [P in keyof StyleProps]: ValidStylePropName<P> &
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ((value: any) => {
-        [Q in keyof ReturnType<StyleProps[P]>]: Q extends keyof CSSProperties
-          ? CSSProperties[Q]
-          : never;
+        [Q in keyof ReturnType<
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          StyleProps[P] extends (value: any) => unknown ? StyleProps[P] : never
+        >]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
       });
   };
   conditions?: Conds;
@@ -45,7 +46,7 @@ export function createComponent<
     JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
     never
   > & {
-      [P in Conds extends Conditions<unknown>
+      [P in Conds extends Conditions<string>
         ? "conditions"
         : never]?: Conds extends Conditions<infer ConditionName>
         ? {
@@ -60,7 +61,7 @@ export function createComponent<
             | (Conds extends Conditions<infer ConditionName>
                 ? ConditionName
                 : never)
-            | LocalConditionName}:${keyof StyleProps}`]: P extends `${`${string}:` | ""}${infer PropertyName}`
+            | LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}`]: P extends `${`${string}:` | ""}${infer PropertyName}`
         ? PropertyName extends keyof StyleProps
           ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
             ? Parameters<StyleProps[PropertyName]>[0]

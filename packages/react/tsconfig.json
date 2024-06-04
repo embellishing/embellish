@@ -5,7 +5,8 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "checkJs": false,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "skipLibCheck": false
   },
   "include": ["src"]
 }
