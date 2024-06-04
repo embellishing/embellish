@@ -254,6 +254,9 @@ function CtaButton({
 +       activeEnabled: {
 +         and: ["active", { not: "disabled" }],
 +       },
++       focusEnabled: {
++         and: ["focus", { not: "disabled" }],
++       },
 +     }}
       as="a"
       href={href}
@@ -271,10 +274,11 @@ function CtaButton({
 -     intent:backgroundColor="#3700b3"
 -     active:backgroundColor="#6200ea"
 -     active:color="#bb86fc"
+-     focusEnabled:outline="2px solid #03dac6"
 +     intentEnabled:backgroundColor="#3700b3"
 +     activeEnabled:backgroundColor="#6200ea"
 +     activeEnabled:color="#bb86fc"
-      focus:outline="2px solid #03dac6"
++     focusEnabled:outline="2px solid #03dac6"
       focus:outlineOffset="2px"
       disabled:cursor="not-allowed">
       {children}
