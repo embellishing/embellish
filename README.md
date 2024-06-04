@@ -46,7 +46,7 @@ elements without compromising on performance or maintainability.
   props. You can choose which ones to support or even define your own custom
   props.
 - **Style prop conditions**: Specify the name of a condition as a style prop
-  prefix, e.g. `hover:background="#333"`, and its value will apply only under
+  modifier, e.g. `hover:background="#333"`, and its value will apply only under
   that condition.
 - **Locally-defined conditions**: Conditions can be combined in a single
   component instance using logical operators, providing flexibility, promoting
@@ -212,6 +212,62 @@ function CtaButton({
       intent:backgroundColor="#3700b3"
       active:backgroundColor="#6200ea"
       active:color="#bb86fc"
+      focus:outline="2px solid #03dac6"
+      focus:outlineOffset="2px"
+      disabled:cursor="not-allowed">
+      {children}
+    </Box>
+  );
+}
+```
+
+## Advanced usage
+
+### Inline conditions
+
+You can compose conditions inline using logical operators, creating maximum
+flexibility and reuse for the hooks you defined in Step 1 above. Simply pass
+additional conditions to the `conditions` prop, and then use them as style prop
+modifiers:
+
+```diff
+function CtaButton({
+  href,
+  children,
+  disabled,
+}: {
+  href: string;
+  children?: ReactNode;
+  disabled?: boolean;
+}) {
+  return (
+    <Box
++     conditions={{
++       intentEnabled: {
++         and: ["intent", { not: "disabled" }],
++       },
++       activeEnabled: {
++         and: ["active", { not: "disabled" }],
++       },
++     }}
+      as="a"
+      href={href}
+      aria-disabled={disabled}
+      backgroundColor="#6200ea"
+      color="#ffffff"
+      padding="12px 24px"
+      border="none"
+      borderRadius="4px"
+      cursor="pointer"
+      fontSize="16px"
+      fontWeight="bold"
+      transition="background-color 0.3s, color 0.3s"
+-     intent:backgroundColor="#3700b3"
+-     active:backgroundColor="#6200ea"
+-     active:color="#bb86fc"
++     intentEnabled:backgroundColor="#3700b3"
++     activeEnabled:backgroundColor="#6200ea"
++     activeEnabled:color="#bb86fc"
       focus:outline="2px solid #03dac6"
       focus:outlineOffset="2px"
       disabled:cursor="not-allowed">
