@@ -60,16 +60,12 @@ export function createComponent<
             | (Conds extends Conditions<infer ConditionName>
                 ? ConditionName
                 : never)
-            | LocalConditionName}:${keyof StyleProps}`]: P extends keyof StyleProps
-        ? StyleProps[P] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
-          ? Parameters<StyleProps[P]>[0]
-          : never
-        : P extends `${string}:${infer PropertyName}`
-          ? PropertyName extends keyof StyleProps
-            ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
-              ? Parameters<StyleProps[PropertyName]>[0]
-              : never
+            | LocalConditionName}:${keyof StyleProps}`]: P extends `${`${string}:` | ""}${infer PropertyName}`
+        ? PropertyName extends keyof StyleProps
+          ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
+            ? Parameters<StyleProps[PropertyName]>[0]
             : never
-          : never;
+          : never
+        : never;
     }>,
 ) => JSX.Element;
