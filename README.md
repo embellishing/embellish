@@ -80,7 +80,7 @@ the conditional style is to be applied; or even `@media`, `@container`, or
 `@supports` rules.
 
 ```typescript
-const { styleSheet, hooks } = createHooks([
+const { StyleSheet, hooks } = createHooks([
   "&:hover",
   "&:focus",
   "&:active",
@@ -97,16 +97,16 @@ const { styleSheet, hooks } = createHooks([
 
 #### Step 1b: Add style sheet
 
-The `styleSheet` function obtained in the previous step returns a small static
+The `StyleSheet` component obtained in the previous step renders a small static
 style sheet containing the CSS required to support conditional styling. Add this
-in a `<style>` element in the root layout component or entry point of your app.
+to the root layout component or entry point of your app.
 
 ```diff
 // e.g. src/main.ts
 
 root.render(
   <StrictMode>
-+   <style dangerouslySetInnerHTML={{ __html: styleSheet() }} />
++   <StyleSheet />
     <App />
   </StrictMode>
 );
