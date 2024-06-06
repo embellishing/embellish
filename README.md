@@ -128,7 +128,29 @@ const conditions = createConditions(hooks, {
 });
 ```
 
-### Step 3: Create a component
+### Step 3: Create style props
+
+You can create your own custom style props, or use the `createStyleProps`
+utility to generate them for you.
+
+```typescript
+const styleProps = createStyleProps([
+  "backgroundColor",
+  "border",
+  "borderRadius",
+  "color",
+  "cursor",
+  "display",
+  "fontSize",
+  "fontWeight",
+  "outline",
+  "outlineOffset",
+  "padding",
+  "transition",
+]);
+```
+
+### Step 4: Create a component
 
 Create e.g. a `Box` component using the conditions defined in the previous step
 along with your desired style props.
@@ -143,49 +165,11 @@ const Box = createComponent({
     textDecoration: "none",
   },
   conditions,
-  styleProps: {
-    backgroundColor: (backgroundColor: CSSProperties["backgroundColor"]) => ({
-      backgroundColor,
-    }),
-    border: (border: CSSProperties["border"]) => ({
-      border,
-    }),
-    borderRadius: (borderRadius: CSSProperties["borderRadius"]) => ({
-      borderRadius,
-    }),
-    color: (color: CSSProperties["color"]) => ({
-      color,
-    }),
-    cursor: (cursor: CSSProperties["cursor"]) => ({
-      cursor,
-    }),
-    display: (display: CSSProperties["display"]) => ({
-      display,
-    }),
-    fontSize: (fontSize: CSSProperties["fontSize"]) => ({
-      fontSize,
-    }),
-    fontWeight: (fontWeight: CSSProperties["fontWeight"]) => ({
-      fontWeight,
-    }),
-    outline: (outline: CSSProperties["outline"]) => ({
-      outline,
-    }),
-    outlineOffset: (outlineOffset: CSSProperties["outlineOffset"]) => ({
-      outlineOffset,
-    }),
-    padding: (padding: CSSProperties["padding"]) => ({
-      padding,
-    }),
-    transition: (transition: CSSProperties["transition"]) => ({
-      transition,
-    }),
-    // define any additional style props you'd like to use
-  },
+  styleProps,
 });
 ```
 
-### Step 4: Use the component
+### Step 5: Use the component
 
 Use your `Box` component to create e.g. a styled button:
 
