@@ -7,7 +7,7 @@ export type { Condition };
 
 const [space, newline] =
   // @ts-expect-error bundler expected to replace `process.env.NODE_ENV` expression
-  process.env.NODE_ENV === "development" ? ["", ""] : [" ", "\n"];
+  process.env.NODE_ENV === "development" ? [" ", "\n"] : ["", ""];
 
 export type Chars<S, Acc = never> = S extends `${infer Head}${infer Tail}`
   ? Chars<Tail, Acc | Head>
