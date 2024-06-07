@@ -24,7 +24,7 @@
   },
   "scripts": {
     "ci:readme": "node -e \"require('fs').writeFileSync('./packages/react/README.md', require('fs').readFileSync('./README.md', 'utf8').replace(/<\\!-- npm-remove -->[\\S\\s]*<\\!-- \\/npm-remove -->/gm, ''))\"",
-    "ci:publish": "pnpm readme && pnpm publish -r --access public --no-git-checks && changeset tag",
+    "ci:publish": "pnpm ci:readme && pnpm publish -r --access public --no-git-checks && changeset tag",
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
     "check": "eslint . && prettier --check .",
     "fix": "eslint --fix . && prettier --write ."
