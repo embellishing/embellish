@@ -1,11 +1,11 @@
 <p align="center">
   <!-- npm-remove -->
-  <a href="https://github.com/embellishes/embellish/#gh-dark-mode-only" target="_blank">
-    <img alt="Embellish" src="https://raw.githubusercontent.com/embellishes/embellish/HEAD/.github/logo-dark.svg" width="320" height="64" style="max-width: 100%;">
+  <a href="https://github.com/embellishing/embellish/#gh-dark-mode-only" target="_blank">
+    <img alt="Embellish" src="https://raw.githubusercontent.com/embellishing/embellish/HEAD/.github/logo-dark.svg" width="320" height="64" style="max-width: 100%;">
   </a>
   <!-- /npm-remove -->
-  <a href="https://github.com/embellishes/embellish/#gh-light-mode-only" target="_blank">
-    <img alt="Embellish" src="https://raw.githubusercontent.com/embellishes/embellish/HEAD/.github/logo-light.svg" width="320" height="64" style="max-width: 100%;">
+  <a href="https://github.com/embellishing/embellish/#gh-light-mode-only" target="_blank">
+    <img alt="Embellish" src="https://raw.githubusercontent.com/embellishing/embellish/HEAD/.github/logo-light.svg" width="320" height="64" style="max-width: 100%;">
   </a>
   <br/>
   A powerfully <em>simple</em> React styling primitive
@@ -22,7 +22,7 @@ behavior, and more. Consider this example of a `Box` component:
 ```tsx
 <Box
   as="a"
-  href="https://github.com/embellishes/embellish"
+  href="https://github.com/embellishing/embellish"
   color="#fff"
   background="#03f"
   hover:background="color-mix(in srgb, #03f, #fff 12.5%)"

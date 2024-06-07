@@ -5,7 +5,7 @@
   "description": "Embellish core library",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/embellishes/embellish.git",
+    "url": "git+https://github.com/embellishing/embellish.git",
     "directory": "packages/core"
   },
   "module": "dist/index.js",
