@@ -80,6 +80,8 @@ the conditional style is to be applied; or even `@media`, `@container`, or
 `@supports` rules.
 
 ```typescript
+import { createHooks } from "@embellish/react";
+
 const { StyleSheet, hooks } = createHooks([
   "&:hover",
   "&:focus",
@@ -118,6 +120,8 @@ A reusable condition assigns an alphanumeric alias (i.e. a valid prop name) to
 each hook. You can also define complex conditions using logical operators.
 
 ```typescript
+import { createConditions } from "@embellish/react";
+
 const conditions = createConditions(hooks, {
   hover: "&:hover",
   focus: "&:focus",
@@ -128,12 +132,20 @@ const conditions = createConditions(hooks, {
 });
 ```
 
+> [!NOTE]
+>
+> At this stage, it's still a good practice to consider the reusability of each
+> complex hook defined here. You can define
+> [inline conditions](#inline-conditions) later for one-off use cases.
+
 ### Step 3: Create style props
 
 You can create your own [custom style props](#custom-style-props), or use the
 `createStyleProps` utility to generate them for you.
 
 ```typescript
+import { createStyleProps } from "@embellish/react";
+
 const styleProps = createStyleProps([
   "backgroundColor",
   "border",
@@ -156,6 +168,8 @@ Create e.g. a `Box` component using the conditions defined in the previous step
 along with your desired style props.
 
 ```typescript
+import { createComponent } from "@embellish/react";
+
 const Box = createComponent({
   displayName: "Box",
   defaultAs: "div", // optional, any HTML tag or component
