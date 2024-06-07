@@ -130,8 +130,8 @@ const conditions = createConditions(hooks, {
 
 ### Step 3: Create style props
 
-You can create your own custom style props, or use the `createStyleProps`
-utility to generate them for you.
+You can create your own [custom style props](#custom-style-props), or use the
+`createStyleProps` utility to generate them for you.
 
 ```typescript
 const styleProps = createStyleProps([
@@ -269,6 +269,41 @@ function CtaButton({
     </Box>
   );
 }
+```
+
+### Custom style props
+
+The `createStyleProps` function used in the [Getting started](#getting-started)
+section above generates a record of style prop utilities using type information
+from
+[`React.CSSProperties`](https://react.dev/learn/typescript#typing-style-props),
+e.g.
+
+```typescript
+const styleProps = createStyleProps(["color", "padding"]);
+
+// is equivalent to
+
+const styleProps = {
+  color: (color: React.CSSProperties["color"]) => ({ color }),
+  padding: (padding: React.CSSProperties["padding"]) => ({ padding }),
+};
+```
+
+To create a custom style prop, simply add an entry to this `styleProps` object,
+with the prop name as the key, prop type as the function parameter, and
+resulting CSS properties as the return value.
+
+You can mix standard and custom style props using object-spread syntax:
+
+```typescript
+const styleProps = {
+  ...createStyleProps(["color", "padding"]),
+  marginX: (value: React.CSSProperties["marginTop"]) => ({
+    marginLeft: value,
+    marginRight: value,
+  }),
+};
 ```
 
 ## Browser support
