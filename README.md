@@ -135,7 +135,7 @@ const conditions = createConditions(hooks, {
 > [!NOTE]
 >
 > At this stage, it's still a good practice to consider the reusability of each
-> complex hook defined here. You can define
+> complex condition defined here. You can define
 > [inline conditions](#inline-conditions) later for one-off use cases.
 
 ### Step 3: Create style props
