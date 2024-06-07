@@ -7,7 +7,7 @@ forward to your contributions. Listed below are a few ways you can help.
 ## Asking questions
 
 If you have a question, please
-[open an issue](https://github.com/embellishes/embellish/issues/new?labels=question)
+[open an issue](https://github.com/embellishing/embellish/issues/new?labels=question)
 to discuss it. This might help us to find a defect; reveal an opportunity to
 improve the documentation or developer experience; or help someone facing a
 similar issue in the future.
@@ -15,7 +15,7 @@ similar issue in the future.
 ## Reporting defects
 
 Please
-[open an issue](https://github.com/embellishes/embellish/issues/new?labels=defect)
+[open an issue](https://github.com/embellishing/embellish/issues/new?labels=defect)
 to discuss any defects you find. Include as much detail as you can, and if
 possible provide a link to a repository or demo environment where the issue can
 be reproduced.
@@ -23,8 +23,9 @@ be reproduced.
 ## Improving documentation
 
 Please share any suggestions for improving or adding to the documentation by
-[submitting a pull request](https://github.com/embellishes/embellish/compare) or
-[opening an issue](https://github.com/embellishes/embellish/issues/new?labels=documentation).
+[submitting a pull request](https://github.com/embellishing/embellish/compare)
+or
+[opening an issue](https://github.com/embellishing/embellish/issues/new?labels=documentation).
 
 ## Sharing resources
 
@@ -37,7 +38,7 @@ potential contributors) to the project.
 ## Submitting code
 
 Pull requests are welcome, but we ask that you
-[open an issue](https://github.com/embellishes/embellish/issues/new) to discuss
+[open an issue](https://github.com/embellishing/embellish/issues/new) to discuss
 your plans before making any significant investment of your valuable time.
 
 ### Development environment
@@ -67,7 +68,7 @@ commands:
 ### Submitting a pull request
 
 When you are ready to
-[submit a pull request](https://github.com/embellishes/embellish/compare),
+[submit a pull request](https://github.com/embellishing/embellish/compare),
 please make sure to include:
 
 1. a brief description of the change;

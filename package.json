@@ -5,7 +5,7 @@
   "description": "A lightweight styling primitive, powered entirely by CSS and inline styles",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/embellishes/embellish.git"
+    "url": "git+https://github.com/embellishing/embellish.git"
   },
   "author": "Nick Saunders",
   "license": "MIT",
