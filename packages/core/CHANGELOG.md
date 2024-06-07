@@ -1,5 +1,11 @@
 # @embellish/core
 
+## 0.0.4
+
+### Patch Changes
+
+- a39ad49: Fixed pretty-printing in development mode.
+
 ## 0.0.3
 
 ### Patch Changes
