@@ -104,7 +104,7 @@ style sheet containing the CSS required to support conditional styling. Add this
 to the root layout component or entry point of your app.
 
 ```diff
-// e.g. src/main.ts
+// e.g. src/main.tsx
 
 root.render(
   <StrictMode>
