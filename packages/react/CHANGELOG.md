@@ -1,5 +1,12 @@
 # @embellish/react
 
+## 0.4.1
+
+### Patch Changes
+
+- a39ad49: Fixed pretty-printing in development mode.
+- 6bfa76b: Added the `createStyleProps` function to simplify creation of style props.
+
 ## 0.4.0
 
 ### Minor Changes
