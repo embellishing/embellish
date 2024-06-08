@@ -8,7 +8,7 @@
     <img alt="Embellish" src="https://raw.githubusercontent.com/embellishing/embellish/HEAD/.github/logo-light.svg" width="320" height="64" style="max-width: 100%;">
   </a>
   <br/>
-  A powerfully <em>simple</em> React styling primitive
+  A powerfully simple React styling solution
 </p>
 
 ---
