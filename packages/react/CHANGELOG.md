@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.4.2
+
+### Patch Changes
+
+- 84fbfd4: Fix for runtime error when no style props are defined.
+
 ## 0.4.1
 
 ### Patch Changes
