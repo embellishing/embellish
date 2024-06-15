@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2019"],
+    "checkJs": false,
+    "skipLibCheck": false,
+    "types": ["react"]
+  }
+}

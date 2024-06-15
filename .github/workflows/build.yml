@@ -37,6 +37,8 @@ jobs:
 
       - run: pnpm check
 
+      - run: pnpm -r test
+
       - if: github.ref == 'refs/heads/master'
         run:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >>

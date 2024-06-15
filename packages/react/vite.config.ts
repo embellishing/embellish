@@ -7,6 +7,7 @@ export default defineConfig({
     dts({
       rollupTypes: true,
       bundledPackages: ["@embellish/core"],
+      tsconfigPath: "./src/tsconfig.json",
     }),
   ],
   build: {

@@ -3,10 +3,6 @@
   "compilerOptions": {
     "module": "ES2015",
     "moduleResolution": "Node",
-    "noEmit": true,
-    "checkJs": false,
-    "jsx": "react-jsx",
-    "skipLibCheck": false
-  },
-  "include": ["src"]
+    "noEmit": true
+  }
 }

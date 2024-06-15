@@ -92,7 +92,7 @@ function stringifyValue(propertyName, value) {
 
 export function createComponent({
   displayName,
-  styleProps,
+  styleProps = {},
   defaultAs = "div",
   defaultStyle = {},
   conditions: configConditions,
