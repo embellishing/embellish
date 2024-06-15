@@ -37,7 +37,12 @@ jobs:
 
       - run: pnpm check
 
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
       - run: pnpm -r test
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
 
       - if: github.ref == 'refs/heads/master'
         run:
