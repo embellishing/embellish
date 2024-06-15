@@ -14,6 +14,16 @@ export default tseslint.config(
     ignores: ["**/dist/**"],
   },
   {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
     languageOptions: {
       globals: {
         process: "readonly",
@@ -39,7 +49,7 @@ export default tseslint.config(
         { prefer: "type-imports", disallowTypeAnnotations: true },
       ],
       "import/consistent-type-specifier-style": "error",
-      "import/extensions": ["error", "always"],
+      "import/extensions": ["error", "ignorePackages"],
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-absolute-path": "error",
@@ -60,6 +70,20 @@ export default tseslint.config(
       "import/no-self-import": "error",
       "import/prefer-default-export": "off", // we want everything to be named
       "simple-import-sort/imports": "error",
+    },
+  },
+  {
+    files: ["packages/react/**/*"],
+    rules: {
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          devDependencies: true,
+          peerDependencies: true,
+          optionalDependencies: false,
+          packageDir: "packages/react",
+        },
+      ],
     },
   },
 );
