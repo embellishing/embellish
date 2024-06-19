@@ -34,6 +34,7 @@
   "license": "MIT",
   "devDependencies": {
     "@embellish/core": "workspace:^",
+    "@microsoft/api-extractor": "^7.47.0",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
@@ -50,8 +51,9 @@
     "react": ">=17 <20"
   },
   "scripts": {
+    "api": "pnpm run prepare && api-extractor run",
     "prepare": "tsc --project src && vite build",
-    "test": "tsx --tsconfig ./test/tsconfig.json --test test/index.tsx",
+    "test": "tsc --project test && tsx --tsconfig ./test/tsconfig.json --test test/index.tsx",
     "test.watch": "tsx watch --tsconfig ./test/tsconfig.json --test test/index.tsx"
   }
 }

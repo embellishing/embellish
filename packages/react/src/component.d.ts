@@ -11,6 +11,22 @@ import type {
   ValidStylePropName,
 } from "./types";
 
+/**
+ * Creates a polymorphic component that can be styled using first-class props and
+ * CSS hooks.
+ *
+ * @typeParam DisplayName - The display name of the component.
+ * @typeParam StyleProps - The type of the style properties.
+ * @typeParam Conds - The type of the conditions.
+ * @typeParam DefaultAs - The default element type for the component, defaults to
+ * "div".
+ *
+ * @param config - The configuration object for creating the component.
+ *
+ * @returns A polymorphic React component.
+ *
+ * @public
+ */
 export function createComponent<
   const DisplayName extends string,
   StyleProps,

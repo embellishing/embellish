@@ -3,40 +3,85 @@ import type { Condition, LogicalExpression } from "./condition.js";
 import { conditionToLogicalExpression } from "./condition.js";
 import { createHash } from "./util.js";
 
-export type { Condition };
+export type { Branded, Condition };
 
 const [space, newline] =
   // @ts-expect-error bundler expected to replace `process.env.NODE_ENV` expression
   process.env.NODE_ENV === "development" ? [" ", "\n"] : ["", ""];
 
+/**
+ * Converts a string into a union type of its unique characters.
+ *
+ * @typeParam S - The string to extract characters from.
+ * @typeParam Acc - An accumulator to build the union of characters.
+ *
+ * @public
+ */
 export type Chars<S, Acc = never> = S extends `${infer Head}${infer Tail}`
   ? Chars<Tail, Acc | Head>
   : Acc;
 
+/**
+ * Represents an uppercase letter (A-Z).
+ *
+ * @public
+ */
 export type UppercaseLetter = Chars<"ABCDEFGHIJKLMNOPQRSTUVWXYZ">;
 
-export type Letter<A extends string = UppercaseLetter> = A | Lowercase<A>;
+/**
+ * Represents a letter (uppercase or lowercase).
+ *
+ * @public
+ */
+export type Letter = UppercaseLetter | Lowercase<UppercaseLetter>;
 
-export type Digit<A = "01234567890"> = Chars<A> | Lowercase<Chars<A>>;
+/**
+ * Represents a digit (0-9).
+ *
+ * @public
+ */
+export type Digit = Chars<"0123456789">;
 
+/**
+ * Ensures that the string `S` contains only the characters `C`.
+ *
+ * @typeParam C - Allowable characters.
+ * @typeParam S - The string to check.
+ *
+ * @public
+ */
 export type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}`
   ? Head extends C
     ? unknown & OnlyChars<C, Tail>
     : never
   : unknown;
 
-export type ValidConditionName<Name> = Name extends "box" | "initial"
-  ? never
-  : Name extends `${Letter}${infer Tail}`
-    ? OnlyChars<Letter | Digit, Tail>
-    : never;
+/**
+ * Ensures that a condition name is alphanumeric.
+ *
+ * @public
+ */
+export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
+  ? OnlyChars<Letter | Digit, Tail>
+  : never;
 
+/**
+ * Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
+ *
+ * @public
+ */
 export type Selector =
   | `${string}&${string}`
   | `@${"media" | "container" | "supports"} ${string}`;
 
+/**
+ * Represents a unique hook identifier.
+ *
+ * @public
+ */
 export type HookId = Branded<string, "HookId">;
 
+/** @internal */
 export function createHooks<Hooks extends Selector[]>(hooks: Hooks) {
   const hookIds = Object.fromEntries(
     hooks.map(hook => [hook, createHash(hook)]),
@@ -74,13 +119,31 @@ export function createHooks<Hooks extends Selector[]>(hooks: Hooks) {
   };
 }
 
+/**
+ * A record of conditions that map to hook ids or combinations using `and`, `or`,
+ * and `not` operators.
+ *
+ * @typeParam ConditionName - The type of the condition names.
+ *
+ * @public
+ */
 export type Conditions<ConditionName extends string> = Branded<
   Record<ConditionName, Condition<HookId>>,
   "Conditions"
 >;
 
+/**
+ * Creates the specified conditions based on available hooks.
+ *
+ * @param hooks - The hooks available as the basis for conditions.
+ * @param conditions - The conditions to create based on the available hooks.
+ *
+ * @returns The conditions available for use by a component.
+ *
+ * @public
+ */
 export function createConditions<
-  Hooks extends ReturnType<typeof createHooks>["hooks"],
+  Hooks extends Record<string, HookId>,
   ConditionsConfig extends Record<string, unknown>,
 >(
   hooks: Hooks,
@@ -102,13 +165,13 @@ export function createConditions<
           return hooks[condition] as HookId;
         }
         if (typeof condition === "object") {
-          if ("and" in condition) {
+          if (condition.and) {
             return { and: condition.and.map(expand) };
           }
-          if ("or" in condition) {
+          if (condition.or) {
             return { or: condition.or.map(expand) };
           }
-          if ("not" in condition) {
+          if (condition.not) {
             return { not: expand(condition.not) };
           }
         }
@@ -150,13 +213,13 @@ export function createLocalConditions<
                 return conditions[condition] as HookId;
               }
               if (condition && typeof condition === "object") {
-                if ("and" in condition) {
+                if (condition.and) {
                   return { and: condition.and.map(expand) };
                 }
-                if ("or" in condition) {
+                if (condition.or) {
                   return { or: condition.or.map(expand) };
                 }
-                if ("not" in condition) {
+                if (condition.not) {
                   return { not: expand(condition.not) };
                 }
               }

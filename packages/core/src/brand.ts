@@ -1,3 +1,8 @@
 declare const __brand: unique symbol;
-type Brand<B> = { [__brand]: B };
-export type Branded<T, B> = T & Brand<B>;
+
+/**
+ * Creates a branded type to add a unique symbol for type differentiation.
+ *
+ * @public
+ */
+export type Branded<T, B> = T & { [__brand]: B };

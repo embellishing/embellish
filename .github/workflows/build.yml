@@ -44,6 +44,15 @@ jobs:
         env:
           PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
 
+      # Ensure docs are up-to-date.
+      - name: docs
+        run: |
+          pnpm run docs
+          if [[ -n $(git status --porcelain) ]]; then
+            echo 'Error: Git status is not clean.';
+            exit 1;
+          fi
+
       - if: github.ref == 'refs/heads/master'
         run:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >>

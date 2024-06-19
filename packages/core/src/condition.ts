@@ -1,8 +1,16 @@
+/**
+ * A condition consisting of a single `S` value or a logical combination of
+ * multiple `S` values
+ *
+ * @typeParam S - a simple condition; either a hook id or a condition name
+ *
+ * @public
+ */
 export type Condition<S> =
   | S
-  | { and: Condition<S>[] }
-  | { or: Condition<S>[] }
-  | { not: Condition<S> };
+  | { and: Condition<S>[]; or?: undefined; not?: undefined }
+  | { or: Condition<S>[]; and?: undefined; not?: undefined }
+  | { not: Condition<S>; and?: undefined; or?: undefined };
 
 export type LogicalExpression<S> =
   | { tag: "just"; value: S }
@@ -24,7 +32,7 @@ export function conditionToLogicalExpression<S>(
     return { tag: "just", value: condition as S };
   }
 
-  if ("and" in condition) {
+  if (condition.and) {
     const [first, ...rest] = condition.and;
     if (first) {
       return rest.reduce<LogicalExpression<S>>(
@@ -38,7 +46,7 @@ export function conditionToLogicalExpression<S>(
     }
   }
 
-  if ("or" in condition) {
+  if (condition.or) {
     const [first, ...rest] = condition.or;
     if (first) {
       return rest.reduce<LogicalExpression<S>>(
@@ -52,7 +60,7 @@ export function conditionToLogicalExpression<S>(
     }
   }
 
-  if ("not" in condition) {
+  if (condition.not) {
     return {
       tag: "not",
       value: conditionToLogicalExpression(condition.not),
