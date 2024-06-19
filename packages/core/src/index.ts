@@ -45,7 +45,7 @@ export type Letter = UppercaseLetter | Lowercase<UppercaseLetter>;
 export type Digit = Chars<"0123456789">;
 
 /**
- * Ensures that the string `S` contains only the characters `C`.
+ * Ensures that the string contains only the allowable characters.
  *
  * @typeParam Characters - Allowable characters
  * @typeParam String - The string to check
@@ -62,9 +62,7 @@ export type OnlyChars<Characters, String> =
 /**
  * Ensures that a condition name is alphanumeric.
  *
- * @typeParam Invalid - Type returned if the string is not a valid condition
- * name
- * @typeParam Valid - Type returned if the string is a valid condition name
+ * @typeParam Name - The name to check
  *
  * @public
  */
