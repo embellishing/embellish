@@ -32,9 +32,11 @@ function hex(value: string) {
 
 async function withBrowser<T>(f: (browser: Browser) => Promise<T>): Promise<T> {
   const browser = await puppeteer.launch();
-  const result = await f(browser);
-  await browser.close();
-  return result;
+  try {
+    return await f(browser);
+  } finally {
+    await browser.close();
+  }
 }
 
 async function withPage<T>(f: (page: Page) => Promise<T>): Promise<T> {
@@ -298,6 +300,55 @@ test('reusable "not" condition', async () => {
   });
   assert.strictEqual(hex(style.color), "#0000ff");
   assert.strictEqual(hex(hoverStyle.color), "#ff0000");
+});
+
+test("reusable complex condition", async () => {
+  const { StyleSheet, hooks } = createHooks(["&.a", "&.b", "&.c"]);
+  const Box = createComponent({
+    conditions: createConditions(hooks, {
+      condition: {
+        or: [
+          { and: [{ not: { or: ["&.a", "&.b", "&.c"] } }] },
+          { and: ["&.a", "&.b", { not: "&.c" }] },
+          { and: [{ not: "&.a" }, "&.b", "&.c"] },
+        ],
+      },
+    }),
+    styleProps: createStyleProps(["color"]),
+  });
+  await withPage(async page => {
+    await renderContent(
+      page,
+      <>
+        <StyleSheet />
+        {["", "a", "b", "c", "a b", "b c", "a c", "a b c"].map(
+          (className, index) => (
+            <Box
+              key={index}
+              id={`case${index}`}
+              className={className}
+              color="#000000"
+              condition:color="#009900"
+            />
+          ),
+        )}
+      </>,
+    );
+    for (const caseId of [1, 2, 3, 6, 7]) {
+      assert.strictEqual(
+        hex((await queryComputedStyle(page, `#case${caseId}`)).color),
+        "#000000",
+        `case ${caseId}`,
+      );
+    }
+    for (const caseId of [0, 4, 5]) {
+      assert.strictEqual(
+        hex((await queryComputedStyle(page, `#case${caseId}`)).color),
+        "#009900",
+        `case ${caseId}`,
+      );
+    }
+  });
 });
 
 test('inline "and" condition', async () => {

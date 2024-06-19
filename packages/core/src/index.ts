@@ -81,64 +81,6 @@ export type Condition<S> =
   | { or: Condition<S>[]; and?: undefined; not?: undefined }
   | { not: Condition<S>; and?: undefined; or?: undefined };
 
-type LogicalExpression<S> =
-  | { tag: "just"; value: S }
-  | {
-      tag: "and" | "or";
-      left: LogicalExpression<S>;
-      right: LogicalExpression<S>;
-    }
-  | { tag: "not"; value: LogicalExpression<S> };
-
-function conditionToLogicalExpression<S>(
-  condition: Condition<S>,
-): LogicalExpression<S> {
-  if (
-    typeof condition !== "object" ||
-    condition === null ||
-    (!("and" in condition) && !("or" in condition) && !("not" in condition))
-  ) {
-    return { tag: "just", value: condition as S };
-  }
-
-  if (condition.and) {
-    const [first, ...rest] = condition.and;
-    if (first) {
-      return rest.reduce<LogicalExpression<S>>(
-        (acc, curr) => ({
-          tag: "and",
-          left: acc,
-          right: conditionToLogicalExpression(curr),
-        }),
-        conditionToLogicalExpression(first),
-      );
-    }
-  }
-
-  if (condition.or) {
-    const [first, ...rest] = condition.or;
-    if (first) {
-      return rest.reduce<LogicalExpression<S>>(
-        (acc, curr) => ({
-          tag: "or",
-          left: acc,
-          right: conditionToLogicalExpression(curr),
-        }),
-        conditionToLogicalExpression(first),
-      );
-    }
-  }
-
-  if (condition.not) {
-    return {
-      tag: "not",
-      value: conditionToLogicalExpression(condition.not),
-    };
-  }
-
-  throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
-}
-
 /**
  * Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
  *
@@ -308,33 +250,39 @@ export function createLocalConditions<
             ] as Condition<HookId>);
 
       return (function buildExpression(
-        condition: LogicalExpression<HookId>,
+        condition: Condition<HookId>,
         valueIfTrue: string,
         valueIfFalse: string,
       ): string {
-        switch (condition.tag) {
-          case "just":
-            return `var(--${condition.value}-1, ${valueIfTrue}) var(--${condition.value}-0, ${valueIfFalse})`;
-          case "and":
-            return buildExpression(
-              condition.left,
-              buildExpression(condition.right, valueIfTrue, valueIfFalse),
-              valueIfFalse,
-            );
-          case "or":
-            return buildExpression(
-              condition.left,
-              valueIfTrue,
-              buildExpression(condition.right, valueIfTrue, valueIfFalse),
-            );
-          case "not":
-            return buildExpression(condition.value, valueIfFalse, valueIfTrue);
+        if (typeof condition === "string") {
+          return `var(--${condition}-1, ${valueIfTrue}) var(--${condition}-0, ${valueIfFalse})`;
         }
-      })(
-        conditionToLogicalExpression<HookId>(condition),
-        valueIfTrue,
-        valueIfFalse,
-      );
+        if (condition.and) {
+          const [head, ...tail] = condition.and;
+          if (!head) {
+            return valueIfTrue;
+          }
+          if (tail.length === 0) {
+            return buildExpression(head, valueIfTrue, valueIfFalse);
+          }
+          return buildExpression(
+            head,
+            buildExpression({ and: tail }, valueIfTrue, valueIfFalse),
+            valueIfFalse,
+          );
+        }
+        if (condition.or) {
+          return buildExpression(
+            { and: condition.or.map(not => ({ not })) },
+            valueIfFalse,
+            valueIfTrue,
+          );
+        }
+        if (condition.not) {
+          return buildExpression(condition.not, valueIfFalse, valueIfTrue);
+        }
+        throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
+      })(condition, valueIfTrue, valueIfFalse);
     },
   };
 }
