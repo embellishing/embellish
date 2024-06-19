@@ -53,6 +53,7 @@ export type Digit = Chars<"0123456789">;
  * @public
  */
 export type OnlyChars<Characters, String> =
+  // eslint-disable-next-line @typescript-eslint/ban-types
   String extends `${infer Head}${infer Tail}`
     ? Head extends Characters
       ? OnlyChars<Characters, Tail> & unknown
