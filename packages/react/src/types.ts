@@ -12,9 +12,10 @@ import type {
  *
  * @public
  */
-export type ValidStylePropName<Name> = Name extends `${Letter}${infer Tail}`
-  ? OnlyChars<Letter | Digit, Tail>
-  : never;
+export type ValidStylePropName<Name, Invalid, Valid> =
+  Name extends `${Letter}${infer Tail}`
+    ? OnlyChars<Letter | Digit, Tail, Invalid, Valid>
+    : Invalid;
 
 /**
  * Represents the props of a React component, including refs.

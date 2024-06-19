@@ -33,14 +33,17 @@ export function createComponent<
   defaultAs?: DefaultAs;
   defaultStyle?: CSSProperties;
   styleProps?: StyleProps & {
-    [P in keyof StyleProps]: ValidStylePropName<P> &
+    [P in keyof StyleProps]: ValidStylePropName<
+      P,
+      never,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((value: any) => {
+      (value: any) => {
         [Q in keyof ReturnType<
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           StyleProps[P] extends (value: any) => unknown ? StyleProps[P] : never
         >]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
-      });
+      }
+    >;
   };
   conditions?: Conds;
   fallback?: "revert-layer" | "unset";
@@ -60,8 +63,11 @@ export function createComponent<
         ? "conditions"
         : never]?: Conds extends Conditions<infer ConditionName>
         ? {
-            [P in LocalConditionName]: ValidConditionName<P> &
-              Condition<ConditionName>;
+            [P in LocalConditionName]: ValidConditionName<
+              P,
+              never,
+              Condition<ConditionName>
+            >;
           }
         : never;
     } & Partial<{

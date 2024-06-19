@@ -47,31 +47,39 @@ export type Digit = Chars<"0123456789">;
 /**
  * Ensures that the string `S` contains only the characters `C`.
  *
- * @typeParam C - Allowable characters.
- * @typeParam S - The string to check.
+ * @typeParam Characters - Allowable characters
+ * @typeParam String - The string to check
+ * @typeParam Invalid - Type returned if the string contains invalid characters
+ * @typeParam Valid - Type returned if the string contains only valid characters
  *
  * @public
  */
-export type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}`
-  ? Head extends C
-    ? unknown & OnlyChars<C, Tail>
-    : never
-  : unknown;
+export type OnlyChars<Characters, String, Invalid, Valid> =
+  String extends `${infer Head}${infer Tail}`
+    ? Head extends Characters
+      ? OnlyChars<Characters, Tail, Invalid, Valid> & Valid
+      : Invalid
+    : Valid;
 
 /**
  * Ensures that a condition name is alphanumeric.
  *
+ * @typeParam Invalid - Type returned if the string is not a valid condition
+ * name
+ * @typeParam Valid - Type returned if the string is a valid condition name
+ *
  * @public
  */
-export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
-  ? OnlyChars<Letter | Digit, Tail>
-  : never;
+export type ValidConditionName<Name, Invalid, Valid> =
+  Name extends `${Letter}${infer Tail}`
+    ? OnlyChars<Letter | Digit, Tail, Invalid, Valid>
+    : Invalid;
 
 /**
- * A condition consisting of a single `S` value or a logical combination of
- * multiple `S` values
+ * Represents a condition consisting of a single `S` value or a logical
+ * combination of multiple `S` values.
  *
- * @typeParam S - a simple condition; either a hook id or a condition name
+ * @typeParam S - A simple condition; either a hook id or a condition name
  *
  * @public
  */
@@ -79,10 +87,11 @@ export type Condition<S> =
   | S
   | { and: Condition<S>[]; or?: undefined; not?: undefined }
   | { or: Condition<S>[]; and?: undefined; not?: undefined }
-  | { not: Condition<S>; and?: undefined; or?: undefined };
+  | { not: [Condition<S>]; and?: undefined; or?: undefined };
 
 /**
- * Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
+ * Represents hook selector logic consisting of either a basic CSS selector or
+ * an at-rule (`@media`, `@container`, or `@supports`).
  *
  * @public
  */
@@ -97,13 +106,22 @@ export type Selector =
  */
 export type HookId = Branded<string, "HookId">;
 
-/** @internal */
-export function createHooks<Selectors extends Selector[]>(
-  selectors: Selectors,
-) {
+/**
+ * A map of hooks, keyed by the selector logic used to create the hook
+ *
+ * @typeParam S - The selector logic used for each hook
+ *
+ * @public
+ */
+export type Hooks<S extends Selector> = Branded<
+  { [HookName in S]: HookId },
+  "Hooks"
+>;
+
+export function createHooks<S extends Selector>(selectors: S[]) {
   const hooks = Object.fromEntries(
     selectors.map(selector => [selector, createHash(selector)]),
-  ) as { [Hook in Selectors[number]]: HookId };
+  ) as Hooks<S>;
   return {
     styleSheet() {
       const indent = Array(2).fill(space).join("");
@@ -138,10 +156,10 @@ export function createHooks<Selectors extends Selector[]>(
 }
 
 /**
- * A record of conditions that map to hook ids or combinations using `and`, `or`,
- * and `not` operators.
+ * A record of condition names, each mapping to a hook id or a logical
+ * combination using `and`, `or`, and `not` operators.
  *
- * @typeParam ConditionName - The type of the condition names.
+ * @typeParam ConditionName - The type of the condition names
  *
  * @public
  */
@@ -151,34 +169,41 @@ export type Conditions<ConditionName extends string> = Branded<
 >;
 
 /**
- * Creates the specified conditions based on available hooks.
+ * Creates reusable conditions based on the provided hooks, each consisting of
+ * either a hook id or a logical combination using the `and`, `or`, and `not`
+ * operators.
  *
- * @param hooks - The hooks available as the basis for conditions.
- * @param conditions - The conditions to create based on the available hooks.
+ * @typeParam AvailableHooks - The type of hooks available for use in conditions
+ * @typeParam ConditionsConfig - The type of conditions to create
+ * @param hooks - The hooks available for use in conditions
+ * @param conditions - The conditions to create
  *
- * @returns The conditions available for use by a component.
+ * @returns The conditions available for use by a component
  *
  * @public
  */
 export function createConditions<
-  Hooks extends Record<string, HookId>,
+  AvailableHooks extends Hooks<Selector>,
   ConditionsConfig extends Record<string, unknown>,
+  S extends keyof AvailableHooks = AvailableHooks extends Hooks<infer S>
+    ? S
+    : never,
 >(
-  hooks: Hooks,
+  hooks: AvailableHooks,
   conditions: ConditionsConfig & {
-    [ConditionName in keyof ConditionsConfig]: ValidConditionName<ConditionName> &
-      Condition<keyof Hooks>;
+    [ConditionName in keyof ConditionsConfig]: ValidConditionName<
+      ConditionName,
+      never,
+      Condition<S>
+    >;
   },
 ) {
   return Object.fromEntries(
     (
-      Object.entries(conditions) as [
-        keyof ConditionsConfig,
-        Condition<keyof Hooks>,
-      ][]
+      Object.entries(conditions) as [keyof ConditionsConfig, Condition<S>][]
     ).map(([conditionName, condition]) => [
       conditionName,
-      (function expand(condition: Condition<keyof Hooks>): Condition<HookId> {
+      (function expand(condition: Condition<S>): Condition<HookId> {
         if (typeof condition === "string") {
           return hooks[condition] as HookId;
         }
@@ -190,7 +215,7 @@ export function createConditions<
             return { or: condition.or.map(expand) };
           }
           if (condition.not) {
-            return { not: expand(condition.not) };
+            return { not: [expand(condition.not[0])] };
           }
         }
         throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
@@ -202,23 +227,31 @@ export function createConditions<
 }
 
 export function createLocalConditions<
-  Conditions extends ReturnType<typeof createConditions>,
-  LocalConditions,
+  ReusableConditions extends Conditions<string>,
+  LocalConditions extends Record<string, unknown>,
+  C extends keyof ReusableConditions = ReusableConditions extends Conditions<
+    infer C
+  >
+    ? C
+    : never,
 >(
-  conditions: Conditions,
+  conditions: ReusableConditions,
   localConditions: LocalConditions & {
-    [ConditionName in keyof LocalConditions]: ValidConditionName<ConditionName> &
-      Condition<keyof Conditions>;
+    [ConditionName in keyof LocalConditions]: ValidConditionName<
+      ConditionName,
+      never,
+      Condition<C>
+    >;
   },
 ) {
   return {
     get conditionNames() {
       return Object.keys(conditions || {}).concat(
         Object.keys(localConditions || {}),
-      ) as (keyof Conditions | keyof LocalConditions)[];
+      ) as (C | keyof LocalConditions)[];
     },
     conditionalDeclarationValue(
-      conditionName: keyof Conditions | keyof LocalConditions,
+      conditionName: C | keyof LocalConditions,
       valueIfTrue: string,
       valueIfFalse: string,
     ) {
@@ -238,16 +271,14 @@ export function createLocalConditions<
                   return { or: condition.or.map(expand) };
                 }
                 if (condition.not) {
-                  return { not: expand(condition.not) };
+                  return { not: [expand(condition.not[0])] };
                 }
               }
               throw new Error(
                 `Invalid condition: ${JSON.stringify(condition)}`,
               );
             })(localConditions[conditionName as keyof LocalConditions])
-          : (conditions[
-              conditionName as keyof Conditions
-            ] as Condition<HookId>);
+          : (conditions[conditionName as C] as Condition<HookId>);
 
       return (function buildExpression(
         condition: Condition<HookId>,
@@ -273,13 +304,13 @@ export function createLocalConditions<
         }
         if (condition.or) {
           return buildExpression(
-            { and: condition.or.map(not => ({ not })) },
+            { and: condition.or.map(not => ({ not: [not] })) },
             valueIfFalse,
             valueIfTrue,
           );
         }
         if (condition.not) {
-          return buildExpression(condition.not, valueIfFalse, valueIfTrue);
+          return buildExpression(condition.not[0], valueIfFalse, valueIfTrue);
         }
         throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
       })(condition, valueIfTrue, valueIfFalse);

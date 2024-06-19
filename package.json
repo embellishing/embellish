@@ -29,6 +29,7 @@
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
     "check": "eslint . && prettier --check .",
     "docs": "pnpm -r api && api-documenter markdown -i temp -o docs/api",
-    "fix": "eslint --fix . && prettier --write ."
+    "fix": "eslint --fix . && prettier --write .",
+    "test": "pnpm -r prepare && pnpm -r test"
   }
 }
