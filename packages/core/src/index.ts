@@ -1,9 +1,11 @@
-import type { Branded } from "./brand";
-import type { Condition, LogicalExpression } from "./condition.js";
-import { conditionToLogicalExpression } from "./condition.js";
-import { createHash } from "./util.js";
+declare const __brand: unique symbol;
 
-export type { Branded, Condition };
+/**
+ * Creates a branded type to add a unique symbol for type differentiation.
+ *
+ * @public
+ */
+export type Branded<T, B> = T & { [__brand]: B };
 
 const [space, newline] =
   // @ts-expect-error bundler expected to replace `process.env.NODE_ENV` expression
@@ -64,6 +66,78 @@ export type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}`
 export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
   ? OnlyChars<Letter | Digit, Tail>
   : never;
+
+/**
+ * A condition consisting of a single `S` value or a logical combination of
+ * multiple `S` values
+ *
+ * @typeParam S - a simple condition; either a hook id or a condition name
+ *
+ * @public
+ */
+export type Condition<S> =
+  | S
+  | { and: Condition<S>[]; or?: undefined; not?: undefined }
+  | { or: Condition<S>[]; and?: undefined; not?: undefined }
+  | { not: Condition<S>; and?: undefined; or?: undefined };
+
+type LogicalExpression<S> =
+  | { tag: "just"; value: S }
+  | {
+      tag: "and" | "or";
+      left: LogicalExpression<S>;
+      right: LogicalExpression<S>;
+    }
+  | { tag: "not"; value: LogicalExpression<S> };
+
+function conditionToLogicalExpression<S>(
+  condition: Condition<S>,
+): LogicalExpression<S> {
+  if (
+    typeof condition !== "object" ||
+    condition === null ||
+    (!("and" in condition) && !("or" in condition) && !("not" in condition))
+  ) {
+    return { tag: "just", value: condition as S };
+  }
+
+  if (condition.and) {
+    const [first, ...rest] = condition.and;
+    if (first) {
+      return rest.reduce<LogicalExpression<S>>(
+        (acc, curr) => ({
+          tag: "and",
+          left: acc,
+          right: conditionToLogicalExpression(curr),
+        }),
+        conditionToLogicalExpression(first),
+      );
+    }
+  }
+
+  if (condition.or) {
+    const [first, ...rest] = condition.or;
+    if (first) {
+      return rest.reduce<LogicalExpression<S>>(
+        (acc, curr) => ({
+          tag: "or",
+          left: acc,
+          right: conditionToLogicalExpression(curr),
+        }),
+        conditionToLogicalExpression(first),
+      );
+    }
+  }
+
+  if (condition.not) {
+    return {
+      tag: "not",
+      value: conditionToLogicalExpression(condition.not),
+    };
+  }
+
+  throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
+}
 
 /**
  * Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
@@ -261,4 +335,20 @@ export function createLocalConditions<
       );
     },
   };
+}
+
+function createHash(obj: unknown) {
+  const jsonString = JSON.stringify(obj);
+
+  let hashValue = 0;
+
+  for (let i = 0; i < jsonString.length; i++) {
+    const charCode = jsonString.charCodeAt(i);
+    hashValue = (hashValue << 5) - hashValue + charCode;
+    hashValue &= 0x7fffffff;
+  }
+
+  const str = hashValue.toString(36);
+
+  return /^[0-9]/.test(str) ? `a${str}` : str;
 }
