@@ -49,17 +49,15 @@ export type Digit = Chars<"0123456789">;
  *
  * @typeParam Characters - Allowable characters
  * @typeParam String - The string to check
- * @typeParam Invalid - Type returned if the string contains invalid characters
- * @typeParam Valid - Type returned if the string contains only valid characters
  *
  * @public
  */
-export type OnlyChars<Characters, String, Invalid, Valid> =
+export type OnlyChars<Characters, String> =
   String extends `${infer Head}${infer Tail}`
     ? Head extends Characters
-      ? OnlyChars<Characters, Tail, Invalid, Valid> & Valid
-      : Invalid
-    : Valid;
+      ? OnlyChars<Characters, Tail> & unknown
+      : never
+    : unknown;
 
 /**
  * Ensures that a condition name is alphanumeric.
@@ -70,10 +68,9 @@ export type OnlyChars<Characters, String, Invalid, Valid> =
  *
  * @public
  */
-export type ValidConditionName<Name, Invalid, Valid> =
-  Name extends `${Letter}${infer Tail}`
-    ? OnlyChars<Letter | Digit, Tail, Invalid, Valid>
-    : Invalid;
+export type ValidConditionName<Name> = Name extends `${Letter}${infer Tail}`
+  ? OnlyChars<Letter | Digit, Tail>
+  : never;
 
 /**
  * Represents a condition consisting of a single `S` value or a logical
@@ -87,7 +84,7 @@ export type Condition<S> =
   | S
   | { and: Condition<S>[]; or?: undefined; not?: undefined }
   | { or: Condition<S>[]; and?: undefined; not?: undefined }
-  | { not: [Condition<S>]; and?: undefined; or?: undefined };
+  | { not: Condition<S>; and?: undefined; or?: undefined };
 
 /**
  * Represents hook selector logic consisting of either a basic CSS selector or
@@ -174,7 +171,9 @@ export type Conditions<ConditionName extends string> = Branded<
  * operators.
  *
  * @typeParam AvailableHooks - The type of hooks available for use in conditions
- * @typeParam ConditionsConfig - The type of conditions to create
+ * @typeParam ConditionName - The type of the names of conditions to create
+ * @typeParam S - The selector logic of the hooks available for use in
+ * conditions
  * @param hooks - The hooks available for use in conditions
  * @param conditions - The conditions to create
  *
@@ -184,51 +183,45 @@ export type Conditions<ConditionName extends string> = Branded<
  */
 export function createConditions<
   AvailableHooks extends Hooks<Selector>,
-  ConditionsConfig extends Record<string, unknown>,
+  ConditionName extends string,
   S extends keyof AvailableHooks = AvailableHooks extends Hooks<infer S>
     ? S
     : never,
 >(
   hooks: AvailableHooks,
-  conditions: ConditionsConfig & {
-    [ConditionName in keyof ConditionsConfig]: ValidConditionName<
-      ConditionName,
-      never,
-      Condition<S>
-    >;
+  conditions: {
+    [Name in ConditionName]: ValidConditionName<Name> & Condition<S>;
   },
 ) {
   return Object.fromEntries(
-    (
-      Object.entries(conditions) as [keyof ConditionsConfig, Condition<S>][]
-    ).map(([conditionName, condition]) => [
-      conditionName,
-      (function expand(condition: Condition<S>): Condition<HookId> {
-        if (typeof condition === "string") {
-          return hooks[condition] as HookId;
-        }
-        if (typeof condition === "object") {
-          if (condition.and) {
-            return { and: condition.and.map(expand) };
+    (Object.entries(conditions) as [ConditionName, Condition<S>][]).map(
+      ([conditionName, condition]) => [
+        conditionName,
+        (function expand(condition: Condition<S>): Condition<HookId> {
+          if (typeof condition === "string") {
+            return hooks[condition] as HookId;
           }
-          if (condition.or) {
-            return { or: condition.or.map(expand) };
+          if (typeof condition === "object") {
+            if (condition.and) {
+              return { and: condition.and.map(expand) };
+            }
+            if (condition.or) {
+              return { or: condition.or.map(expand) };
+            }
+            if (condition.not) {
+              return { not: expand(condition.not) };
+            }
           }
-          if (condition.not) {
-            return { not: [expand(condition.not[0])] };
-          }
-        }
-        throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
-      })(condition),
-    ]),
-  ) as keyof ConditionsConfig extends string
-    ? Conditions<keyof ConditionsConfig>
-    : never;
+          throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
+        })(condition),
+      ],
+    ),
+  ) as Conditions<ConditionName>;
 }
 
 export function createLocalConditions<
   ReusableConditions extends Conditions<string>,
-  LocalConditions extends Record<string, unknown>,
+  ConditionName extends string,
   C extends keyof ReusableConditions = ReusableConditions extends Conditions<
     infer C
   >
@@ -236,30 +229,24 @@ export function createLocalConditions<
     : never,
 >(
   conditions: ReusableConditions,
-  localConditions: LocalConditions & {
-    [ConditionName in keyof LocalConditions]: ValidConditionName<
-      ConditionName,
-      never,
-      Condition<C>
-    >;
+  localConditions: {
+    [Name in ConditionName]: ValidConditionName<Name> & Condition<C>;
   },
 ) {
   return {
     get conditionNames() {
       return Object.keys(conditions || {}).concat(
         Object.keys(localConditions || {}),
-      ) as (C | keyof LocalConditions)[];
+      ) as (C | ConditionName)[];
     },
     conditionalDeclarationValue(
-      conditionName: C | keyof LocalConditions,
+      conditionName: C | ConditionName,
       valueIfTrue: string,
       valueIfFalse: string,
     ) {
       const condition =
         conditionName in localConditions
-          ? (function expand(
-              condition: Condition<keyof typeof conditions>,
-            ): Condition<HookId> {
+          ? (function expand(condition: Condition<C>): Condition<HookId> {
               if (typeof condition === "string") {
                 return conditions[condition] as HookId;
               }
@@ -271,13 +258,13 @@ export function createLocalConditions<
                   return { or: condition.or.map(expand) };
                 }
                 if (condition.not) {
-                  return { not: [expand(condition.not[0])] };
+                  return { not: expand(condition.not) };
                 }
               }
               throw new Error(
                 `Invalid condition: ${JSON.stringify(condition)}`,
               );
-            })(localConditions[conditionName as keyof LocalConditions])
+            })(localConditions[conditionName as ConditionName])
           : (conditions[conditionName as C] as Condition<HookId>);
 
       return (function buildExpression(
@@ -304,13 +291,13 @@ export function createLocalConditions<
         }
         if (condition.or) {
           return buildExpression(
-            { and: condition.or.map(not => ({ not: [not] })) },
+            { and: condition.or.map(not => ({ not })) },
             valueIfFalse,
             valueIfTrue,
           );
         }
         if (condition.not) {
-          return buildExpression(condition.not[0], valueIfFalse, valueIfTrue);
+          return buildExpression(condition.not, valueIfFalse, valueIfTrue);
         }
         throw new Error(`Invalid condition: ${JSON.stringify(condition)}`);
       })(condition, valueIfTrue, valueIfFalse);

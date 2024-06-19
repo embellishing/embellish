@@ -281,7 +281,7 @@ test('reusable "not" condition', async () => {
   const { StyleSheet, hooks } = createHooks(["&:hover"]);
   const Box = createComponent({
     conditions: createConditions(hooks, {
-      unhover: { not: ["&:hover"] },
+      unhover: { not: "&:hover" },
     }),
     styleProps: createStyleProps(["color"]),
   });
@@ -308,9 +308,9 @@ test("reusable complex condition", async () => {
     conditions: createConditions(hooks, {
       condition: {
         or: [
-          { and: [{ not: [{ or: ["&.a", "&.b", "&.c"] }] }] },
-          { and: ["&.a", "&.b", { not: ["&.c"] }] },
-          { and: [{ not: ["&.a"] }, "&.b", "&.c"] },
+          { and: [{ not: { or: ["&.a", "&.b", "&.c"] } }] },
+          { and: ["&.a", "&.b", { not: "&.c" }] },
+          { and: [{ not: "&.a" }, "&.b", "&.c"] },
         ],
       },
     }),
@@ -486,7 +486,7 @@ test('inline "not" condition', async () => {
       <>
         <StyleSheet />
         <Box
-          conditions={{ unhover: { not: ["hover"] } }}
+          conditions={{ unhover: { not: "hover" } }}
           as="button"
           id="box"
           color="#ff0000"
