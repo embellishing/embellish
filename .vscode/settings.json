@@ -1,4 +1,6 @@
 {
   "html.validate.styles": false,
-  "eslint.experimental.useFlatConfig": true
+  "eslint.experimental.useFlatConfig": true,
+  "rewrap.wrappingColumn": 80,
+  "rewrap.autoWrap.enabled": true
 }
