@@ -10,14 +10,13 @@ Creates a polymorphic component that can be styled using first-class props and C
 
 ```typescript
 export declare function createComponent<
-const DisplayName extends string,
 StyleProps,
 Conds,
 DefaultAs extends
 | keyof JSX.IntrinsicElements
 | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
-    displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
+    displayName?: string;
     defaultAs?: DefaultAs;
     defaultStyle?: CSSProperties;
     styleProps?: StyleProps & {
@@ -95,7 +94,7 @@ config
 
 </td><td>
 
-{ displayName?: DisplayName &amp; [ValidComponentDisplayName](./react.validcomponentdisplayname.md)<!-- -->&lt;DisplayName&gt;; defaultAs?: DefaultAs; defaultStyle?: CSSProperties; styleProps?: StyleProps &amp; { \[P in keyof StyleProps\]: [ValidStylePropName](./react.validstylepropname.md)<!-- -->&lt;P&gt; &amp; // eslint-disable-next-line @typescript-eslint/no-explicit-any ((value: any) =&gt; { \[Q in keyof ReturnType&lt; // eslint-disable-next-line @typescript-eslint/no-explicit-any StyleProps\[P\] extends (value: any) =&gt; unknown ? StyleProps\[P\] : never &gt;\]: Q extends keyof CSSProperties ? CSSProperties\[Q\] : never; }); }; conditions?: Conds; fallback?: "revert-layer" \| "unset"; }
+{ displayName?: string; defaultAs?: DefaultAs; defaultStyle?: CSSProperties; styleProps?: StyleProps &amp; { \[P in keyof StyleProps\]: [ValidStylePropName](./react.validstylepropname.md)<!-- -->&lt;P&gt; &amp; // eslint-disable-next-line @typescript-eslint/no-explicit-any ((value: any) =&gt; { \[Q in keyof ReturnType&lt; // eslint-disable-next-line @typescript-eslint/no-explicit-any StyleProps\[P\] extends (value: any) =&gt; unknown ? StyleProps\[P\] : never &gt;\]: Q extends keyof CSSProperties ? CSSProperties\[Q\] : never; }); }; conditions?: Conds; fallback?: "revert-layer" \| "unset"; }
 
 
 </td><td>

@@ -5,17 +5,12 @@ import type {
 } from "@embellish/core";
 import type { CSSProperties, JSXElementConstructor } from "react";
 
-import type {
-  ComponentPropsWithRef,
-  ValidComponentDisplayName,
-  ValidStylePropName,
-} from "./types";
+import type { ComponentPropsWithRef, ValidStylePropName } from "./types";
 
 /**
  * Creates a polymorphic component that can be styled using first-class props and
  * CSS hooks.
  *
- * @typeParam DisplayName - The display name of the component.
  * @typeParam StyleProps - The type of the style properties.
  * @typeParam Conds - The type of the conditions.
  * @typeParam DefaultAs - The default element type for the component, defaults to
@@ -28,14 +23,13 @@ import type {
  * @public
  */
 export function createComponent<
-  const DisplayName extends string,
   StyleProps,
   Conds,
   DefaultAs extends
     | keyof JSX.IntrinsicElements
     | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
 >(config: {
-  displayName?: DisplayName & ValidComponentDisplayName<DisplayName>;
+  displayName?: string;
   defaultAs?: DefaultAs;
   defaultStyle?: CSSProperties;
   styleProps?: StyleProps & {

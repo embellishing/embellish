@@ -1,9 +1,4 @@
-import type {
-  Digit,
-  Letter,
-  OnlyChars,
-  UppercaseLetter,
-} from "@embellish/core";
+import type { Digit, Letter, OnlyChars } from "@embellish/core";
 import type {
   Component,
   ComponentProps,
@@ -11,17 +6,6 @@ import type {
   PropsWithRef,
   RefAttributes,
 } from "react";
-
-/**
- * Ensures that a component display name is alphanumeric and begins with an
- * uppercase letter.
- *
- * @public
- */
-export type ValidComponentDisplayName<Name> =
-  Name extends `${UppercaseLetter}${infer Tail}`
-    ? OnlyChars<Letter | Digit, Tail>
-    : never;
 
 /**
  * Ensures that a style prop name is alphanumeric and begins with a letter.
