@@ -9,10 +9,10 @@ Creates the specified CSS hooks.
 **Signature:**
 
 ```typescript
-export declare function createHooks<Hooks extends Selector[]>(hooks: Hooks): {
+export declare function createHooks<Selectors extends Selector[]>(selectors: Selectors): {
     StyleSheet(): JSX.Element;
     hooks: {
-        [Hook in Hooks[number]]: HookId;
+        [Hook in Selectors[number]]: HookId;
     };
 };
 ```
@@ -37,24 +37,24 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-hooks
+selectors
 
 
 </td><td>
 
-Hooks
+Selectors
 
 
 </td><td>
 
-The hooks to create.
+The selector logic for each hook
 
 
 </td></tr>
 </tbody></table>
 **Returns:**
 
-{ StyleSheet(): JSX.Element; hooks: { \[Hook in Hooks\[number\]\]: [HookId](./react.hookid.md)<!-- -->; }; }
+{ StyleSheet(): JSX.Element; hooks: { \[Hook in Selectors\[number\]\]: [HookId](./react.hookid.md)<!-- -->; }; }
 
-The created hooks along with the `StyleSheet` component required to support them.
+A set of hooks implementing the specified selector logic along with the `StyleSheet` component required to support them
 

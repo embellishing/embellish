@@ -5,20 +5,21 @@ import { createElement } from "react";
 /**
  * Creates the specified CSS hooks.
  *
- * @typeParam Hooks - The type of the hooks to create.
- * @param hooks - The hooks to create.
+ * @typeParam Selectors - The type of the selector logic for each hook
+ * @param selectors - The selector logic for each hook
  *
- * @returns The created hooks along with the `StyleSheet` component required to support them.
+ * @returns A set of hooks implementing the specified selector logic along with
+ * the `StyleSheet` component required to support them
  *
  * @public
  */
-export function createHooks<Hooks extends Selector[]>(
-  hooks: Hooks,
+export function createHooks<Selectors extends Selector[]>(
+  selectors: Selectors,
 ): {
   StyleSheet(): JSX.Element;
-  hooks: { [Hook in Hooks[number]]: HookId };
+  hooks: { [Hook in Selectors[number]]: HookId };
 } {
-  const { styleSheet, ...rest } = createHooksImpl(hooks);
+  const { styleSheet, ...rest } = createHooksImpl(selectors);
   return {
     ...rest,
     StyleSheet() {

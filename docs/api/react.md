@@ -41,7 +41,7 @@ Creates the specified conditions based on available hooks.
 </td></tr>
 <tr><td>
 
-[createHooks(hooks)](./react.createhooks.md)
+[createHooks(selectors)](./react.createhooks.md)
 
 
 </td><td>

@@ -156,19 +156,21 @@ export type Selector =
 export type HookId = Branded<string, "HookId">;
 
 /** @internal */
-export function createHooks<Hooks extends Selector[]>(hooks: Hooks) {
-  const hookIds = Object.fromEntries(
-    hooks.map(hook => [hook, createHash(hook)]),
-  ) as { [Hook in Hooks[number]]: HookId };
+export function createHooks<Selectors extends Selector[]>(
+  selectors: Selectors,
+) {
+  const hooks = Object.fromEntries(
+    selectors.map(selector => [selector, createHash(selector)]),
+  ) as { [Hook in Selectors[number]]: HookId };
   return {
     styleSheet() {
       const indent = Array(2).fill(space).join("");
-      return `*${space}{${newline}${Object.entries(hookIds)
+      return `*${space}{${newline}${Object.entries(hooks)
         .flatMap(([, id]) => [
           `${indent}--${id}-0:${space}initial;`,
           `${indent}--${id}-1:${space};`,
         ])
-        .join(newline)}${newline}}${newline}${Object.entries(hookIds)
+        .join(newline)}${newline}}${newline}${Object.entries(hooks)
         .flatMap(([def, id]) => {
           if (def.startsWith("@")) {
             return [
@@ -189,7 +191,7 @@ export function createHooks<Hooks extends Selector[]>(hooks: Hooks) {
         })
         .join(newline)}`;
     },
-    hooks: hookIds,
+    hooks,
   };
 }
 
