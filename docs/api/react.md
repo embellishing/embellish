@@ -199,17 +199,6 @@ Represents an uppercase letter (A-Z).
 </td></tr>
 <tr><td>
 
-[ValidComponentDisplayName](./react.validcomponentdisplayname.md)
-
-
-</td><td>
-
-Ensures that a component display name is alphanumeric and begins with an uppercase letter.
-
-
-</td></tr>
-<tr><td>
-
 [ValidConditionName](./react.validconditionname.md)
 
 

@@ -15,8 +15,4 @@ export type {
 } from "@embellish/core";
 export { createComponent } from "./component.js";
 export { createStyleProps } from "./style-props.js";
-export type {
-  ComponentPropsWithRef,
-  ValidComponentDisplayName,
-  ValidStylePropName,
-} from "./types.js";
+export type { ComponentPropsWithRef, ValidStylePropName } from "./types.js";
