@@ -10,6 +10,8 @@ import type {
 /**
  * Ensures that a style prop name is alphanumeric and begins with a letter.
  *
+ * @typeParam Name - The name to check
+ *
  * @public
  */
 export type ValidStylePropName<Name> = Name extends `${Letter}${infer Tail}`

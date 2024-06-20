@@ -1,28 +1,57 @@
+import type { Branded } from "@embellish/core";
 import type { CSSProperties } from "react";
 
+import type { ValidStylePropName } from "./types";
+
 /**
- * Generates a set of style prop definitions for the given CSS property names.
+ * Represents style prop definitions.
  *
- * @typeParam Properties - A tuple of keys from the CSSProperties type, ensuring only valid CSS property names are used.
- * @param properties - An array of standard React CSS property names for which to create prop functions.
- *
- * @returns An object where each key is a CSS property name from the input array, and each value is a function that takes a value for that property and returns an object with the property and its value.
+ * @typeParam P - The name and type of each style prop
  *
  * @public
  */
-export function createStyleProps<
-  const Properties extends (keyof CSSProperties)[],
->(
-  properties: Properties,
-): {
-  [P in Properties[number]]: (
-    value: Required<CSSProperties>[P],
-  ) => Pick<Required<CSSProperties>, P>;
-} {
+export type StyleProps<P> = Branded<P, "StyleProps">;
+
+/**
+ * Creates style props, with each entry either enabling a standard CSS property
+ * or defining a custom CSS property.
+ *
+ * @typeParam StylePropConfig - The type of the style props to create
+ * @param styleProps - The style props to create
+ *
+ * @returns The set of style props defined in the provided configuration and
+ * available for use in a component
+ *
+ * @public
+ */
+export function createStyleProps<StylePropConfig>(
+  styleProps: StylePropConfig & {
+    [P in keyof StylePropConfig]:
+      | (P extends keyof CSSProperties ? true : never)
+      | (ValidStylePropName<P> &
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ((value: any) => {
+            [Q in keyof ReturnType<
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              StylePropConfig[P] extends (value: any) => unknown
+                ? StylePropConfig[P]
+                : never
+            >]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
+          }));
+  },
+) {
   return Object.fromEntries(
-    properties.map(property => [
+    Object.entries(styleProps).map(([property, definition]) => [
       property,
-      (value: unknown) => ({ [property]: value }),
+      definition === true
+        ? (value: unknown) => ({ [property]: value })
+        : definition,
     ]),
-  ) as ReturnType<typeof createStyleProps>;
+  ) as StyleProps<{
+    [P in keyof StylePropConfig]: P extends keyof CSSProperties
+      ? CSSProperties[P]
+      : StylePropConfig[P] extends (value: infer Value) => unknown
+        ? Value
+        : never;
+  }>;
 }

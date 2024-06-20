@@ -4,14 +4,16 @@
 
 ## createStyleProps() function
 
-Generates a set of style prop definitions for the given CSS property names.
+Creates style props, with each entry either enabling a standard CSS property or defining a custom CSS property.
 
 **Signature:**
 
 ```typescript
-export declare function createStyleProps<const Properties extends (keyof CSSProperties)[]>(properties: Properties): {
-    [P in Properties[number]]: (value: Required<CSSProperties>[P]) => Pick<Required<CSSProperties>, P>;
-};
+export declare function createStyleProps<StylePropConfig>(styleProps: StylePropConfig & {
+    [P in keyof StylePropConfig]: (P extends keyof CSSProperties ? true : never) | (ValidStylePropName<P> & ((value: any) => {
+        [Q in keyof ReturnType<StylePropConfig[P] extends (value: any) => unknown ? StylePropConfig[P] : never>]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
+    }));
+}): StyleProps<{ [P in keyof StylePropConfig]: P extends keyof CSSProperties ? CSSProperties[P] : StylePropConfig[P] extends (value: infer Value) => unknown ? Value : never; }>;
 ```
 
 ## Parameters
@@ -34,24 +36,24 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-properties
+styleProps
 
 
 </td><td>
 
-Properties
+StylePropConfig &amp; { \[P in keyof StylePropConfig\]: (P extends keyof CSSProperties ? true : never) \| ([ValidStylePropName](./react.validstylepropname.md)<!-- -->&lt;P&gt; &amp; ((value: any) =&gt; { \[Q in keyof ReturnType&lt;StylePropConfig\[P\] extends (value: any) =&gt; unknown ? StylePropConfig\[P\] : never&gt;\]: Q extends keyof CSSProperties ? CSSProperties\[Q\] : never; })); }
 
 
 </td><td>
 
-An array of standard React CSS property names for which to create prop functions.
+The style props to create
 
 
 </td></tr>
 </tbody></table>
 **Returns:**
 
-{ \[P in Properties\[number\]\]: (value: Required&lt;CSSProperties&gt;\[P\]) =&gt; Pick&lt;Required&lt;CSSProperties&gt;, P&gt;; }
+[StyleProps](./react.styleprops.md)<!-- -->&lt;{ \[P in keyof StylePropConfig\]: P extends keyof CSSProperties ? CSSProperties\[P\] : StylePropConfig\[P\] extends (value: infer Value) =&gt; unknown ? Value : never; }&gt;
 
-An object where each key is a CSS property name from the input array, and each value is a function that takes a value for that property and returns an object with the property and its value.
+The set of style props defined in the provided configuration and available for use in a component
 

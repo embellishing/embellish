@@ -4,12 +4,12 @@
 
 ## OnlyChars type
 
-Ensures that the string `S` contains only the characters `C`<!-- -->.
+Ensures that the string contains only the allowable characters.
 
 **Signature:**
 
 ```typescript
-export declare type OnlyChars<C, S> = S extends `${infer Head}${infer Tail}` ? Head extends C ? unknown & OnlyChars<C, Tail> : never : unknown;
+export declare type OnlyChars<Characters, String> = String extends `${infer Head}${infer Tail}` ? Head extends Characters ? OnlyChars<Characters, Tail> & unknown : never : unknown;
 ```
 **References:** [OnlyChars](./react.onlychars.md)
 

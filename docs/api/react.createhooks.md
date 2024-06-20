@@ -4,17 +4,12 @@
 
 ## createHooks() function
 
-Creates the specified CSS hooks.
+Creates hooks from the provided selectors.
 
 **Signature:**
 
 ```typescript
-export declare function createHooks<Selectors extends Selector[]>(selectors: Selectors): {
-    StyleSheet(): JSX.Element;
-    hooks: {
-        [Hook in Selectors[number]]: HookId;
-    };
-};
+export declare function createHooks<S extends Selector>(selectors: S[]): CreateHooksResult<S>;
 ```
 
 ## Parameters
@@ -42,19 +37,19 @@ selectors
 
 </td><td>
 
-Selectors
+S\[\]
 
 
 </td><td>
 
-The selector logic for each hook
+The selector logic used for each hook
 
 
 </td></tr>
 </tbody></table>
 **Returns:**
 
-{ StyleSheet(): JSX.Element; hooks: { \[Hook in Selectors\[number\]\]: [HookId](./react.hookid.md)<!-- -->; }; }
+[CreateHooksResult](./react.createhooksresult.md)<!-- -->&lt;S&gt;
 
-A set of hooks implementing the specified selector logic along with the `StyleSheet` component required to support them
+A set of hooks implementing the specified selector logic along with the `StyleSheet` component needed to support them
 
