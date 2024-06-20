@@ -6,7 +6,7 @@ export type {
   Condition,
   Conditions,
   Digit,
-  HookId,
+  Hooks,
   Letter,
   OnlyChars,
   Selector,

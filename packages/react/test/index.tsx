@@ -98,7 +98,11 @@ test("`style` prop", async () => {
 
 test("style props", async () => {
   const Box = createComponent({
-    styleProps: createStyleProps(["padding", "color", "fontSize"]),
+    styleProps: createStyleProps({
+      padding: true,
+      color: true,
+      fontSize: true,
+    }),
   });
   const style = await withPage(async page => {
     await renderContent(
@@ -127,7 +131,7 @@ test("declaration ordering - default style vs. `style` prop", async () => {
 
 test("declaration ordering - `style` prop vs. style prop", async () => {
   const Box = createComponent({
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const style = await withPage(async page => {
     await renderContent(
@@ -145,7 +149,7 @@ test("simple reusable condition", async () => {
     conditions: createConditions(hooks, {
       hover: "&:hover",
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { style, hoverStyle } = await withPage(async page => {
     await renderContent(
@@ -170,7 +174,7 @@ test('reusable "and" condition', async () => {
     conditions: createConditions(hooks, {
       enabledHover: { and: ["&:enabled", "&:hover"] },
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { disabledStyle, disabledHoverStyle, enabledStyle, enabledHoverStyle } =
     await withPage(async page => {
@@ -221,7 +225,7 @@ test('reusable "or" condition', async () => {
     conditions: createConditions(hooks, {
       disabled: { or: ["&[aria-disabled=true]", "&:disabled"] },
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { linkStyle, buttonStyle, disabledLinkStyle, disabledButtonStyle } =
     await withPage(async page => {
@@ -283,7 +287,7 @@ test('reusable "not" condition', async () => {
     conditions: createConditions(hooks, {
       unhover: { not: "&:hover" },
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { style, hoverStyle } = await withPage(async page => {
     await renderContent(
@@ -314,7 +318,7 @@ test("reusable complex condition", async () => {
         ],
       },
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   await withPage(async page => {
     await renderContent(
@@ -358,7 +362,7 @@ test('inline "and" condition', async () => {
       enabled: "&:enabled",
       hover: "&:hover",
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { disabledStyle, disabledHoverStyle, enabledStyle, enabledHoverStyle } =
     await withPage(async page => {
@@ -412,7 +416,7 @@ test('inline "or" condition', async () => {
       ariaDisabled: "&[aria-disabled=true]",
       trueDisabled: "&:disabled",
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { linkStyle, buttonStyle, disabledLinkStyle, disabledButtonStyle } =
     await withPage(async page => {
@@ -478,7 +482,7 @@ test('inline "not" condition', async () => {
     conditions: createConditions(hooks, {
       hover: "&:hover",
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { style, hoverStyle } = await withPage(async page => {
     await renderContent(
@@ -520,7 +524,7 @@ test("prop ordering - initial vs. conditional style", async () => {
     conditions: createConditions(hooks, {
       hover: "&:hover",
     }),
-    styleProps: createStyleProps(["color"]),
+    styleProps: createStyleProps({ color: true }),
   });
   const { style, hoverStyle } = await withPage(async page => {
     await renderContent(

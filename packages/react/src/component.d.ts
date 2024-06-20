@@ -5,26 +5,27 @@ import type {
 } from "@embellish/core";
 import type { CSSProperties, JSXElementConstructor } from "react";
 
-import type { ComponentPropsWithRef, ValidStylePropName } from "./types";
+import type { StyleProps } from "./style-props";
+import type { ComponentPropsWithRef } from "./types";
 
 /**
- * Creates a polymorphic component that can be styled using first-class props and
- * CSS hooks.
+ * Creates a polymorphic component with first-class style props and conditional
+ * styling using CSS hooks.
  *
- * @typeParam StyleProps - The type of the style properties.
- * @typeParam Conds - The type of the conditions.
- * @typeParam DefaultAs - The default element type for the component, defaults to
- * "div".
+ * @typeParam P - The type of the style props that the component will expose
+ * @typeParam C - The name of the conditions that the component will expose
+ * @typeParam DefaultAs - The default element type for the component, defaults
+ * to "div".
  *
  * @param config - The configuration object for creating the component.
  *
- * @returns A polymorphic React component.
+ * @returns A polymorphic React component with style props
  *
  * @public
  */
 export function createComponent<
-  StyleProps,
-  Conds,
+  C extends string,
+  P,
   DefaultAs extends
     | keyof JSX.IntrinsicElements
     | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -32,17 +33,8 @@ export function createComponent<
   displayName?: string;
   defaultAs?: DefaultAs;
   defaultStyle?: CSSProperties;
-  styleProps?: StyleProps & {
-    [P in keyof StyleProps]: ValidStylePropName<P> &
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((value: any) => {
-        [Q in keyof ReturnType<
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          StyleProps[P] extends (value: any) => unknown ? StyleProps[P] : never
-        >]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
-      });
-  };
-  conditions?: Conds;
+  styleProps?: StyleProps<P>;
+  conditions?: Conditions<C>;
   fallback?: "revert-layer" | "unset";
 }): <
   As extends
@@ -52,31 +44,26 @@ export function createComponent<
 >(
   props: {
     as?: As;
-  } & Omit<
-    JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
-    never
-  > & {
-      [P in Conds extends Conditions<string>
-        ? "conditions"
-        : never]?: Conds extends Conditions<infer ConditionName>
-        ? {
-            [P in LocalConditionName]: ValidConditionName<P> &
-              Condition<ConditionName>;
-          }
-        : never;
-    } & Partial<{
-      [P in
-        | keyof StyleProps
-        | `${
-            | (Conds extends Conditions<infer ConditionName>
-                ? ConditionName
-                : never)
-            | LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}`]: P extends `${`${string}:` | ""}${infer PropertyName}`
-        ? PropertyName extends keyof StyleProps
-          ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
-            ? Parameters<StyleProps[PropertyName]>[0]
-            : never
+  } & Omit<JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>, never> &
+    (string extends C
+      ? unknown
+      : {
+          conditions?: {
+            [Name in LocalConditionName]: ValidConditionName<Name> &
+              Condition<C>;
+          };
+        }) &
+    Partial<{
+      [PropName in
+        | keyof P
+        | (keyof P extends string
+            ? `${C | LocalConditionName}:${keyof P}`
+            : never)]: PropName extends `${C | LocalConditionName}:${infer BasePropName}`
+        ? BasePropName extends keyof P
+          ? P[BasePropName]
           : never
-        : never;
+        : PropName extends keyof P
+          ? P[PropName]
+          : never;
     }>,
 ) => JSX.Element;
