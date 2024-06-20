@@ -4,7 +4,7 @@
 
 ## Conditions type
 
-A record of conditions that map to hook ids or combinations using `and`<!-- -->, `or`<!-- -->, and `not` operators.
+A record of condition names, each mapping to a hook id or a logical combination using `and`<!-- -->, `or`<!-- -->, and `not` operators.
 
 **Signature:**
 

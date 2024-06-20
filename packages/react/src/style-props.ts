@@ -7,6 +7,8 @@ import type { ValidStylePropName } from "./types";
  * Represents style prop definitions.
  *
  * @typeParam P - The name and type of each style prop
+ *
+ * @public
  */
 export type StyleProps<P> = Branded<P, "StyleProps">;
 

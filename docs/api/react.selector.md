@@ -4,7 +4,7 @@
 
 ## Selector type
 
-Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
+Represents hook selector logic consisting of either a basic CSS selector or an at-rule (`@media`<!-- -->, `@container`<!-- -->, or `@supports`<!-- -->).
 
 **Signature:**
 

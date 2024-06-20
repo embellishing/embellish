@@ -4,14 +4,14 @@
 
 ## createConditions() function
 
-Creates the specified conditions based on available hooks.
+Creates reusable conditions based on the provided hooks, each consisting of either a hook id or a logical combination using the `and`<!-- -->, `or`<!-- -->, and `not` operators.
 
 **Signature:**
 
 ```typescript
-export declare function createConditions<Hooks extends Record<string, HookId>, ConditionsConfig extends Record<string, unknown>>(hooks: Hooks, conditions: ConditionsConfig & {
-    [ConditionName in keyof ConditionsConfig]: ValidConditionName<ConditionName> & Condition<keyof Hooks>;
-}): keyof ConditionsConfig extends string ? Conditions<keyof ConditionsConfig> : never;
+export declare function createConditions<AvailableHooks extends Hooks<Selector>, ConditionName extends string, S extends keyof AvailableHooks = AvailableHooks extends Hooks<infer S> ? S : never>(hooks: AvailableHooks, conditions: {
+    [Name in ConditionName]: ValidConditionName<Name> & Condition<S>;
+}): Conditions<ConditionName>;
 ```
 
 ## Parameters
@@ -39,12 +39,12 @@ hooks
 
 </td><td>
 
-Hooks
+AvailableHooks
 
 
 </td><td>
 
-The hooks available as the basis for conditions.
+The hooks available for use in conditions
 
 
 </td></tr>
@@ -55,19 +55,19 @@ conditions
 
 </td><td>
 
-ConditionsConfig &amp; { \[ConditionName in keyof ConditionsConfig\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;ConditionName&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;keyof Hooks&gt;; }
+{ \[Name in ConditionName\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;Name&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;S&gt;; }
 
 
 </td><td>
 
-The conditions to create based on the available hooks.
+The conditions to create
 
 
 </td></tr>
 </tbody></table>
 **Returns:**
 
-keyof ConditionsConfig extends string ? [Conditions](./react.conditions.md)<!-- -->&lt;keyof ConditionsConfig&gt; : never
+[Conditions](./react.conditions.md)<!-- -->&lt;ConditionName&gt;
 
-The conditions available for use by a component.
+The conditions available for use by a component
 

@@ -24,7 +24,7 @@ Description
 
 </td><td>
 
-Creates a polymorphic component that can be styled using first-class props and CSS hooks.
+Creates a polymorphic component with first-class style props and conditional styling using CSS hooks.
 
 
 </td></tr>
@@ -35,7 +35,7 @@ Creates a polymorphic component that can be styled using first-class props and C
 
 </td><td>
 
-Creates the specified conditions based on available hooks.
+Creates reusable conditions based on the provided hooks, each consisting of either a hook id or a logical combination using the `and`<!-- -->, `or`<!-- -->, and `not` operators.
 
 
 </td></tr>
@@ -46,18 +46,44 @@ Creates the specified conditions based on available hooks.
 
 </td><td>
 
-Creates the specified CSS hooks.
+Creates hooks from the provided selectors.
 
 
 </td></tr>
 <tr><td>
 
-[createStyleProps(properties)](./react.createstyleprops.md)
+[createStyleProps(styleProps)](./react.createstyleprops.md)
 
 
 </td><td>
 
-Generates a set of style prop definitions for the given CSS property names.
+Creates style props, with each entry either enabling a standard CSS property or defining a custom CSS property.
+
+
+</td></tr>
+</tbody></table>
+
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CreateHooksResult](./react.createhooksresult.md)
+
+
+</td><td>
+
+Values returned from the [createHooks()](./react.createhooks.md) function
 
 
 </td></tr>
@@ -116,7 +142,7 @@ Represents the props of a React component, including refs.
 
 </td><td>
 
-A condition consisting of a single `S` value or a logical combination of multiple `S` values
+Represents a condition consisting of a single `S` value or a logical combination of multiple `S` values.
 
 
 </td></tr>
@@ -127,7 +153,7 @@ A condition consisting of a single `S` value or a logical combination of multipl
 
 </td><td>
 
-A record of conditions that map to hook ids or combinations using `and`<!-- -->, `or`<!-- -->, and `not` operators.
+A record of condition names, each mapping to a hook id or a logical combination using `and`<!-- -->, `or`<!-- -->, and `not` operators.
 
 
 </td></tr>
@@ -155,6 +181,17 @@ Represents a unique hook identifier.
 </td></tr>
 <tr><td>
 
+[Hooks](./react.hooks.md)
+
+
+</td><td>
+
+A map of hooks, keyed by the selector logic used to create the hook
+
+
+</td></tr>
+<tr><td>
+
 [Letter](./react.letter.md)
 
 
@@ -171,7 +208,7 @@ Represents a letter (uppercase or lowercase).
 
 </td><td>
 
-Ensures that the string `S` contains only the characters `C`<!-- -->.
+Ensures that the string contains only the allowable characters.
 
 
 </td></tr>
@@ -182,7 +219,18 @@ Ensures that the string `S` contains only the characters `C`<!-- -->.
 
 </td><td>
 
-Represents a hook implementation consisting of either a basic CSS selector or an at-rule.
+Represents hook selector logic consisting of either a basic CSS selector or an at-rule (`@media`<!-- -->, `@container`<!-- -->, or `@supports`<!-- -->).
+
+
+</td></tr>
+<tr><td>
+
+[StyleProps](./react.styleprops.md)
+
+
+</td><td>
+
+Represents style prop definitions.
 
 
 </td></tr>

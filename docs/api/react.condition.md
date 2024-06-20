@@ -4,7 +4,7 @@
 
 ## Condition type
 
-A condition consisting of a single `S` value or a logical combination of multiple `S` values
+Represents a condition consisting of a single `S` value or a logical combination of multiple `S` values.
 
 **Signature:**
 

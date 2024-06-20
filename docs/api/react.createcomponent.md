@@ -4,14 +4,14 @@
 
 ## createComponent() function
 
-Creates a polymorphic component that can be styled using first-class props and CSS hooks.
+Creates a polymorphic component with first-class style props and conditional styling using CSS hooks.
 
 **Signature:**
 
 ```typescript
 export declare function createComponent<
-StyleProps,
-Conds,
+C extends string,
+P,
 DefaultAs extends
 | keyof JSX.IntrinsicElements
 | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -19,17 +19,8 @@ DefaultAs extends
     displayName?: string;
     defaultAs?: DefaultAs;
     defaultStyle?: CSSProperties;
-    styleProps?: StyleProps & {
-        [P in keyof StyleProps]: ValidStylePropName<P> &
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ((value: any) => {
-            [Q in keyof ReturnType<
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            StyleProps[P] extends (value: any) => unknown ? StyleProps[P] : never
-            >]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
-        });
-    };
-    conditions?: Conds;
+    styleProps?: StyleProps<P>;
+    conditions?: Conditions<C>;
     fallback?: "revert-layer" | "unset";
 }): <
 As extends
@@ -39,31 +30,26 @@ LocalConditionName extends string = never,
 >(
 props: {
     as?: As;
-} & Omit<
-JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
-never
-> & {
-    [P in Conds extends Conditions<string>
-    ? "conditions"
-    : never]?: Conds extends Conditions<infer ConditionName>
-    ? {
-        [P in LocalConditionName]: ValidConditionName<P> &
-        Condition<ConditionName>;
-    }
-    : never;
-} & Partial<{
-    [P in
-    | keyof StyleProps
-    | `${
-    | (Conds extends Conditions<infer ConditionName>
-    ? ConditionName
-    : never)
-    | LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}`]: P extends `${`${string}:` | ""}${infer PropertyName}`
-    ? PropertyName extends keyof StyleProps
-    ? StyleProps[PropertyName] extends (value: any) => unknown // eslint-disable-line @typescript-eslint/no-explicit-any
-    ? Parameters<StyleProps[PropertyName]>[0]
+} & Omit<JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>, never> &
+(string extends C
+? unknown
+: {
+    conditions?: {
+        [Name in LocalConditionName]: ValidConditionName<Name> &
+        Condition<C>;
+    };
+}) &
+Partial<{
+    [PropName in
+    | keyof P
+    | (keyof P extends string
+    ? `${C | LocalConditionName}:${keyof P}`
+    : never)]: PropName extends `${C | LocalConditionName}:${infer BasePropName}`
+    ? BasePropName extends keyof P
+    ? P[BasePropName]
     : never
-    : never
+    : PropName extends keyof P
+    ? P[PropName]
     : never;
 }>,
 ) => JSX.Element;
@@ -94,7 +80,7 @@ config
 
 </td><td>
 
-{ displayName?: string; defaultAs?: DefaultAs; defaultStyle?: CSSProperties; styleProps?: StyleProps &amp; { \[P in keyof StyleProps\]: [ValidStylePropName](./react.validstylepropname.md)<!-- -->&lt;P&gt; &amp; // eslint-disable-next-line @typescript-eslint/no-explicit-any ((value: any) =&gt; { \[Q in keyof ReturnType&lt; // eslint-disable-next-line @typescript-eslint/no-explicit-any StyleProps\[P\] extends (value: any) =&gt; unknown ? StyleProps\[P\] : never &gt;\]: Q extends keyof CSSProperties ? CSSProperties\[Q\] : never; }); }; conditions?: Conds; fallback?: "revert-layer" \| "unset"; }
+{ displayName?: string; defaultAs?: DefaultAs; defaultStyle?: CSSProperties; styleProps?: [StyleProps](./react.styleprops.md)<!-- -->&lt;P&gt;; conditions?: [Conditions](./react.conditions.md)<!-- -->&lt;C&gt;; fallback?: "revert-layer" \| "unset"; }
 
 
 </td><td>
@@ -106,7 +92,7 @@ The configuration object for creating the component.
 </tbody></table>
 **Returns:**
 
-&lt; As extends \| keyof JSX.IntrinsicElements \| React.JSXElementConstructor&lt;any&gt; = DefaultAs, // eslint-disable-line @typescript-eslint/no-explicit-any LocalConditionName extends string = never, &gt;( props: { as?: As; } &amp; Omit&lt; JSX.LibraryManagedAttributes&lt;As, [ComponentPropsWithRef](./react.componentpropswithref.md)<!-- -->&lt;As&gt;&gt;, never &gt; &amp; { \[P in Conds extends [Conditions](./react.conditions.md)<!-- -->&lt;string&gt; ? "conditions" : never\]?: Conds extends [Conditions](./react.conditions.md)<!-- -->&lt;infer ConditionName&gt; ? { \[P in LocalConditionName\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;P&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;ConditionName&gt;; } : never; } &amp; Partial&lt;{ \[P in \| keyof StyleProps \| \`${ \| (Conds extends [Conditions](./react.conditions.md)<!-- -->&lt;infer ConditionName&gt; ? ConditionName : never) \| LocalConditionName}:${keyof StyleProps extends string ? keyof StyleProps : never}\`\]: P extends \`${\`${string}:\` \| ""}${infer PropertyName}\` ? PropertyName extends keyof StyleProps ? StyleProps\[PropertyName\] extends (value: any) =&gt; unknown // eslint-disable-line @typescript-eslint/no-explicit-any ? Parameters&lt;StyleProps\[PropertyName\]&gt;\[0\] : never : never : never; }&gt;, ) =&gt; JSX.Element
+&lt; As extends \| keyof JSX.IntrinsicElements \| React.JSXElementConstructor&lt;any&gt; = DefaultAs, // eslint-disable-line @typescript-eslint/no-explicit-any LocalConditionName extends string = never, &gt;( props: { as?: As; } &amp; Omit&lt;JSX.LibraryManagedAttributes&lt;As, [ComponentPropsWithRef](./react.componentpropswithref.md)<!-- -->&lt;As&gt;&gt;, never&gt; &amp; (string extends C ? unknown : { conditions?: { \[Name in LocalConditionName\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;Name&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;C&gt;; }; }) &amp; Partial&lt;{ \[PropName in \| keyof P \| (keyof P extends string ? \`${C \| LocalConditionName}:${keyof P}\` : never)\]: PropName extends \`${C \| LocalConditionName}:${infer BasePropName}\` ? BasePropName extends keyof P ? P\[BasePropName\] : never : PropName extends keyof P ? P\[PropName\] : never; }&gt;, ) =&gt; JSX.Element
 
-A polymorphic React component.
+A polymorphic React component with style props
 

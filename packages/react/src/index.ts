@@ -1,4 +1,3 @@
-export { createHooks } from "./hooks.js";
 export { createConditions } from "@embellish/core";
 export type {
   Branded,
@@ -6,6 +5,7 @@ export type {
   Condition,
   Conditions,
   Digit,
+  HookId,
   Hooks,
   Letter,
   OnlyChars,
@@ -14,5 +14,8 @@ export type {
   ValidConditionName,
 } from "@embellish/core";
 export { createComponent } from "./component.js";
+export { createHooks } from "./hooks.js";
+export type { CreateHooksResult } from "./hooks.js";
+export type { StyleProps } from "./style-props.js";
 export { createStyleProps } from "./style-props.js";
 export type { ComponentPropsWithRef, ValidStylePropName } from "./types.js";
