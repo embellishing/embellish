@@ -1,5 +1,15 @@
 # @embellish/react
 
+## 0.5.0
+
+### Minor Changes
+
+- 8f33c80: Simplified type definitions for the `createComponent` function. The `createStyleProps` function is now required and accepts a record with `true` values instead of an array of property names.
+
+### Patch Changes
+
+- a7e660a: Removed component display name validation, which is not needed because React allows any string.
+
 ## 0.4.2
 
 ### Patch Changes
