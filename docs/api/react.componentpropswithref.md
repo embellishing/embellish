@@ -9,5 +9,5 @@ Represents the props of a React component, including refs.
 **Signature:**
 
 ```typescript
-export declare type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<C extends new (props: infer P) => Component<unknown, unknown> ? PropsWithRef<P> & RefAttributes<InstanceType<C>> : ComponentProps<C>>;
+export declare type ComponentPropsWithRef<C extends ElementType> = PropsWithRef<C extends new (props: infer P) => Component_2<unknown, unknown> ? PropsWithRef<P> & RefAttributes<InstanceType<C>> : ComponentProps_2<C>>;
 ```

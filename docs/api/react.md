@@ -78,6 +78,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ComponentOptions](./react.componentoptions.md)
+
+
+</td><td>
+
+Component configuration options
+
+
+</td></tr>
+<tr><td>
+
 [CreateHooksResult](./react.createhooksresult.md)
 
 
@@ -121,6 +132,28 @@ Creates a branded type to add a unique symbol for type differentiation.
 </td><td>
 
 Converts a string into a union type of its unique characters.
+
+
+</td></tr>
+<tr><td>
+
+[Component](./react.component.md)
+
+
+</td><td>
+
+Polymorphic component with first-class style props and conditional styling capabilities
+
+
+</td></tr>
+<tr><td>
+
+[ComponentProps](./react.componentprops.md)
+
+
+</td><td>
+
+Component props
 
 
 </td></tr>
