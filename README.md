@@ -31,11 +31,11 @@ behavior, and more. Consider this example of a `Box` component:
 </Box>
 ```
 
-With a styling API that builds heavily upon the declarative nature of React, the
-`Box` component enables you to manage complex styling scenarios with ease.
-Meanwhile, Embellish's purely CSS-driven approach for defining conditions like
-`hover` and `active` means that you can create dynamic and interactive UI
-elements without compromising on performance or maintainability.
+With a styling API that builds upon the declarative nature of React, the `Box`
+component enables you to manage complex styling scenarios with ease. Meanwhile,
+Embellish's purely CSS-driven approach for defining conditions like `hover` and
+`active` means that you can create dynamic and interactive UI elements without
+compromising on performance or maintainability.
 
 ## Features
 
@@ -48,9 +48,9 @@ elements without compromising on performance or maintainability.
 - **Style prop conditions**: Specify the name of a condition as a style prop
   modifier, e.g. `hover:background="#333"`, and its value will apply only under
   that condition.
-- **Inline conditions**: Conditions can be combined in a single component
-  instance using logical operators, providing flexibility, promoting reuse, and
-  keeping global CSS to a minimum.
+- **Inline conditions**: Conditions can be combined inline using logical
+  operators, providing flexibility, promoting reuse, and keeping global CSS to a
+  minimum.
 - **No runtime style injection**: Avoid hydration mismatches, flashes of
   unstyled content, and questionable performance of runtime style injection.
 - **No build step**: Simplify the development workflow by avoiding static
@@ -63,6 +63,9 @@ elements without compromising on performance or maintainability.
 
 ## Installation
 
+Install [@embellish/react](https://www.npmjs.com/package/@embellish/react) using
+your package manager of choice, e.g.
+
 ```bash
 npm install @embellish/react
 ```
@@ -73,11 +76,8 @@ npm install @embellish/react
 
 #### Step 1a: Define hooks
 
-Start by defining CSS hooks. These are all of the CSS "selectors" you want to
-use throughout your app. These can be actual selectors, e.g., `&:hover`,
-`&.foo`, or `:checked ~ &`, where `&` is a placeholder for the element to which
-the conditional style is to be applied; or even `@media`, `@container`, or
-`@supports` rules.
+Start by defining CSS hooks. These are all of the "selectors" you want to use
+throughout your app. These can be actual CSS selectors or even at-rules.
 
 ```typescript
 import { createHooks } from "@embellish/react";
@@ -140,38 +140,45 @@ const conditions = createConditions(hooks, {
 
 ### Step 3: Create style props
 
-You can create your own [custom style props](#custom-style-props), or use the
-`createStyleProps` utility to generate them for you.
+Use the `createStyleProps` function to define style props. The keys of the
+configuration object are the prop names, with each entry consisting of either
+
+- a function, parameterized by the prop value, which returns a React
+  `CSSProperties` object; or
+- `true`, indicating that a default implementation should be used (standard CSS
+  properties only)
 
 ```typescript
 import { createStyleProps } from "@embellish/react";
 
-const styleProps = createStyleProps([
-  "backgroundColor",
-  "border",
-  "borderRadius",
-  "color",
-  "cursor",
-  "display",
-  "fontSize",
-  "fontWeight",
-  "outline",
-  "outlineOffset",
-  "padding",
-  "transition",
-]);
+const styleProps = createStyleProps({
+  backgroundColor: (value: CSSProperties["backgroundColor"]) => ({
+    backgroundColor: value,
+  }), // defined as a function for illustrative purposes
+  border: true,
+  borderRadius: true,
+  color: true,
+  cursor: true,
+  display: true,
+  fontSize: true,
+  fontWeight: true,
+  outline: true,
+  outlineOffset: true,
+  padding: true,
+  transition: true,
+});
 ```
 
 ### Step 4: Create a component
 
-Create e.g. a `Box` component using the conditions defined in the previous step
-along with your desired style props.
+Create a `Box` component using the conditions defined in the previous step along
+with your desired style props.
 
 ```typescript
 import { createComponent } from "@embellish/react";
 
 const Box = createComponent({
-  displayName: "Box",
+  displayName: "Box", // recommended for debugging purposes
   defaultAs: "div", // optional, any HTML tag or component
   defaultStyle: {
     // optional, a regular React style object consisting of "base" styles
@@ -185,7 +192,7 @@ const Box = createComponent({
 
 ### Step 5: Use the component
 
-Use your `Box` component to create e.g. a styled button:
+Use your `Box` component to create a styled button:
 
 ```tsx
 function CtaButton({
@@ -283,41 +290,6 @@ function CtaButton({
     </Box>
   );
 }
-```
-
-### Custom style props
-
-The `createStyleProps` function used in the [Getting started](#getting-started)
-section above generates a record of style prop utilities using type information
-from
-[`React.CSSProperties`](https://react.dev/learn/typescript#typing-style-props),
-e.g.
-
-```typescript
-const styleProps = createStyleProps(["color", "padding"]);
-
-// is equivalent to
-
-const styleProps = {
-  color: (color: React.CSSProperties["color"]) => ({ color }),
-  padding: (padding: React.CSSProperties["padding"]) => ({ padding }),
-};
-```
-
-To create a custom style prop, simply add an entry to this `styleProps` object,
-with the prop name as the key, prop type as the function parameter, and
-resulting CSS properties as the return value.
-
-You can mix standard and custom style props using object-spread syntax:
-
-```typescript
-const styleProps = {
-  ...createStyleProps(["color", "padding"]),
-  marginX: (value: React.CSSProperties["marginTop"]) => ({
-    marginLeft: value,
-    marginRight: value,
-  }),
-};
 ```
 
 ## Browser support
