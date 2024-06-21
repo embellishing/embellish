@@ -4,7 +4,7 @@
 
 ## createComponent() function
 
-Creates a polymorphic component with first-class style props and conditional styling using CSS hooks.
+Creates a polymorphic component with first-class style props and conditional styling capabilities.
 
 **Signature:**
 

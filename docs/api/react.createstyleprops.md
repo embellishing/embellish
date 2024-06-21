@@ -13,7 +13,7 @@ export declare function createStyleProps<StylePropConfig>(styleProps: StylePropC
     [P in keyof StylePropConfig]: (P extends keyof CSSProperties ? true : never) | (ValidStylePropName<P> & ((value: any) => {
         [Q in keyof ReturnType<StylePropConfig[P] extends (value: any) => unknown ? StylePropConfig[P] : never>]: Q extends keyof CSSProperties ? CSSProperties[Q] : never;
     }));
-}): StyleProps<{ [P in keyof StylePropConfig]: P extends keyof CSSProperties ? CSSProperties[P] : StylePropConfig[P] extends (value: infer Value) => unknown ? Value : never; }>;
+}): StyleProps<{ [P in keyof StylePropConfig]: StylePropConfig[P] extends (value: infer Value) => unknown ? Value : P extends keyof CSSProperties ? CSSProperties[P] : never; }>;
 ```
 
 ## Parameters
@@ -53,7 +53,7 @@ The style props to create
 </tbody></table>
 **Returns:**
 
-[StyleProps](./react.styleprops.md)<!-- -->&lt;{ \[P in keyof StylePropConfig\]: P extends keyof CSSProperties ? CSSProperties\[P\] : StylePropConfig\[P\] extends (value: infer Value) =&gt; unknown ? Value : never; }&gt;
+[StyleProps](./react.styleprops.md)<!-- -->&lt;{ \[P in keyof StylePropConfig\]: StylePropConfig\[P\] extends (value: infer Value) =&gt; unknown ? Value : P extends keyof CSSProperties ? CSSProperties\[P\] : never; }&gt;
 
 The set of style props defined in the provided configuration and available for use in a component
 

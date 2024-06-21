@@ -82,7 +82,8 @@ export type ComponentProps<
   }>;
 
 /**
- * Polymorphic component with first-class style props and conditional styling capabilities
+ * Polymorphic component with first-class style props and conditional styling
+ * capabilities
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
@@ -108,11 +109,12 @@ export type Component<
 
 /**
  * Creates a polymorphic component with first-class style props and conditional
- * styling using CSS hooks.
+ * styling capabilities.
  *
  * @typeParam P - Type of the style props that the component will expose
  * @typeParam C - Name of the conditions that the component will expose
- * @typeParam DefaultAs - Default element type for the component, defaults to "div"
+ * @typeParam DefaultAs - Default element type for the component, defaults to
+ * "div"
  *
  * @param config - Configuration object for creating the component
  *

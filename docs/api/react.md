@@ -24,7 +24,7 @@ Description
 
 </td><td>
 
-Creates a polymorphic component with first-class style props and conditional styling using CSS hooks.
+Creates a polymorphic component with first-class style props and conditional styling capabilities.
 
 
 </td></tr>

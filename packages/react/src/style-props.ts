@@ -48,10 +48,12 @@ export function createStyleProps<StylePropConfig>(
         : definition,
     ]),
   ) as StyleProps<{
-    [P in keyof StylePropConfig]: P extends keyof CSSProperties
-      ? CSSProperties[P]
-      : StylePropConfig[P] extends (value: infer Value) => unknown
-        ? Value
+    [P in keyof StylePropConfig]: StylePropConfig[P] extends (
+      value: infer Value,
+    ) => unknown
+      ? Value
+      : P extends keyof CSSProperties
+        ? CSSProperties[P]
         : never;
   }>;
 }
