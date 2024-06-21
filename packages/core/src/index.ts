@@ -218,7 +218,7 @@ export function createConditions<
   ) as Conditions<ConditionName>;
 }
 
-export function createLocalConditions<
+export function createInlineConditions<
   ReusableConditions extends Conditions<string>,
   ConditionName extends string,
   C extends keyof ReusableConditions = ReusableConditions extends Conditions<
@@ -228,14 +228,14 @@ export function createLocalConditions<
     : never,
 >(
   conditions: ReusableConditions,
-  localConditions: {
+  inlineConditions: {
     [Name in ConditionName]: ValidConditionName<Name> & Condition<C>;
   },
 ) {
   return {
     get conditionNames() {
       return Object.keys(conditions || {}).concat(
-        Object.keys(localConditions || {}),
+        Object.keys(inlineConditions || {}),
       ) as (C | ConditionName)[];
     },
     conditionalDeclarationValue(
@@ -244,7 +244,7 @@ export function createLocalConditions<
       valueIfFalse: string,
     ) {
       const condition =
-        conditionName in localConditions
+        conditionName in inlineConditions
           ? (function expand(condition: Condition<C>): Condition<HookId> {
               if (typeof condition === "string") {
                 return conditions[condition] as HookId;
@@ -263,7 +263,7 @@ export function createLocalConditions<
               throw new Error(
                 `Invalid condition: ${JSON.stringify(condition)}`,
               );
-            })(localConditions[conditionName as ConditionName])
+            })(inlineConditions[conditionName as ConditionName])
           : (conditions[conditionName as C] as Condition<HookId>);
 
       return (function buildExpression(

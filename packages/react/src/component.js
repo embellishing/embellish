@@ -1,4 +1,4 @@
-import { createLocalConditions } from "@embellish/core";
+import { createInlineConditions } from "@embellish/core";
 import { createElement, forwardRef } from "react";
 
 const unitlessNumbers = new Set([
@@ -119,7 +119,7 @@ export function createComponent({
         style[key] = styleProp[key];
       }
 
-      const conditions = createLocalConditions(
+      const conditions = createInlineConditions(
         configConditions,
         localConditions,
       );
