@@ -116,7 +116,7 @@ export type Component<
  * @typeParam DefaultAs - Default element type for the component, defaults to
  * "div"
  *
- * @param config - Configuration object for creating the component
+ * @param options - Component configuration options
  *
  * @returns A polymorphic React component with style props
  *
@@ -128,4 +128,4 @@ export function createComponent<
   DefaultAs extends
     | keyof JSX.IntrinsicElements
     | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
->(config: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;
+>(options: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;

@@ -15,7 +15,7 @@ C extends string,
 DefaultAs extends
 | keyof JSX.IntrinsicElements
 | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
->(config: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;
+>(options: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;
 ```
 
 ## Parameters
@@ -38,7 +38,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-config
+options
 
 
 </td><td>
@@ -48,7 +48,7 @@ config
 
 </td><td>
 
-Configuration object for creating the component
+Component configuration options
 
 
 </td></tr>

@@ -19,7 +19,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[createComponent(config)](./react.createcomponent.md)
+[createComponent(options)](./react.createcomponent.md)
 
 
 </td><td>
