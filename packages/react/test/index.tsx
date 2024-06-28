@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import type { Browser, Page } from "puppeteer";
 import puppeteer from "puppeteer";
+import type { CSSProperties } from "react";
 import { renderToString } from "react-dom/server";
 
 import {
@@ -73,9 +74,9 @@ async function queryComputedStyle(
 
 test("default style", async () => {
   const Box = createComponent({
-    defaultStyle: {
+    defaultStyle: () => ({
       background: "#0000ff",
-    },
+    }),
   });
   const style = await withPage(async page => {
     await renderContent(page, <Box id="box" />);
@@ -118,9 +119,9 @@ test("style props", async () => {
 
 test("declaration ordering - default style vs. `style` prop", async () => {
   const Box = createComponent({
-    defaultStyle: {
+    defaultStyle: () => ({
       color: "#0000ff",
-    },
+    }),
   });
   const style = await withPage(async page => {
     await renderContent(page, <Box id="box" style={{ color: "#ff0000" }} />);
@@ -141,6 +142,46 @@ test("declaration ordering - `style` prop vs. style prop", async () => {
     return await queryComputedStyle(page, "#box");
   });
   assert.strictEqual(hex(style.color), "#ff0000");
+});
+
+test("default style as a function of the `is` prop", async () => {
+  function Component({ id, style }: { id: string; style?: CSSProperties }) {
+    return <div id={id} style={style} />;
+  }
+  const Box = createComponent({
+    defaultStyle: is => ({
+      background:
+        is === "div"
+          ? "#ff0000"
+          : is === "span"
+            ? "#00ff00"
+            : is === Component
+              ? "#0000ff"
+              : "#999999",
+    }),
+  });
+  await withPage(async page => {
+    await renderContent(
+      page,
+      <>
+        <Box id="div" is="div" />
+        <Box id="span" is="span" />
+        <Box id="component" is={Component} />
+      </>,
+    );
+    assert.strictEqual(
+      hex((await queryComputedStyle(page, "#div")).backgroundColor),
+      "#ff0000",
+    );
+    assert.strictEqual(
+      hex((await queryComputedStyle(page, "#span")).backgroundColor),
+      "#00ff00",
+    );
+    assert.strictEqual(
+      hex((await queryComputedStyle(page, "#component")).backgroundColor),
+      "#0000ff",
+    );
+  });
 });
 
 test("simple reusable condition", async () => {

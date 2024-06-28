@@ -83,7 +83,7 @@ _(Optional)_ Default value for the `is` prop
 
 </td><td>
 
-CSSProperties
+( is: keyof JSX.IntrinsicElements \| React.JSXElementConstructor&lt;any&gt;, ) =&gt; CSSProperties
 
 
 </td><td>

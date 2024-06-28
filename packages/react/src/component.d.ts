@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type {
   Condition,
   Conditions,
@@ -25,7 +27,10 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
   defaultIs?: DefaultIs;
 
   /** Default styles to apply to the element */
-  defaultStyle?: CSSProperties;
+  defaultStyle?: (
+    /** The value provided for the `is` prop */
+    is: keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+  ) => CSSProperties;
 
   /** Component style props */
   styleProps?: StyleProps<P>;
@@ -53,7 +58,6 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
 export type ComponentProps<
   P,
   C extends string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
   InlineConditionName extends string,
 > = {
@@ -96,12 +100,11 @@ export type Component<
   C extends string,
   DefaultIs extends
     | keyof JSX.IntrinsicElements
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | React.JSXElementConstructor<any>,
 > = <
   Is extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
+    | React.JSXElementConstructor<any> = DefaultIs,
   InlineConditionName extends string = never,
 >(
   props: ComponentProps<P, C, Is, InlineConditionName>,
@@ -127,5 +130,5 @@ export function createComponent<
   C extends string,
   DefaultIs extends
     | keyof JSX.IntrinsicElements
-    | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
+    | JSXElementConstructor<any> = "div",
 >(options: ComponentOptions<P, C, DefaultIs>): Component<P, C, DefaultIs>;

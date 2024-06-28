@@ -14,12 +14,11 @@ P,
 C extends string,
 DefaultIs extends
 | keyof JSX.IntrinsicElements
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 | React.JSXElementConstructor<any>,
 > = <
 Is extends
 | keyof JSX.IntrinsicElements
-| React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
+| React.JSXElementConstructor<any> = DefaultIs,
 InlineConditionName extends string = never,
 >(
 props: ComponentProps<P, C, Is, InlineConditionName>,

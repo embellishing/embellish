@@ -94,7 +94,7 @@ export function createComponent({
   displayName,
   styleProps = {},
   defaultIs = "div",
-  defaultStyle = {},
+  defaultStyle = () => ({}),
   conditions: configConditions,
   fallback: configFallback = "revert-layer",
 }) {
@@ -111,7 +111,7 @@ export function createComponent({
       },
       ref,
     ) => {
-      const style = { ...defaultStyle },
+      const style = { ...defaultStyle(Component) },
         forwardProps = {};
 
       for (const key in styleProp) {

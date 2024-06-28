@@ -12,7 +12,6 @@ Component props
 export declare type ComponentProps<
 P,
 C extends string,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
 InlineConditionName extends string,
 > = {
