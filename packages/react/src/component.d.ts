@@ -13,16 +13,16 @@ import type { ComponentPropsWithRef } from "./types";
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam DefaultAs - Type of element to render the component by default
+ * @typeParam DefaultIs - Type of element to render the component by default
  *
  * @public
  */
-export interface ComponentOptions<P, C extends string, DefaultAs> {
+export interface ComponentOptions<P, C extends string, DefaultIs> {
   /** Component display name */
   displayName?: string;
 
-  /** Default value for the `as` prop */
-  defaultAs?: DefaultAs;
+  /** Default value for the `is` prop */
+  defaultIs?: DefaultIs;
 
   /** Default styles to apply to the element */
   defaultStyle?: CSSProperties;
@@ -87,21 +87,21 @@ export type ComponentProps<
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam DefaultAs - Type of element to render the component by default
+ * @typeParam DefaultIs - Type of element to render the component by default
  *
  * @public
  */
 export type Component<
   P,
   C extends string,
-  DefaultAs extends
+  DefaultIs extends
     | keyof JSX.IntrinsicElements
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | React.JSXElementConstructor<any>,
 > = <
   As extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<any> = DefaultAs, // eslint-disable-line @typescript-eslint/no-explicit-any
+    | React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
   InlineConditionName extends string = never,
 >(
   props: ComponentProps<P, C, As, InlineConditionName>,
@@ -113,7 +113,7 @@ export type Component<
  *
  * @typeParam P - Type of the style props that the component will expose
  * @typeParam C - Name of the conditions that the component will expose
- * @typeParam DefaultAs - Default element type for the component, defaults to
+ * @typeParam DefaultIs - Default element type for the component, defaults to
  * "div"
  *
  * @param options - Component configuration options
@@ -125,7 +125,7 @@ export type Component<
 export function createComponent<
   P,
   C extends string,
-  DefaultAs extends
+  DefaultIs extends
     | keyof JSX.IntrinsicElements
     | JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
->(options: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;
+>(options: ComponentOptions<P, C, DefaultIs>): Component<P, C, DefaultIs>;

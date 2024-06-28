@@ -156,7 +156,7 @@ test("simple reusable condition", async () => {
       page,
       <>
         <StyleSheet />
-        <Box as="button" id="box" color="#0000ff" hover:color="#ff0000" />
+        <Box is="button" id="box" color="#0000ff" hover:color="#ff0000" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
@@ -183,14 +183,14 @@ test('reusable "and" condition', async () => {
         <>
           <StyleSheet />
           <Box
-            as="button"
+            is="button"
             id="disabledBox"
             disabled
             color="#0000ff"
             enabledHover:color="#ff0000"
           />
           <Box
-            as="button"
+            is="button"
             id="enabledBox"
             color="#0000ff"
             enabledHover:color="#ff0000"
@@ -234,26 +234,26 @@ test('reusable "or" condition', async () => {
         <>
           <StyleSheet />
           <Box
-            as="a"
+            is="a"
             id="enabledLink"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            as="a"
+            is="a"
             id="disabledLink"
             aria-disabled="true"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            as="button"
+            is="button"
             id="enabledButton"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            as="button"
+            is="button"
             id="disabledButton"
             disabled
             color="#000000"
@@ -294,7 +294,7 @@ test('reusable "not" condition', async () => {
       page,
       <>
         <StyleSheet />
-        <Box as="button" id="box" color="#ff0000" unhover:color="#0000ff" />
+        <Box is="button" id="box" color="#ff0000" unhover:color="#0000ff" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
@@ -372,7 +372,7 @@ test('inline "and" condition', async () => {
           <StyleSheet />
           <Box
             conditions={{ enabledHover: { and: ["enabled", "hover"] } }}
-            as="button"
+            is="button"
             id="disabledBox"
             disabled
             color="#0000ff"
@@ -380,7 +380,7 @@ test('inline "and" condition', async () => {
           />
           <Box
             conditions={{ enabledHover: { and: ["enabled", "hover"] } }}
-            as="button"
+            is="button"
             id="enabledBox"
             color="#0000ff"
             enabledHover:color="#ff0000"
@@ -426,14 +426,14 @@ test('inline "or" condition', async () => {
           <StyleSheet />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            as="a"
+            is="a"
             id="enabledLink"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            as="a"
+            is="a"
             id="disabledLink"
             aria-disabled="true"
             color="#000000"
@@ -441,14 +441,14 @@ test('inline "or" condition', async () => {
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            as="button"
+            is="button"
             id="enabledButton"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            as="button"
+            is="button"
             id="disabledButton"
             disabled
             color="#000000"
@@ -491,7 +491,7 @@ test('inline "not" condition', async () => {
         <StyleSheet />
         <Box
           conditions={{ unhover: { not: "hover" } }}
-          as="button"
+          is="button"
           id="box"
           color="#ff0000"
           unhover:color="#0000ff"
@@ -531,7 +531,7 @@ test("prop ordering - initial vs. conditional style", async () => {
       page,
       <>
         <StyleSheet />
-        <Box id="box" as="button" hover:color="#ff0000" color="#0000ff" />
+        <Box id="box" is="button" hover:color="#ff0000" color="#0000ff" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
