@@ -180,11 +180,11 @@ import { createComponent } from "@embellish/react";
 const Box = createComponent({
   displayName: "Box", // recommended for debugging purposes
   defaultAs: "div", // optional, any HTML tag or component
-  defaultStyle: {
+  defaultStyle: () => ({
     // optional, a regular React style object consisting of "base" styles
     boxSizing: "border-box",
     textDecoration: "none",
-  },
+  }),
   conditions,
   styleProps,
 });
