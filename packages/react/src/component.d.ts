@@ -25,7 +25,13 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
   defaultIs?: DefaultIs;
 
   /** Default styles to apply to the element */
-  defaultStyle?: CSSProperties;
+  defaultStyle?: (
+    /** The value provided for the `is` prop */
+    is:
+      | keyof JSX.IntrinsicElements
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      | React.JSXElementConstructor<any>,
+  ) => CSSProperties;
 
   /** Component style props */
   styleProps?: StyleProps<P>;
