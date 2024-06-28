@@ -509,7 +509,7 @@ test('inline "not" condition', async () => {
 
 test("default as", async () => {
   const Box = createComponent({
-    defaultAs: "section",
+    defaultIs: "section",
   });
   const tagName = await withPage(async page => {
     await renderContent(page, <Box id="box" />);

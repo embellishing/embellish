@@ -45,7 +45,7 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam As - Type of element to render the component
+ * @typeParam Is - Type of element to render the component
  * @typeParam InlineConditionName - Type of inline condition names
  *
  * @public
@@ -54,11 +54,11 @@ export type ComponentProps<
   P,
   C extends string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  As extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+  Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
   InlineConditionName extends string,
 > = {
-  as?: As;
-} & Omit<JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>, never> &
+  is?: Is;
+} & Omit<JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>, never> &
   (string extends C
     ? unknown
     : {
@@ -99,12 +99,12 @@ export type Component<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | React.JSXElementConstructor<any>,
 > = <
-  As extends
+  Is extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
   InlineConditionName extends string = never,
 >(
-  props: ComponentProps<P, C, As, InlineConditionName>,
+  props: ComponentProps<P, C, Is, InlineConditionName>,
 ) => JSX.Element;
 
 /**
