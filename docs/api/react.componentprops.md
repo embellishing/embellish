@@ -13,11 +13,11 @@ export declare type ComponentProps<
 P,
 C extends string,
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-As extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
 InlineConditionName extends string,
 > = {
-    as?: As;
-} & Omit<JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>, never> &
+    is?: Is;
+} & Omit<JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>, never> &
 (string extends C
 ? unknown
 : {
