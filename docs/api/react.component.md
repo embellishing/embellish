@@ -12,17 +12,17 @@ Polymorphic component with first-class style props and conditional styling capab
 export declare type Component<
 P,
 C extends string,
-DefaultAs extends
+DefaultIs extends
 | keyof JSX.IntrinsicElements
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 | React.JSXElementConstructor<any>,
 > = <
-As extends
+Is extends
 | keyof JSX.IntrinsicElements
-| React.JSXElementConstructor<any> = DefaultAs, // eslint-disable-line @typescript-eslint/no-explicit-any
+| React.JSXElementConstructor<any> = DefaultIs, // eslint-disable-line @typescript-eslint/no-explicit-any
 InlineConditionName extends string = never,
 >(
-props: ComponentProps<P, C, As, InlineConditionName>,
+props: ComponentProps<P, C, Is, InlineConditionName>,
 ) => JSX.Element;
 ```
 **References:** [ComponentProps](./react.componentprops.md)
