@@ -14,7 +14,7 @@ P,
 C extends string,
 DefaultIs extends
 | keyof JSX.IntrinsicElements
-| JSXElementConstructor<any> = "div", // eslint-disable-line @typescript-eslint/no-explicit-any
+| JSXElementConstructor<any> = "div",
 >(options: ComponentOptions<P, C, DefaultIs>): Component<P, C, DefaultIs>;
 ```
 

@@ -9,5 +9,7 @@ Default styles to apply to the element
 **Signature:**
 
 ```typescript
-defaultStyle?: CSSProperties;
+defaultStyle?: (
+    is: keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+    ) => CSSProperties;
 ```
