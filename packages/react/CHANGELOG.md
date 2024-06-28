@@ -1,5 +1,12 @@
 # @embellish/react
 
+## 0.6.0
+
+### Minor Changes
+
+- b532595: Made `defaultStyle` a function parameterized by the `is` prop (or default).
+- ffaad05: Renamed the `as` prop to `is`.
+
 ## 0.5.0
 
 ### Minor Changes
