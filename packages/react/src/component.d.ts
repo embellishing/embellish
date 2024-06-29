@@ -52,6 +52,7 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
  * @typeParam C - Type of supported condition names
  * @typeParam Is - Type of element to render the component
  * @typeParam InlineConditionName - Type of inline condition names
+ * @typeParam OwnProps - Type of the component's own props
  *
  * @public
  */
@@ -60,10 +61,7 @@ export type ComponentProps<
   C extends string,
   Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
   InlineConditionName extends string,
-> = {
-  is?: Is;
-} & Omit<JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>, never> &
-  (string extends C
+  OwnProps = (string extends C
     ? unknown
     : {
         conditions?: {
@@ -71,19 +69,26 @@ export type ComponentProps<
             Condition<C>;
         };
       }) &
-  Partial<{
-    [PropName in
-      | keyof P
-      | (keyof P extends string
-          ? `${C | InlineConditionName}:${keyof P}`
-          : never)]: PropName extends `${C | InlineConditionName}:${infer BasePropName}`
-      ? BasePropName extends keyof P
-        ? P[BasePropName]
-        : never
-      : PropName extends keyof P
-        ? P[PropName]
-        : never;
-  }>;
+    Partial<{
+      [PropName in
+        | keyof P
+        | (keyof P extends string
+            ? `${C | InlineConditionName}:${keyof P}`
+            : never)]: PropName extends `${C | InlineConditionName}:${infer BasePropName}`
+        ? BasePropName extends keyof P
+          ? P[BasePropName]
+          : never
+        : PropName extends keyof P
+          ? P[PropName]
+          : never;
+    }>,
+> = {
+  is?: Is;
+} & Omit<
+  JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+  keyof OwnProps
+> &
+  OwnProps;
 
 /**
  * Polymorphic component with first-class style props and conditional styling
