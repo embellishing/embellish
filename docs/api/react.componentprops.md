@@ -14,10 +14,7 @@ P,
 C extends string,
 Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
 InlineConditionName extends string,
-> = {
-    is?: Is;
-} & Omit<JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>, never> &
-(string extends C
+OwnProps = (string extends C
 ? unknown
 : {
     conditions?: {
@@ -37,7 +34,14 @@ Partial<{
     : PropName extends keyof P
     ? P[PropName]
     : never;
-}>;
+}>,
+> = {
+    is?: Is;
+} & Omit<
+JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+keyof OwnProps
+> &
+OwnProps;
 ```
-**References:** [ComponentPropsWithRef](./react.componentpropswithref.md)<!-- -->, [ValidConditionName](./react.validconditionname.md)<!-- -->, [Condition](./react.condition.md)
+**References:** [ValidConditionName](./react.validconditionname.md)<!-- -->, [Condition](./react.condition.md)<!-- -->, [ComponentPropsWithRef](./react.componentpropswithref.md)
 
