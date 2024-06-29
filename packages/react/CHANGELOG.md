@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.6.1
+
+### Patch Changes
+
+- 2a74e6b: Avoid prop collision issues by prioritizing component's own props.
+
 ## 0.6.0
 
 ### Minor Changes
