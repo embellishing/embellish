@@ -9,7 +9,7 @@ Creates reusable conditions based on the provided hooks, each consisting of eith
 **Signature:**
 
 ```typescript
-export declare function createConditions<AvailableHooks extends Hooks<Selector>, ConditionName extends string, S extends keyof AvailableHooks = AvailableHooks extends Hooks<infer S> ? S : never>(hooks: AvailableHooks, conditions: {
+export declare function createConditions<S extends Selector, ConditionName extends string>(hooks: Hooks<S>, conditions: Record<string, Condition<S>> & {
     [Name in ConditionName]: ValidConditionName<Name> & Condition<S>;
 }): Conditions<ConditionName>;
 ```
@@ -39,7 +39,7 @@ hooks
 
 </td><td>
 
-AvailableHooks
+[Hooks](./react.hooks.md)<!-- -->&lt;S&gt;
 
 
 </td><td>
@@ -55,7 +55,7 @@ conditions
 
 </td><td>
 
-{ \[Name in ConditionName\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;Name&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;S&gt;; }
+Record&lt;string, [Condition](./react.condition.md)<!-- -->&lt;S&gt;&gt; &amp; { \[Name in ConditionName\]: [ValidConditionName](./react.validconditionname.md)<!-- -->&lt;Name&gt; &amp; [Condition](./react.condition.md)<!-- -->&lt;S&gt;; }
 
 
 </td><td>

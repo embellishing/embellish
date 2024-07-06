@@ -11,7 +11,8 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "test": "tsc --project test"
   },
   "exports": {
     ".": {
