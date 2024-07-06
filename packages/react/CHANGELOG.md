@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.6.2
+
+### Patch Changes
+
+- f88ed60: Fixed a potential \`is\` prop collision issue.
+
 ## 0.6.1
 
 ### Patch Changes
