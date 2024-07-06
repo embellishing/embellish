@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.6.3
+
+### Patch Changes
+
+- 68a6480: Fixed typing for complex reusable conditions.
+
 ## 0.6.2
 
 ### Patch Changes
