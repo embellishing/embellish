@@ -169,10 +169,9 @@ export type Conditions<ConditionName extends string> = Branded<
  * either a hook id or a logical combination using the `and`, `or`, and `not`
  * operators.
  *
- * @typeParam AvailableHooks - The type of hooks available for use in conditions
- * @typeParam ConditionName - The type of the names of conditions to create
  * @typeParam S - The selector logic of the hooks available for use in
  * conditions
+ * @typeParam ConditionName - The type of the names of conditions to create
  * @param hooks - The hooks available for use in conditions
  * @param conditions - The conditions to create
  *
@@ -181,14 +180,11 @@ export type Conditions<ConditionName extends string> = Branded<
  * @public
  */
 export function createConditions<
-  AvailableHooks extends Hooks<Selector>,
+  S extends Selector,
   ConditionName extends string,
-  S extends keyof AvailableHooks = AvailableHooks extends Hooks<infer S>
-    ? S
-    : never,
 >(
-  hooks: AvailableHooks,
-  conditions: {
+  hooks: Hooks<S>,
+  conditions: Record<string, Condition<S>> & {
     [Name in ConditionName]: ValidConditionName<Name> & Condition<S>;
   },
 ) {
