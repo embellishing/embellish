@@ -61,7 +61,9 @@ export type ComponentProps<
   C extends string,
   Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
   InlineConditionName extends string,
-  OwnProps = (string extends C
+  OwnProps = {
+    is?: Is;
+  } & (string extends C
     ? unknown
     : {
         conditions?: {
@@ -82,9 +84,7 @@ export type ComponentProps<
           ? P[PropName]
           : never;
     }>,
-> = {
-  is?: Is;
-} & Omit<
+> = Omit<
   JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
   keyof OwnProps
 > &
