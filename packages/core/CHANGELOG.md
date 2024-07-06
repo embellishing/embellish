@@ -1,5 +1,11 @@
 # @embellish/core
 
+## 0.0.5
+
+### Patch Changes
+
+- 68a6480: Fixed typing for complex reusable conditions.
+
 ## 0.0.4
 
 ### Patch Changes
