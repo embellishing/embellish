@@ -126,6 +126,17 @@ Creates a branded type to add a unique symbol for type differentiation.
 </td></tr>
 <tr><td>
 
+[CallbackPropFix](./react.callbackpropfix.md)
+
+
+</td><td>
+
+Fixes type inference for callback props, e.g. `onClick`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [Chars](./react.chars.md)
 
 
