@@ -37,11 +37,13 @@ Partial<{
     ? P[PropName]
     : never;
 }>,
-> = Omit<
+> = CallbackPropFix<
+Omit<
 JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
 keyof OwnProps
+>
 > &
 OwnProps;
 ```
-**References:** [ValidConditionName](./react.validconditionname.md)<!-- -->, [Condition](./react.condition.md)<!-- -->, [ComponentPropsWithRef](./react.componentpropswithref.md)
+**References:** [ValidConditionName](./react.validconditionname.md)<!-- -->, [Condition](./react.condition.md)<!-- -->, [CallbackPropFix](./react.callbackpropfix.md)<!-- -->, [ComponentPropsWithRef](./react.componentpropswithref.md)
 

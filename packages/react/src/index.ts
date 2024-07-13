@@ -14,6 +14,7 @@ export type {
   ValidConditionName,
 } from "@embellish/core";
 export type {
+  CallbackPropFix,
   Component,
   ComponentProps,
   ComponentOptions,
