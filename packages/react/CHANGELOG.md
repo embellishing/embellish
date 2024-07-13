@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.6.4
+
+### Patch Changes
+
+- 096c9e9: Type inference fix for callback props.
+
 ## 0.6.3
 
 ### Patch Changes
