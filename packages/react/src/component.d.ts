@@ -46,6 +46,17 @@ export interface ComponentOptions<P, C extends string, DefaultIs> {
 }
 
 /**
+ * Fixes type inference for callback props, e.g. `onClick`.
+ *
+ * @remarks
+ * See
+ * {@link https://github.com/microsoft/TypeScript/issues/44596#issuecomment-1447648600 | microsoft/TypeScript#44596 (comment)}.
+ *
+ * @public
+ */
+export type CallbackPropFix<T> = T extends any ? T : never;
+
+/**
  * Component props
  *
  * @typeParam P - Type of supported style props
@@ -84,9 +95,11 @@ export type ComponentProps<
           ? P[PropName]
           : never;
     }>,
-> = Omit<
-  JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
-  keyof OwnProps
+> = CallbackPropFix<
+  Omit<
+    JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+    keyof OwnProps
+  >
 > &
   OwnProps;
 
