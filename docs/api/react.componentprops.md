@@ -12,10 +12,10 @@ Component props
 export declare type ComponentProps<
 P,
 C extends string,
-Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+As extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
 InlineConditionName extends string,
 OwnProps = {
-    is?: Is;
+    as?: As;
 } & (string extends C
 ? unknown
 : {
@@ -39,7 +39,7 @@ Partial<{
 }>,
 > = CallbackPropFix<
 Omit<
-JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
 keyof OwnProps
 >
 > &

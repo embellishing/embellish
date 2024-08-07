@@ -12,10 +12,10 @@ Creates a polymorphic component with first-class style props and conditional sty
 export declare function createComponent<
 P,
 C extends string,
-DefaultIs extends
+DefaultAs extends
 | keyof JSX.IntrinsicElements
 | JSXElementConstructor<any> = "div",
->(options: ComponentOptions<P, C, DefaultIs>): Component<P, C, DefaultIs>;
+>(options: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;
 ```
 
 ## Parameters
@@ -43,7 +43,7 @@ options
 
 </td><td>
 
-[ComponentOptions](./react.componentoptions.md)<!-- -->&lt;P, C, DefaultIs&gt;
+[ComponentOptions](./react.componentoptions.md)<!-- -->&lt;P, C, DefaultAs&gt;
 
 
 </td><td>
@@ -55,7 +55,7 @@ Component configuration options
 </tbody></table>
 **Returns:**
 
-[Component](./react.component.md)<!-- -->&lt;P, C, DefaultIs&gt;
+[Component](./react.component.md)<!-- -->&lt;P, C, DefaultAs&gt;
 
 A polymorphic React component with style props
 

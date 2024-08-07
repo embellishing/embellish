@@ -15,16 +15,16 @@ import type { ComponentPropsWithRef } from "./types";
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam DefaultIs - Type of element to render the component by default
+ * @typeParam DefaultAs - Type of element to render the component by default
  *
  * @public
  */
-export interface ComponentOptions<P, C extends string, DefaultIs> {
+export interface ComponentOptions<P, C extends string, DefaultAs> {
   /** Component display name */
   displayName?: string;
 
   /** Default value for the `is` prop */
-  defaultIs?: DefaultIs;
+  defaultAs?: DefaultAs;
 
   /** Default styles to apply to the element */
   defaultStyle?: (
@@ -61,7 +61,7 @@ export type CallbackPropFix<T> = T extends any ? T : never;
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam Is - Type of element to render the component
+ * @typeParam As - Type of element to render the component
  * @typeParam InlineConditionName - Type of inline condition names
  * @typeParam OwnProps - Type of the component's own props
  *
@@ -70,10 +70,10 @@ export type CallbackPropFix<T> = T extends any ? T : never;
 export type ComponentProps<
   P,
   C extends string,
-  Is extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+  As extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
   InlineConditionName extends string,
   OwnProps = {
-    is?: Is;
+    as?: As;
   } & (string extends C
     ? unknown
     : {
@@ -97,7 +97,7 @@ export type ComponentProps<
     }>,
 > = CallbackPropFix<
   Omit<
-    JSX.LibraryManagedAttributes<Is, ComponentPropsWithRef<Is>>,
+    JSX.LibraryManagedAttributes<As, ComponentPropsWithRef<As>>,
     keyof OwnProps
   >
 > &
@@ -109,23 +109,23 @@ export type ComponentProps<
  *
  * @typeParam P - Type of supported style props
  * @typeParam C - Type of supported condition names
- * @typeParam DefaultIs - Type of element to render the component by default
+ * @typeParam DefaultAs - Type of element to render the component by default
  *
  * @public
  */
 export type Component<
   P,
   C extends string,
-  DefaultIs extends
+  DefaultAs extends
     | keyof JSX.IntrinsicElements
     | React.JSXElementConstructor<any>,
 > = <
-  Is extends
+  As extends
     | keyof JSX.IntrinsicElements
-    | React.JSXElementConstructor<any> = DefaultIs,
+    | React.JSXElementConstructor<any> = DefaultAs,
   InlineConditionName extends string = never,
 >(
-  props: ComponentProps<P, C, Is, InlineConditionName>,
+  props: ComponentProps<P, C, As, InlineConditionName>,
 ) => JSX.Element;
 
 /**
@@ -134,7 +134,7 @@ export type Component<
  *
  * @typeParam P - Type of the style props that the component will expose
  * @typeParam C - Name of the conditions that the component will expose
- * @typeParam DefaultIs - Default element type for the component, defaults to
+ * @typeParam DefaultAs - Default element type for the component, defaults to
  * "div"
  *
  * @param options - Component configuration options
@@ -146,7 +146,7 @@ export type Component<
 export function createComponent<
   P,
   C extends string,
-  DefaultIs extends
+  DefaultAs extends
     | keyof JSX.IntrinsicElements
     | JSXElementConstructor<any> = "div",
->(options: ComponentOptions<P, C, DefaultIs>): Component<P, C, DefaultIs>;
+>(options: ComponentOptions<P, C, DefaultAs>): Component<P, C, DefaultAs>;

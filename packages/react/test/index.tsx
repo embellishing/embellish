@@ -149,13 +149,13 @@ test("default style as a function of the `is` prop", async () => {
     return <div id={id} style={style} />;
   }
   const Box = createComponent({
-    defaultStyle: is => ({
+    defaultStyle: as => ({
       background:
-        is === "div"
+        as === "div"
           ? "#ff0000"
-          : is === "span"
+          : as === "span"
             ? "#00ff00"
-            : is === Component
+            : as === Component
               ? "#0000ff"
               : "#999999",
     }),
@@ -164,9 +164,9 @@ test("default style as a function of the `is` prop", async () => {
     await renderContent(
       page,
       <>
-        <Box id="div" is="div" />
-        <Box id="span" is="span" />
-        <Box id="component" is={Component} />
+        <Box id="div" as="div" />
+        <Box id="span" as="span" />
+        <Box id="component" as={Component} />
       </>,
     );
     assert.strictEqual(
@@ -197,7 +197,7 @@ test("simple reusable condition", async () => {
       page,
       <>
         <StyleSheet />
-        <Box is="button" id="box" color="#0000ff" hover:color="#ff0000" />
+        <Box as="button" id="box" color="#0000ff" hover:color="#ff0000" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
@@ -224,14 +224,14 @@ test('reusable "and" condition', async () => {
         <>
           <StyleSheet />
           <Box
-            is="button"
+            as="button"
             id="disabledBox"
             disabled
             color="#0000ff"
             enabledHover:color="#ff0000"
           />
           <Box
-            is="button"
+            as="button"
             id="enabledBox"
             color="#0000ff"
             enabledHover:color="#ff0000"
@@ -275,26 +275,26 @@ test('reusable "or" condition', async () => {
         <>
           <StyleSheet />
           <Box
-            is="a"
+            as="a"
             id="enabledLink"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            is="a"
+            as="a"
             id="disabledLink"
             aria-disabled="true"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            is="button"
+            as="button"
             id="enabledButton"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
-            is="button"
+            as="button"
             id="disabledButton"
             disabled
             color="#000000"
@@ -335,7 +335,7 @@ test('reusable "not" condition', async () => {
       page,
       <>
         <StyleSheet />
-        <Box is="button" id="box" color="#ff0000" unhover:color="#0000ff" />
+        <Box as="button" id="box" color="#ff0000" unhover:color="#0000ff" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
@@ -413,7 +413,7 @@ test('inline "and" condition', async () => {
           <StyleSheet />
           <Box
             conditions={{ enabledHover: { and: ["enabled", "hover"] } }}
-            is="button"
+            as="button"
             id="disabledBox"
             disabled
             color="#0000ff"
@@ -421,7 +421,7 @@ test('inline "and" condition', async () => {
           />
           <Box
             conditions={{ enabledHover: { and: ["enabled", "hover"] } }}
-            is="button"
+            as="button"
             id="enabledBox"
             color="#0000ff"
             enabledHover:color="#ff0000"
@@ -467,14 +467,14 @@ test('inline "or" condition', async () => {
           <StyleSheet />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            is="a"
+            as="a"
             id="enabledLink"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            is="a"
+            as="a"
             id="disabledLink"
             aria-disabled="true"
             color="#000000"
@@ -482,14 +482,14 @@ test('inline "or" condition', async () => {
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            is="button"
+            as="button"
             id="enabledButton"
             color="#000000"
             disabled:color="#999999"
           />
           <Box
             conditions={{ disabled: { or: ["ariaDisabled", "trueDisabled"] } }}
-            is="button"
+            as="button"
             id="disabledButton"
             disabled
             color="#000000"
@@ -532,7 +532,7 @@ test('inline "not" condition', async () => {
         <StyleSheet />
         <Box
           conditions={{ unhover: { not: "hover" } }}
-          is="button"
+          as="button"
           id="box"
           color="#ff0000"
           unhover:color="#0000ff"
@@ -550,7 +550,7 @@ test('inline "not" condition', async () => {
 
 test("default as", async () => {
   const Box = createComponent({
-    defaultIs: "section",
+    defaultAs: "section",
   });
   const tagName = await withPage(async page => {
     await renderContent(page, <Box id="box" />);
@@ -572,7 +572,7 @@ test("prop ordering - initial vs. conditional style", async () => {
       page,
       <>
         <StyleSheet />
-        <Box id="box" is="button" hover:color="#ff0000" color="#0000ff" />
+        <Box id="box" as="button" hover:color="#ff0000" color="#0000ff" />
       </>,
     );
     const style = await queryComputedStyle(page, "#box");
