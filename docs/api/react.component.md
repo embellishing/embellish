@@ -12,16 +12,16 @@ Polymorphic component with first-class style props and conditional styling capab
 export declare type Component<
 P,
 C extends string,
-DefaultIs extends
+DefaultAs extends
 | keyof JSX.IntrinsicElements
 | React.JSXElementConstructor<any>,
 > = <
-Is extends
+As extends
 | keyof JSX.IntrinsicElements
-| React.JSXElementConstructor<any> = DefaultIs,
+| React.JSXElementConstructor<any> = DefaultAs,
 InlineConditionName extends string = never,
 >(
-props: ComponentProps<P, C, Is, InlineConditionName>,
+props: ComponentProps<P, C, As, InlineConditionName>,
 ) => JSX.Element;
 ```
 **References:** [ComponentProps](./react.componentprops.md)

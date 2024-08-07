@@ -9,7 +9,7 @@ Component configuration options
 **Signature:**
 
 ```typescript
-export declare interface ComponentOptions<P, C extends string, DefaultIs> 
+export declare interface ComponentOptions<P, C extends string, DefaultAs> 
 ```
 
 ## Properties
@@ -56,7 +56,7 @@ _(Optional)_ Conditions that can be applied to each style prop
 </td></tr>
 <tr><td>
 
-[defaultIs?](./react.componentoptions.defaultis.md)
+[defaultAs?](./react.componentoptions.defaultas.md)
 
 
 </td><td>
@@ -64,7 +64,7 @@ _(Optional)_ Conditions that can be applied to each style prop
 
 </td><td>
 
-DefaultIs
+DefaultAs
 
 
 </td><td>
