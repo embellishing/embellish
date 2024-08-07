@@ -21,7 +21,7 @@ behavior, and more. Consider this example of a `Box` component:
 
 ```tsx
 <Box
-  is="a"
+  as="a"
   href="https://github.com/embellishing/embellish"
   color="#fff"
   background="#03f"
@@ -206,7 +206,7 @@ function CtaButton({
 }) {
   return (
     <Box
-      is="a"
+      as="a"
       href={href}
       aria-disabled={disabled}
       display="inline-block"
@@ -263,7 +263,7 @@ function CtaButton({
 +         and: ["focus", { not: "disabled" }],
 +       },
 +     }}
-      is="a"
+      as="a"
       href={href}
       aria-disabled={disabled}
       display="inline-block"
