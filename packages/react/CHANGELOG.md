@@ -1,5 +1,11 @@
 # @embellish/react
 
+## 0.7.1
+
+### Patch Changes
+
+- 1c5e06a: Fix for highly complex expressions not working properly in Chrome.
+
 ## 0.7.0
 
 ### Minor Changes
