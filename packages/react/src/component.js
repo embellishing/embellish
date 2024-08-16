@@ -168,11 +168,14 @@ export function createComponent({
             continue;
           }
           delete style[resolvedProperty];
-          style[resolvedProperty] = conditions.conditionalDeclarationValue(
-            stylePrefix,
-            condValue,
-            fallback,
-          );
+          let extraDecls;
+          [style[resolvedProperty], extraDecls] =
+            conditions.conditionalDeclarationValue(
+              stylePrefix,
+              condValue,
+              fallback,
+            );
+          Object.assign(style, extraDecls);
         }
       }
 
