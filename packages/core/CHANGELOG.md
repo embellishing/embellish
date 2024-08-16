@@ -1,5 +1,11 @@
 # @embellish/core
 
+## 0.0.6
+
+### Patch Changes
+
+- 1c5e06a: Fix for highly complex expressions not working properly in Chrome.
+
 ## 0.0.5
 
 ### Patch Changes
