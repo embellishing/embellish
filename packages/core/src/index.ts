@@ -266,23 +266,41 @@ export function createInlineConditions<
         condition: Condition<HookId>,
         valueIfTrue: string,
         valueIfFalse: string,
-      ): string {
+      ): [string, Record<string, string>] {
         if (typeof condition === "string") {
-          return `var(--${condition}-1, ${valueIfTrue}) var(--${condition}-0, ${valueIfFalse})`;
+          let valTrue = valueIfTrue,
+            valFalse = valueIfFalse;
+          const extraDecls: Record<string, string> = {};
+          if (valTrue.length > 32) {
+            const hash = createHash(valTrue);
+            extraDecls[`--${hash}`] = valTrue;
+            valTrue = `var(--${hash})`;
+          }
+          if (valFalse.length > 32) {
+            const hash = createHash(valFalse);
+            extraDecls[`--${hash}`] = valFalse;
+            valFalse = `var(--${hash})`;
+          }
+          return [
+            `var(--${condition}-1, ${valTrue}) var(--${condition}-0, ${valFalse})`,
+            extraDecls,
+          ];
         }
         if (condition.and) {
           const [head, ...tail] = condition.and;
           if (!head) {
-            return valueIfTrue;
+            return [valueIfTrue, {}];
           }
           if (tail.length === 0) {
             return buildExpression(head, valueIfTrue, valueIfFalse);
           }
-          return buildExpression(
-            head,
-            buildExpression({ and: tail }, valueIfTrue, valueIfFalse),
+          const [tailExpr, tailDecls] = buildExpression(
+            { and: tail },
+            valueIfTrue,
             valueIfFalse,
           );
+          const [expr, decls] = buildExpression(head, tailExpr, valueIfFalse);
+          return [expr, { ...decls, ...tailDecls }];
         }
         if (condition.or) {
           return buildExpression(
